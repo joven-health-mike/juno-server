@@ -1,0 +1,7 @@
+{
+  "colorize": true,
+  "hideObject": true,
+  "ignore": "pid,hostname,name",
+  "messageFormat": "{msg}",
+  "translateTime": "SYS:hh:MM:ss TT"
+}

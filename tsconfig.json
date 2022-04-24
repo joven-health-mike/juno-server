@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+
+    // Node.js only currently understands CommonJS
+    "module": "commonjs",
+
+    // Output the javascript files from typescript. Overrides the
+    // default setting that would otherwise force you to use Bable.
+    "noEmit": false,
+
+    // Location to store the compiled javascript files
+    "outDir": "build",
+
+    // Remove comments from the compiled javascript
+    "removeComments": true,
+    
+    "resolveJsonModule": true,
+
+    // Can set this to "false" once we configure the debugger
+    "sourceMap": true,
+
+    "typeRoots": ["./types", "./node_modules/@types/"]
+  }
+}

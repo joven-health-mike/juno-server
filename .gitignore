@@ -1,0 +1,15 @@
+# Do not store build files, install them using npm run build
+build
+dist/
+
+# Do not store dependancies, install them using npm install
+node_modules/
+
+# Ignore local configuration files
+local.json
+local.js
+local.cjs
+.env
+
+# Operating System files
+.DS_Store
