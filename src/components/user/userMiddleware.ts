@@ -1,6 +1,10 @@
-import {NextFunction, Request, Response} from 'express'
+import { NextFunction, Request, Response } from 'express'
 
-export const getUser = (request: Request, response: Response, next: NextFunction) => {
+export const getUser = (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
   const user = {
     id: 1,
     name: 'Jon Smith',
@@ -9,7 +13,11 @@ export const getUser = (request: Request, response: Response, next: NextFunction
   next()
 }
 
-export const createUser = (request: Request, response: Response, next: NextFunction) => {
+export const createUser = (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
   const user = {
     id: 2,
     name: 'Jake Smith',

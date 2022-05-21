@@ -1,3 +1,6 @@
+// Default Configurations
+// This file contains all of the possible configurations for the node application and their default values.
+
 module.exports = {
   log: {
     // Enable or disable all logging

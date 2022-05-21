@@ -39,6 +39,8 @@ check: install-nvm
 	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prettier
 	@echo "\n✅  Checking for outdated dependencies\n"
 	@-source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm outdated
+	@echo "\n✅  Checking for newer node.js versions\n"
+	@nvm ls-remote v18
 	@echo "\n🎉  Done.\n"
 
 docker-build:
@@ -75,9 +77,10 @@ docker-stop:
 	@docker rm create-node-app 2>&1 >/dev/null || true
 
 install: install-nvm
-	@echo "\n🏗️  Installing node and dependencies\n"
+	@echo "\n🏗  Install VSCode extensions\n"
+	@code --install-extension dbaeumer.vscode-eslint@2.2.2
+	@echo "\n🏗  Installing node and dependencies\n"
 	@source $(HOME)/.nvm/nvm.sh ; nvm install ; nvm exec npm install
-	@echo "\n Using Visual Studio Code? Install the Prettier extension by running:\n\n\tcode --install-extension esbenp.prettier-vscode\n"
 
 install-nvm:
 ifneq (, ${shell command -v nvm})
