@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction} from 'express'
-import {authenticateAuth0} from './authentication'
+import {authenticateSession} from './sessionAuthMiddleware'
 
-describe('AuthMiddleware', () => {
+describe('SessionAuthMiddleware', () => {
   let header: jest.Mock
   let next: NextFunction
   let res: Response
@@ -21,9 +21,9 @@ describe('AuthMiddleware', () => {
     jest.resetAllMocks()
   })
 
-  describe('authenticateAuth0', () => {
+  describe('authenticateSession', () => {
     it('should not attempt to authenticate a request missing the Authorization header', async () => {
-      await authenticateAuth0(req, res, next)
+      await authenticateSession(req, res, next)
       expect(next).toHaveBeenCalled()
     })
   })

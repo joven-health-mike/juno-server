@@ -2,6 +2,21 @@
 // This file contains all of the possible configurations for the node application and their default values.
 
 module.exports = {
+  authentication: {
+    machineToMachine: {
+      audience: 'https://code-juno.com/api',
+      issuer: 'https://code-juno.us.auth0.com/',
+      jwksUri: 'https://code-juno.us.auth0.com/.well-known/jwks.json',
+    },
+    session: {
+      baseUrl: 'https://localhost',
+      clientId: 'VGKtYFhw8IqTKC9gUswVede8AWGcEuvq',
+      issuerBaseUrl: 'https://code-juno.us.auth0.com',
+      secret: 'a long, randomly-generated string stored in env',
+    }
+  },
+
+  //
   log: {
     // Enable or disable all logging
     enabled: true,

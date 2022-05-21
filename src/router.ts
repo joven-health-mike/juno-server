@@ -1,11 +1,10 @@
 import {Express} from 'express'
-// import swaggerUi from 'swagger-ui-express'
-// import swaggerDoc from '../docs/openapi.json'
 import {errorHandler} from './components/handlers/errorHandler'
 import {healthRouter} from './components/meta/healthRouter'
 import {requestHandler} from './components/handlers/requestHandler'
 import {responseHandler} from './components/handlers/responseHandler'
 import {userRouter} from './components/user/userRouter'
+import { authenticationRouter } from './components/permissions/authenticationRouter'
 
 
 export class AppRouter {
@@ -19,6 +18,8 @@ export class AppRouter {
 
     // Add a handler to validate, authenticate, and log all incoming requests
     app.use(requestHandler)
+
+    app.use('/', authenticationRouter)
 
     app.use('/', healthRouter)
     app.use('/', userRouter)

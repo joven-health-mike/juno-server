@@ -7,7 +7,7 @@
     "build": "tsc",
     "eslint:base": "./node_modules/.bin/eslint --fix",
     "eslint": "npm run eslint:base -- '{src,cypress}/**/*.{js,ts,tsx}'",
-    "start": "NODE_ENV=development ts-node-dev --poll src/index.ts",
+    "start": "NODE_ENV=development ts-node-dev --poll --cache-directory ./.cache src/index.ts",
     "test": "jest --clearCache && jest",
     "ts-node-dev": "ts-node-dev"
   },

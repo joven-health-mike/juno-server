@@ -1,5 +1,5 @@
 import { Logger } from 'pino'
-import { JwtUser } from '../../src/components/permissions/authentication'
+import { JwtUser, M2mAuth } from '../../src/components/permissions/m2mAuthMiddleware'
 
 declare module 'Express' {
   interface Request {
@@ -8,6 +8,7 @@ declare module 'Express' {
     idempotencyKey: string | undefined;
     log: Logger;
     jwtUser: JwtUser | undefined;
+    m2mAuth: M2mAuth | undefined;
     user: object | undefined;
   }
 
@@ -29,6 +30,7 @@ declare module 'express-serve-static-core' {
   }
 
   interface Response {
+    // TODO: Change to Locals?
     locals: {
       data: unknown;
     };

@@ -18,7 +18,7 @@ menu:
 .PHONY: list
 list:
 	@echo $(MAKEFILE_LIST)
-	@echo "\n🗺️  List of all available make commands:\n"
+	@echo "\n🧭  List of all available make commands:\n"
 	@$(MAKE) -pRrq -f $(lastword Makefile) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$'
 	@echo ""
 
@@ -80,10 +80,20 @@ docker-stop:
 install: install-nvm
 	@echo "\n🏗  Install VSCode extensions\n"
 	@code --install-extension dbaeumer.vscode-eslint@2.2.2
-	@echo "\n Install caddy using homebrew"
-	@brew update && brew install caddy
 	@echo "\n🏗  Installing node and dependencies\n"
 	@source $(HOME)/.nvm/nvm.sh ; nvm install ; nvm exec npm install
+
+install-caddy: install-homebrew
+ifeq (, ${shell command -v caddy})
+	@echo "\n🦫 Install caddy using homebrew, see https://caddyserver.com\n"
+	@brew update && brew install caddy
+endif
+
+install-homebrew:
+ifeq (, ${shell command -v brew})
+	@echo "\n🍺  Installing homebrew, see https://brew.sh\n"
+	@/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+endif
 
 install-nvm:
 ifneq (, ${shell command -v nvm})
@@ -95,11 +105,11 @@ start: install-nvm
 	@echo "\n🚀  Starting Service"
 	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm start --quiet | ./node_modules/.bin/pino-pretty
 
-start-proxy:
+start-proxy: install-caddy
 	@echo "\n🔑  Starting a proxy from https://localhost to http://localhost:8080"
 	caddy start --config caddy.json
 
-stop-proxy:
+stop-proxy: install-caddy
 	@echo "\n🔑  Stopping the proxy from https://localhost to http://localhost:8080"
 	caddy stop --config caddy.json
 

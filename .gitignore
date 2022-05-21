@@ -13,3 +13,6 @@ local.cjs
 
 # Operating System files
 .DS_Store
+
+# Directory where ts-node-config stores the cached typescript build files.
+.cache
