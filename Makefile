@@ -10,7 +10,7 @@ menu:
 	@echo "\t🚧  build          \t build project for distribution"
 	@echo "\t✅  check          \t run all static analysis tools"
 	@echo "\t🐳  docker-start   \t build and run in a production environment"
-	@echo "\t🏗   install       \t install project dependencies"
+	@echo "\t🏗  install       \t install project dependencies"
 	@echo "\t🚀  start          \t start the service"
 	@echo "\t🧪  test           \t run all tests"
 	@echo "\n\n\tSee the \"Makefile\" or use command \"make list\" for a complete list of commands.\n"
@@ -23,7 +23,7 @@ list:
 	@echo ""
 
 build: install-nvm
-	@echo "\n🏗️  Building project for distribution"
+	@echo "\n🏗  Building project for distribution"
 	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent \
 	npm run-script build
 	@echo "🎉  Finished build, distribution files can be found in the ./build folder\n"
@@ -36,12 +36,13 @@ build-start:
 check: install-nvm
 	@echo "\n✅  Running all static analysis tools\n"
 	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script eslint
-	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prettier
 	@echo "\n✅  Checking for outdated dependencies\n"
 	@-source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm outdated
-	@echo "\n✅  Checking for newer node.js versions\n"
-	@nvm ls-remote v18
-	@echo "\n🎉  Done.\n"
+	@echo "\n✅  Validating Caddy configuration\n"
+	@caddy validate --config caddy.json 2>/dev/null | grep -q "Valid configuration" || echo "\n🚨  The \"caddy.json\" file is invalid, to see the validation errors run \"caddy validate --config caddy.json\"\n"
+	@echo "\n✅  Checking for newer node.js versions. Review the list for newer versions.\n"
+	@source $(HOME)/.nvm/nvm.sh ; nvm ls-remote v18
+	@echo "\n🎉  Done. Review the output for warnings and errors.\n"
 
 docker-build:
 	@echo "\n🐳  Building a new docker image called \"create-node-app:latest\"\n"
@@ -79,6 +80,8 @@ docker-stop:
 install: install-nvm
 	@echo "\n🏗  Install VSCode extensions\n"
 	@code --install-extension dbaeumer.vscode-eslint@2.2.2
+	@echo "\n Install caddy using homebrew"
+	@brew update && brew install caddy
 	@echo "\n🏗  Installing node and dependencies\n"
 	@source $(HOME)/.nvm/nvm.sh ; nvm install ; nvm exec npm install
 
@@ -92,6 +95,14 @@ start: install-nvm
 	@echo "\n🚀  Starting Service"
 	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm start --quiet | ./node_modules/.bin/pino-pretty
 
+start-proxy:
+	@echo "\n🔑  Starting a proxy from https://localhost to http://localhost:8080"
+	caddy start --config caddy.json
+
+stop-proxy:
+	@echo "\n🔑  Stopping the proxy from https://localhost to http://localhost:8080"
+	caddy stop --config caddy.json
+
 test: install-nvm
 	@echo "\n🧪  Running all unit tests"
 	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent \
@@ -101,5 +112,5 @@ uninstall-nvm:
 ifneq (, ${shell command -v nvm})
 	@echo "\n🌮  Uninstalling nvm, see https://github.com/nvm-sh/nvm\n"
 	rm -rf "$NVM_DIR"
-	@echo "\n⚠️  You will need to manually remove any references to NVM in your ~/.bashrc or other shell resource config files.\n"
+	@echo "\n🚨  You will need to manually remove any references to NVM in your ~/.bashrc or other shell resource config files.\n"
 endif

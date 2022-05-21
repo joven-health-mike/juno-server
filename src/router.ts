@@ -7,16 +7,18 @@ import {requestHandler} from './components/handlers/requestHandler'
 import {responseHandler} from './components/handlers/responseHandler'
 import {userRouter} from './components/user/userRouter'
 
+
 export class AppRouter {
   constructor(app: Express) {
     this.createRoutes(app)
   }
 
   createRoutes(app: Express) {
+    // TODO: hide favicon requests
+    // app.get('/favicon.ico', (req, res) => {res.status(200).send()})
+
     // Add a handler to validate, authenticate, and log all incoming requests
     app.use(requestHandler)
-
-    // app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc))
 
     app.use('/', healthRouter)
     app.use('/', userRouter)

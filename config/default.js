@@ -21,4 +21,7 @@ module.exports = {
 
   // Port that the server will listen on
   port: 8080,
+
+  // When the app is behind a reverse proxy, to get the real IP address enable "trust proxy", see https://expressjs.com/en/guide/behind-proxies.html
+  trustProxy: false,
 }

@@ -2,7 +2,9 @@ import {Http as HttpStatus} from '@status/codes'
 import {NextFunction, Request, Response} from 'express'
 
 export const ensureUserIsAuthenticated = async (request: Request, response: Response, next: NextFunction) => {
-  if (request.authenticated === true) {
+  if (request.oidc.isAuthenticated) {
+    next()
+  } else if (request.authenticated === true) {
     next()
   } else {
     response.status(HttpStatus.Unauthorized)
