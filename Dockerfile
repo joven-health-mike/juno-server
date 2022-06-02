@@ -1,10 +1,15 @@
 FROM node:14.16.1-alpine AS build
+
+# Install system level dependancies required to build the application
+RUN apk add --no-cache g++ gcc libgcc libstdc++ linux-headers make python
+
 WORKDIR /app
 
 # Add the source code directories
 COPY ./config/custom-environment-variables.js ./config/custom-environment-variables.js
 COPY ./config/default.js ./config/default.js
 COPY ./config/production.js ./config/production.js
+COPY ./prisma ./prisma
 COPY ./scripts ./scripts
 COPY ./src ./src
 COPY ./types ./types
@@ -13,19 +18,10 @@ COPY ./types ./types
 COPY ./.eslintrc.js ./.eslintrc.js
 COPY ./package-lock.json ./package-lock.json
 COPY ./package.json ./package.json
-COPY ./prettier.config.js ./prettier.config.js
 COPY ./tsconfig.json ./tsconfig.json
-
-# Install system level dependancies required to build the application
-RUN apk add --no-cache g++ gcc libgcc libstdc++ linux-headers make python
 
 # Install all project dependancies required to build the application
 RUN --mount=type=secret,id=npmrc,dst=/root/.npmrc npm ci
-
-# Remove old version of the swagger documentation
-# RUN rm -f ./docs/openapi.json
-# Build a new copy of the swagger documentation, outputs a file at "./docs/openapi.json"
-# RUN npm run generateDocs
 
 # Compile the typescript application and stores the common javascript files in ./build
 RUN --mount=type=secret,id=npmrc,dst=/root/.npmrc npm run build

@@ -4,6 +4,5 @@ import {createUser, getUser} from './userMiddleware'
 
 export const userRouter = express.Router()
 
-userRouter.get('/api/1/user', getUser)
-
-userRouter.put('/api/1/user', ensureUserIsAuthenticated, createUser)
+userRouter.get('/api/1/users/:id', ensureUserIsAuthenticated, getUser)
+userRouter.put('/api/1/users', ensureUserIsAuthenticated, createUser)

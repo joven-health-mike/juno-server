@@ -2,14 +2,13 @@ import {NextFunction, Request, Response} from 'express'
 import {StatusCodes} from 'http-status-codes'
 
 export interface ServiceInfo {
-  settings: {}
   version: string
 }
 
 export const getServiceInfo = (request: Request, response: Response, next: NextFunction) => {
   const data: ServiceInfo = {
-    settings: {},
-    version: process.env.BUILD_VERSION ?? '',
+    // TODO: Set the application's version from it's main source.
+    version: '',
   }
 
   response.status(StatusCodes.OK)

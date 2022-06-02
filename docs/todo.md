@@ -1,0 +1,1 @@
+1. [Setup Auth0 using terraform](https://marketplace.auth0.com/integrations/terraform)

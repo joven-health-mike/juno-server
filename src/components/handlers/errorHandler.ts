@@ -49,7 +49,7 @@ export const addProcessErrorHandlers = (log: Logger): void => {
   })
 }
 
-export const errorHandler = (error: Error, request: Request, response: Response, next: NextFunction): void => {
+export const errorHandler = async (error: Error, request: Request, response: Response, next: NextFunction) => {
   if (error) {
     // When an error occurs and the status code was not updated using "res.status()" to an
     // acceptable value (ie 400 or greater), set the status to "500 Internal Server Error"
@@ -70,10 +70,10 @@ export const errorHandler = (error: Error, request: Request, response: Response,
     }
 
     // Only one response can be sent to the client. If a response has not
-    // already been sent, then send one.
+    // yet been sent, then send one.
     const sendResponse = response.headersSent === false
 
-    // Log the error. When sending a response ("sendResponse" is true) also log the error response.
+    // Log the error. When sending a response (ie "sendResponse" is true) also log the error response.
     exports.logError(apiErrorResponse, error, sendResponse, request, response)
 
     if (sendResponse) {
@@ -105,7 +105,7 @@ export const logError = (
     metadata.requestBody = request.body
   }
 
-  request.log.error(metadata, error?.stack)
+  request.log.debug(metadata, error?.stack)
 
   if (config.get('log.enableErrorResponseLogging') && logApiResponse) {
     request.log.error(

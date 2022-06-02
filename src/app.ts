@@ -1,8 +1,8 @@
-import express, {Express} from 'express'
-import {addProcessErrorHandlers} from './components/handlers/errorHandler'
-import {AppRouter} from './router'
+import express, { Express } from 'express'
+import { addProcessErrorHandlers } from './components/handlers/errorHandler'
+import { AppRouter } from './router'
 import log from './components/log/log'
-import {authenticateAuth0} from './components/permissions/authentication'
+import config from 'config'
 
 class App {
   readonly app: Express
@@ -10,22 +10,24 @@ class App {
   readonly router
 
   constructor() {
-    // Create a new express application
+    // Create a new express application, see http://expressjs.com/en/4x/api.html#app
     this.app = express()
 
-    // Add middleware to parse JSON formatted HTTP request bodies
+    // Add middleware to parse each JSON formatted HTTP request body, see http://expressjs.com/en/4x/api.html#express.json
     this.app.use(express.json())
 
-    // Add middleware to parse URL encoded HTTP request bodies
-    this.app.use(express.urlencoded({extended: true}))
+    // Add middleware to parse each URL encoded HTTP request body, see http://expressjs.com/en/4x/api.html#express.urlencoded
+    this.app.use(express.urlencoded({ extended: true }))
 
-    // Add Auth middleware
-    this.app.use(authenticateAuth0)
+    // TODO: explain
+    if (config.get('trustProxy')) {
+      this.app.enable('trust proxy')
+    }
 
-    // Create and configure an Express router
+    // Create and configure a new Express router (http://expressjs.com/en/4x/api.html#router)
     this.router = new AppRouter(this.app)
 
-    // Add error handlers to the Node.js process, these will catch and log unhandled errors
+    // Add error handlers to the Node.js process, these methods will catch and log unhandled errors
     addProcessErrorHandlers(log)
   }
 }

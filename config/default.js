@@ -1,4 +1,22 @@
+// Default Configurations
+// This file contains all of the possible configurations for the node application and their default values.
+
 module.exports = {
+  authentication: {
+    machineToMachine: {
+      audience: 'https://code-juno.com/api',
+      issuer: 'https://code-juno.us.auth0.com/',
+      jwksUri: 'https://code-juno.us.auth0.com/.well-known/jwks.json',
+    },
+    session: {
+      baseUrl: 'https://localhost',
+      clientId: 'VGKtYFhw8IqTKC9gUswVede8AWGcEuvq',
+      issuerBaseUrl: 'https://code-juno.us.auth0.com',
+      secret: 'a long, randomly-generated string stored in env',
+    }
+  },
+
+  //
   log: {
     // Enable or disable all logging
     enabled: true,
@@ -18,4 +36,7 @@ module.exports = {
 
   // Port that the server will listen on
   port: 8080,
+
+  // When the app is behind a reverse proxy, to get the real IP address enable "trust proxy", see https://expressjs.com/en/guide/behind-proxies.html
+  trustProxy: false,
 }
