@@ -26,6 +26,7 @@ declare module 'express-serve-static-core' {
     idempotencyKey: string | undefined;
     log: Logger;
     jwtUser: JwtUser | undefined;
+    m2mAuth: M2mAuth | undefined;
     user: object | undefined;
   }
 
