@@ -20,7 +20,10 @@
 
     // Can set this to "false" once we configure the debugger
     "sourceMap": true,
-
+    
+    // Disable strict mode to avoid typescript errors with express app.use() and routers.
+    "strict": false,
+    
     "typeRoots": ["./types", "./node_modules/@types/"]
   },
   "include": ["./src"],

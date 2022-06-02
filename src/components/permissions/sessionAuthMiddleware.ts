@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import { findOrCreateUserByEmail } from '../user/userModel'
 
+// User session information returned from Auth0
 export interface UserSession {
   email?: string;
   email_verified?: boolean;
@@ -13,24 +15,30 @@ export interface UserSession {
   updated_at?: string;
 }
 
-export function authenticateSession(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export const authenticateSession = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    // Check if the user has an authenticated session
     if (req.oidc.isAuthenticated()) {
-      // UserSessionstored in req.oidc.user
+      // When there is an authenticated session, the UserSession information can be found in the req.oidc.user
+      if (!req.oidc.user) {
+        throw new Error('User is authenticated, but no user information was returned from the authentiation service.')
+      }
+
+      // Make sure the authenticated user exists in the database.
+      req.user = await findOrCreateUserByEmail({
+        email: req.oidc.user.email,
+        name: req.oidc.user.name,
+      })
+
+      // Mark the request as authenticated
       req.authenticated = true
       req.log.debug('Request was authenticated using a session.')
-    } else {
-      req.log.debug('Request does not contain a valid session.')
     }
     next()
-    // next()
   } catch (error) {
+    // Something went wrong evaluating the session, mark the request as unauthorized because
+    // logging out and back in would most likely fix the issue.
     res.status(StatusCodes.UNAUTHORIZED)
     next(error)
   }
-  next()
 }

@@ -15,7 +15,7 @@ export interface ApiResponseEnvelope {
   requestId: string
 }
 
-export const responseHandler = (request: Request, response: Response, next: NextFunction) => {
+export const responseHandler = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
   if (response.headersSent) {
     // Only one response can be sent to the client. If a response has already been sent, then abort.
     return

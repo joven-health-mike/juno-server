@@ -30,8 +30,8 @@ declare module 'express-serve-static-core' {
   }
 
   interface Response {
-    // TODO: Change to Locals?
-    locals: {
+    // TODO: Change to locals, with a lowercase 'l'?
+    Locals: {
       data: unknown;
     };
   }

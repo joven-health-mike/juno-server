@@ -15,7 +15,7 @@ export interface JwtUser {
 export interface M2mAuth {
   // JWT Issuer, eg 'https://code-juno.us.auth0.com/'
   iss: string;
-  // Application Client ID? in Auth0, eg. 'dKBgJGBWRlmECs3QVO7f5HrFTFOu4874@clients'
+  // This appears to be the Application Client ID in Auth0, eg. 'dKBgJGBWRlmECs3QVO7f5HrFTFOu4874@clients'
   sub: string;
   // JWT Audience, eg. 'https://code-juno.com/api'
   aud: string;
@@ -23,9 +23,9 @@ export interface M2mAuth {
   iat: number;
   // eg. 1653246639
   exp: number;
-  // Application Client ID in Auth0, eg. 'dKBgJGBWRlmECs3QVO7f5HrFTFOu4874'
+  // This appears to be the Application Client ID in Auth0, eg. 'dKBgJGBWRlmECs3QVO7f5HrFTFOu4874'
   azp: string;
-  // Auth type?, eg. 'client-credentials'
+  // This appears to be the authentication type, eg. 'client-credentials'
   gty: string;
 }
 
@@ -44,9 +44,8 @@ export const auth0Verifier = expressjwt({
 })
 
 // Authenticate a JSON Web Token
-export function authenticateM2mToken(req: Request, res: Response, next: NextFunction) {
+export const authenticateM2mToken = async (req: Request, res: Response, next: NextFunction) => {
   if (req.header('Authorization') === undefined) {
-    req.log.debug('Request does not contain an authorization token.')
     // Cannot authenticate a request that is missing the Bearer Token
     return next()
   }
@@ -56,13 +55,12 @@ export function authenticateM2mToken(req: Request, res: Response, next: NextFunc
       if (req.m2mAuth !== undefined) {
         req.log.debug('Request is authenticated using a machine-to-machine token.')
         req.authenticated = true
-      } else {
-        req.log.debug('Request does not contain a valid machine-to-machine token.')
       }
       next()
     })
   } catch (error) {
-    // TODO: Change?
+    // Something went wrong evaluating the Bearer token, mark the request as unauthorized because
+    // generating a new Bearer token would most likely fix the issue.
     res.status(StatusCodes.UNAUTHORIZED)
     next(error)
   }

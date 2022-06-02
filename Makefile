@@ -44,25 +44,42 @@ check: install-nvm
 	@source $(HOME)/.nvm/nvm.sh ; nvm ls-remote v18
 	@echo "\n🎉  Done. Review the output for warnings and errors.\n"
 
+db-build:
+	@echo "\n🚀  Building Prisma database artifacts."
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:generate
+
 docker-build:
-	@echo "\n🐳  Building a new docker image called \"create-node-app:latest\"\n"
+	@echo "\n🐳  Building a new docker image called \"create-node-app:latest\".\n"
 	NPMRC=$$(cat ~/.npmrc) docker image build --secret id=npmrc,env=NPMRC -t create-node-app:latest .
 
+docker-db:
+	@echo "\n🐳  Starting a PostgreSQL database in a docker container called \"postgres\".\n"
+	@docker stop postgres &>/dev/null || true && docker rm postgres &>/dev/null || true
+	@mkdir -p $(PWD)/.docker && docker run --name postgres -p 5555:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=create-node-app -v $(PWD)/.docker/postgres:/var/lib/postgresql/data/ -d postgres
+
+docker-db-psql:
+	@echo "\n🐳  Connecting to the PostgreSQL database command line.\n"
+	@docker exec -it postgres psql postgresql://postgres:postgres@localhost:5432/create-node-app
+
+docker-db-stop:
+	@echo "\n🐳  Starting a PostgreSQL database in a docker container called \"postgres\".\n"
+	@docker container stop postgres
+
 docker-build-no-cache:
-	@echo "\n🐳  Building a new docker image from scratch called \"create-node-app:latest\"\n"
+	@echo "\n🐳  Building a new docker image from scratch called \"create-node-app:latest\".\n"
 	docker build --no-cache --progress=plain -t create-node-app:latest .
 
 docker-scan:
 	$(MAKE) docker-build
-	@echo "\n🐳  Scanning docker \"create-node-app:latest\" with Snyk\n"
+	@echo "\n🐳  Scanning docker \"create-node-app:latest\" with Snyk.\n"
 	docker scan create-node-app:latest
 
 docker-logs:
-	@echo "\n🐳  Streaming docker container logs from \"create-node-app\" (CTRL+C to Quit)\n"
+	@echo "\n🐳  Streaming docker container logs from \"create-node-app\". (CTRL+C to Quit)\n"
 	@source $(HOME)/.nvm/nvm.sh ; docker logs -f create-node-app | ./node_modules/.bin/pino-pretty
 
 docker-shell:
-	@echo "\n🐳  Starting a shell in the local docker container \"create-node-app\" (Enter command \"exit\" to Quit)\n"
+	@echo "\n🐳  Starting a shell in the local docker container \"create-node-app\". (Enter command \"exit\" to Quit)\n"
 	@docker run -it create-node-app /bin/sh
 
 docker-start:
@@ -101,17 +118,31 @@ ifneq (, ${shell command -v nvm})
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
 endif
 
+install-tfenv:
+ifneq (, ${shell command -v tfenv})
+	@echo "\n🌮  Installing tfenv, see https://github.com/tfutils/tfenv\n"
+	@brew update && brew install tfenv
+endif
+
 start: install-nvm
 	@echo "\n🚀  Starting Service"
 	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm start --quiet | ./node_modules/.bin/pino-pretty
 
 start-proxy: install-caddy
+ifneq (200,${shell curl -s -o /dev/null -w "%{http_code}" http://localhost:2019/config/})
 	@echo "\n🔑  Starting a proxy from https://localhost to http://localhost:8080"
 	caddy start --config caddy.json
+else
+	@echo "\n🔑  A proxy from https://localhost to http://localhost:8080 is already running.\n"
+endif
 
 stop-proxy: install-caddy
+ifeq (200,${shell curl -s -o /dev/null -w "%{http_code}" http://localhost:2019/config/})
 	@echo "\n🔑  Stopping the proxy from https://localhost to http://localhost:8080"
 	caddy stop --config caddy.json
+else
+	@echo "\n🔑  The proxy from https://localhost to http://localhost:8080 is not running.\n"
+endif
 
 test: install-nvm
 	@echo "\n🧪  Running all unit tests"

@@ -1,9 +1,8 @@
-
+import config from 'config'
 import express from 'express'
 import { authenticateM2mToken } from './m2mAuthMiddleware'
 import { authenticateSession } from './sessionAuthMiddleware'
 import { auth } from 'express-openid-connect'
-import config from 'config'
 
 export const authenticationRouter = express.Router()
 

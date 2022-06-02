@@ -1,23 +1,20 @@
 import { NextFunction, Request, Response } from 'express'
+import { findUserById } from './userModel'
 
-export const getUser = (
-  request: Request,
-  response: Response,
-  next: NextFunction
-) => {
-  const user = {
-    id: 1,
-    name: 'Jon Smith',
+export const getUser = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+  const userId = parseInt(request.params.id)
+  try {
+    const user = await findUserById(userId)
+    response.locals.data = user
+    next()
+  } catch (error) {
+    request.log.info('error, calling next')
+    return next(error)
   }
-  response.locals.data = user
-  next()
 }
 
-export const createUser = (
-  request: Request,
-  response: Response,
-  next: NextFunction
-) => {
+export const createUser = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+  // TODO: Create user in database
   const user = {
     id: 2,
     name: 'Jake Smith',
