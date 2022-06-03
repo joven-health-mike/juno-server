@@ -1,8 +1,6 @@
 import { prismaClient } from '../../database'
 import { User } from '@prisma/client'
 
-jest.mock('./userModel')
-
 interface UserInfo {
   id?: number
   email?: string

@@ -1,8 +1,8 @@
-import { createUser, getUser } from './userMiddleware'
+import { createUser, getUser } from '../userMiddleware'
 import { Request, Response } from 'express'
-import { mockUser, findUserById} from './__mocks__/userModel'
+import { mockUser, findUserById} from '../__mocks__/userModel'
 
-jest.mock('./userModel')
+jest.mock('../userModel')
 
 describe('UserMiddleware', () => {
   let request: Request

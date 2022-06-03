@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from 'express'
-import {authenticateSession} from './sessionAuthMiddleware'
+import {authenticateSession} from '../sessionAuthMiddleware'
 
 describe('SessionAuthMiddleware', () => {
   let header: jest.Mock
