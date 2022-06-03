@@ -1,6 +1,6 @@
 import pino from 'pino'
 import config from 'config'
-import packageJson from '../../../package.json'
+import packageJson from '../../package.json'
 
 export const createLogger = () => {
   const loggerOptions: pino.LoggerOptions = {}

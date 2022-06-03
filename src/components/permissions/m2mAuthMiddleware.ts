@@ -6,12 +6,6 @@ import { expressJwtSecret, GetVerificationKey } from 'jwks-rsa'
 import { StatusCodes } from 'http-status-codes'
 import config from 'config'
 
-export interface JwtUser {
-  name?: string;
-  updated_at?: string;
-  email?: string;
-}
-
 export interface M2mAuth {
   // JWT Issuer, eg 'https://code-juno.us.auth0.com/'
   iss: string;

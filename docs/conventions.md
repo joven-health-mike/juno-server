@@ -12,11 +12,4 @@ It's tempting to use files named `index.js` to simplify the path needed when imp
 
 All developers should use the same development environment to reduce the development complexity. This project is currently targetting vscode.
 
-## Roles of files
-* schema = define data storage
-* model = database queries
-* middleware = express middleware (controller), handle user input
-* router = direct api requests to middleware
-* service = functionality not related to a model, view, or controller.  For example interacting with an external API or calendar methods
-* utility = Methods that are useful anywhere in the application
 

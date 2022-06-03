@@ -2,7 +2,7 @@ import {Logger} from 'pino'
 import config from 'config'
 import {NextFunction, Request, Response} from 'express'
 import {v4 as uuid} from 'uuid'
-import log from '../log/log'
+import log from '../../services/log'
 import {DEFAULT_RESPONSE_DATA_VALUE, DEFAULT_STATUS_CODE} from './responseHandler'
 
 export const requestHandler = async (request: Request, response: Response, next: NextFunction) => {

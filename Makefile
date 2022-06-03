@@ -6,14 +6,14 @@ endif
 
 default: menu
 menu:
-	@echo "\n\tAvailable Commands:\n"
-	@echo "\t🚧  build          \t build project for distribution"
-	@echo "\t✅  check          \t run all static analysis tools"
-	@echo "\t🐳  docker-start   \t build and run in a production environment"
-	@echo "\t🏗  install       \t install project dependencies"
-	@echo "\t🚀  start          \t start the service"
-	@echo "\t🧪  test           \t run all tests"
-	@echo "\n\n\tSee the \"Makefile\" or use command \"make list\" for a complete list of commands.\n"
+	@echo "\nAvailable Commands:\n"
+	@echo "🚧  build          \t build project for distribution"
+	@echo "✅  check          \t run all static analysis tools"
+	@echo "🐳  docker-start   \t build and run in a production environment"
+	@echo "🏗   install        \t install project dependencies"
+	@echo "🚀  start          \t start the service"
+	@echo "🧪  test           \t run all tests"
+	@echo "\n\nSee the \"Makefile\" or use command \"make list\" for a complete list of commands.\n"
 
 .PHONY: list
 list:
@@ -22,7 +22,7 @@ list:
 	@$(MAKE) -pRrq -f $(lastword Makefile) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$'
 	@echo ""
 
-build: install-nvm
+build: install-nvm db-build
 	@echo "\n🏗  Building project for distribution"
 	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent \
 	npm run-script build
@@ -47,6 +47,10 @@ check: install-nvm
 db-build:
 	@echo "\n🚀  Building Prisma database artifacts."
 	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:generate
+
+db-ui:
+	@echo "\n🚀  Launching Prisma Studio."
+	@npx prisma studio
 
 docker-build:
 	@echo "\n🐳  Building a new docker image called \"create-node-app:latest\".\n"

@@ -1,5 +1,6 @@
 import {NextFunction, Request, Response} from 'express'
 import {StatusCodes} from 'http-status-codes'
+import packageJson from '../../../package.json'
 
 export interface ServiceInfo {
   version: string
@@ -7,8 +8,7 @@ export interface ServiceInfo {
 
 export const getServiceInfo = (request: Request, response: Response, next: NextFunction) => {
   const data: ServiceInfo = {
-    // TODO: Set the application's version from it's main source.
-    version: '',
+    version: packageJson.version,
   }
 
   response.status(StatusCodes.OK)
