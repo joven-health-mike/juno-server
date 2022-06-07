@@ -15,3 +15,12 @@ model User {
   email String  @unique
   name  String?
 }
+
+model Appointment {
+  id    Int     @id     @default(autoincrement())
+  title String?
+  start String?
+  end String?
+  studentId Int?
+  counselorId Int?
+}
