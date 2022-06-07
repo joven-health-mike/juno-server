@@ -7,16 +7,29 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = "postgresql://postgres:postgres@localhost:5555/create-node-app"
+  url      = "postgresql://postgres:postgres@localhost:5555/create-node-app"
 }
 
 model User {
-  id    Int     @id     @default(autoincrement())
-  email String  @unique
-  firstName String
-  lastName String
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  // THIS NEEDS TO BE SALT/HASH SECURE!!! I'M NOT SURE HOW THAT'S HANDLED WITH AUTH0, SO THIS SHOULD BE CONSIDERED A PLACEHOLDER.
+  password String
+
   role Role
+
+  firstName String
+  lastName  String
   videoLink String?
+
+  // If the user is a student or a guardian this will define that relationship.
+  guardians User[] @relation("StudentGuardian") //, fields: [guardianId], references: [id])
+  students  User[] @relation("StudentGuardian")
+
+  School   School? @relation(fields: [schoolId], references: [id])
+  schoolId Int?
+
+  appointments Appointment[]
 }
 
 enum Role {
@@ -26,8 +39,24 @@ enum Role {
   SCHOOL_STAFF // Staff 
   STUDENT
   GUARDIAN // Parents or guardians at home who can:
-           // - log the student in
-           // - see the student's records and information
+  // - log the student in
+  // - see the student's records and information
   COUNSELOR
   SYSADMIN
+}
+
+model School {
+  id           Int    @id @default(autoincrement())
+  name         String
+  address      String
+  district     String //TODO this could be an enum Districts
+  primaryEmail String
+  users        User[]
+}
+
+model Appointment {
+  id              Int      @id @default(autoincrement())
+  dateTime        DateTime
+  durationMinutes Int
+  attendees       User[]
 }
