@@ -13,5 +13,21 @@ datasource db {
 model User {
   id    Int     @id     @default(autoincrement())
   email String  @unique
-  name  String?
+  firstName String
+  lastName String
+  role Role
+  videoLink String?
+}
+
+enum Role {
+  JOVEN_ADMIN // Internal administration
+  JOVEN_STAFF
+  SCHOOL_ADMIN
+  SCHOOL_STAFF // Staff 
+  STUDENT
+  GUARDIAN // Parents or guardians at home who can:
+           // - log the student in
+           // - see the student's records and information
+  COUNSELOR
+  SYSADMIN
 }
