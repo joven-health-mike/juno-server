@@ -1,5 +1,5 @@
 {
-  "name": "create-node-app",
+  "name": "juno",
   "version": "0.0.1",
   "description": "",
   "main": "build/server.js",
@@ -8,20 +8,21 @@
     "eslint:base": "./node_modules/.bin/eslint --fix",
     "eslint": "npm run eslint:base -- '{src,cypress}/**/*.{js,ts,tsx}'",
     "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate deploy",
     "start": "NODE_ENV=development ts-node-dev --poll --cache-directory ./.cache src/index.ts",
     "test": "jest --clearCache && jest",
     "ts-node-dev": "ts-node-dev"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ssmereka/create-node-app.git"
+    "url": "git+https://github.com/joven-health-mike/juno-server.git"
   },
   "author": "ssmereka",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/ssmereka/create-node-app/issues"
+    "url": "https://github.com/joven-health-mike/juno-server/issues"
   },
-  "homepage": "https://github.com/ssmereka/create-node-app#readme",
+  "homepage": "https://github.com/joven-health-mike/juno-server#readme",
   "dependencies": {
     "@prisma/client": "^3.14.0",
     "@status/codes": "1.6.2",

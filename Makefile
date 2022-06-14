@@ -48,55 +48,59 @@ db-build:
 	@echo "\n🚀  Building Prisma database artifacts."
 	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:generate
 
+db-migrate:
+	@echo "\n🚀  Apply Prisma database migrations."
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:migrate
+
 db-ui:
 	@echo "\n🚀  Launching Prisma Studio."
 	@npx prisma studio
 
 docker-build:
-	@echo "\n🐳  Building a new docker image called \"create-node-app:latest\".\n"
-	NPMRC=$$(cat ~/.npmrc) docker image build --secret id=npmrc,env=NPMRC -t create-node-app:latest .
+	@echo "\n🐳  Building a new docker image called \"juno:latest\".\n"
+	NPMRC=$$(cat ~/.npmrc) docker image build --secret id=npmrc,env=NPMRC -t juno:latest .
 
 docker-db:
 	@echo "\n🐳  Starting a PostgreSQL database in a docker container called \"postgres\".\n"
 	@docker stop postgres &>/dev/null || true && docker rm postgres &>/dev/null || true
-	@mkdir -p $(PWD)/.docker && docker run --name postgres -p 5555:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=create-node-app -v $(PWD)/.docker/postgres:/var/lib/postgresql/data/ -d postgres
+	@mkdir -p $(PWD)/.docker && docker run --name postgres -p 5555:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=juno_dev -v $(PWD)/.docker/postgres:/var/lib/postgresql/data/ -d postgres
 
 docker-db-psql:
 	@echo "\n🐳  Connecting to the PostgreSQL database command line.\n"
-	@docker exec -it postgres psql postgresql://postgres:postgres@localhost:5432/create-node-app
+	@docker exec -it postgres psql postgresql://postgres:postgres@localhost:5432/juno
 
 docker-db-stop:
 	@echo "\n🐳  Starting a PostgreSQL database in a docker container called \"postgres\".\n"
 	@docker container stop postgres
 
 docker-build-no-cache:
-	@echo "\n🐳  Building a new docker image from scratch called \"create-node-app:latest\".\n"
-	docker build --no-cache --progress=plain -t create-node-app:latest .
+	@echo "\n🐳  Building a new docker image from scratch called \"juno:latest\".\n"
+	docker build --no-cache --progress=plain -t juno:latest .
 
 docker-scan:
 	$(MAKE) docker-build
-	@echo "\n🐳  Scanning docker \"create-node-app:latest\" with Snyk.\n"
-	docker scan create-node-app:latest
+	@echo "\n🐳  Scanning docker \"juno:latest\" with Snyk.\n"
+	docker scan juno:latest
 
 docker-logs:
-	@echo "\n🐳  Streaming docker container logs from \"create-node-app\". (CTRL+C to Quit)\n"
-	@source $(HOME)/.nvm/nvm.sh ; docker logs -f create-node-app | ./node_modules/.bin/pino-pretty
+	@echo "\n🐳  Streaming docker container logs from \"juno\". (CTRL+C to Quit)\n"
+	@source $(HOME)/.nvm/nvm.sh ; docker logs -f juno | ./node_modules/.bin/pino-pretty
 
 docker-shell:
-	@echo "\n🐳  Starting a shell in the local docker container \"create-node-app\". (Enter command \"exit\" to Quit)\n"
-	@docker run -it create-node-app /bin/sh
+	@echo "\n🐳  Starting a shell in the local docker container \"juno\". (Enter command \"exit\" to Quit)\n"
+	@docker run -it juno /bin/sh
 
 docker-start:
 	@$(MAKE) docker-build
 	@$(MAKE) docker-stop
-	@echo "🐳  Starting the server in a docker container on port \"8080\" in \"production\" mode called \"create-node-app\""
-	@docker run -d --env NODE_ENV=production --env PORT=8080 -p 8080:8080 --name create-node-app create-node-app:latest 2>&1 >/dev/null
+	@echo "🐳  Starting the server in a docker container on port \"8080\" in \"production\" mode called \"juno\""
+	@docker run -d --env NODE_ENV=production --env PORT=8080 -p 8080:8080 --name juno juno:latest 2>&1 >/dev/null
 	@$(MAKE) docker-logs
 
 docker-stop:
-	@echo "\n🐳  Stopping and removing the create-node-app container\n"
-	@docker stop create-node-app 2>&1 >/dev/null || true
-	@docker rm create-node-app 2>&1 >/dev/null || true
+	@echo "\n🐳  Stopping and removing the juno container\n"
+	@docker stop juno 2>&1 >/dev/null || true
+	@docker rm juno 2>&1 >/dev/null || true
 
 install: install-nvm
 	@echo "\n🏗  Install VSCode extensions\n"
