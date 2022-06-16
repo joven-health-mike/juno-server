@@ -80,11 +80,6 @@ model StudentDetails {
   status            StudentStatus
 }
 
-enum StudentStatus {
-  ACTIVE
-  DISCHARGED
-}
-
 model School {
   id           Int                  @id @default(autoincrement())
   name         String
@@ -121,6 +116,11 @@ enum Role {
   // - see the student's records and information
   COUNSELOR
   SYSADMIN
+}
+
+enum StudentStatus {
+  ACTIVE
+  DISCHARGED
 }
 
 enum AppointmentType {
