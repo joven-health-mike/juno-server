@@ -1,8 +1,8 @@
 // Router
 // Creates the application's API routes and Express middleware in the correct order.
 
-import { authenticationRouter } from './components/permissions/authenticationRouter'
 import { Express } from 'express'
+import { authenticationRouter } from './components/permissions/authenticationRouter'
 import { errorHandler } from './components/handlers/errorHandler'
 import { healthRouter } from './components/meta/healthRouter'
 import { requestHandler } from './components/handlers/requestHandler'
