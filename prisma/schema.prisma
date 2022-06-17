@@ -19,6 +19,8 @@ model User {
   firstName String
   lastName  String
 
+  docsUrl String
+
   sysAdminRef    SysAdminDetails?
   counselorRef   CounselorDetails?
   schoolAdminRef SchoolAdminDetails?
