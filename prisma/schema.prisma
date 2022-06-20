@@ -12,16 +12,16 @@ datasource db {
 
 model User {
   id       Int    @id @default(autoincrement())
-  email    String @unique
+  email    String? @unique
   username String @unique
-  phone    String @unique
+  phone    String? @unique
 
   firstName String
   lastName  String
 
-  docsUrl String
+  docsUrl String?
 
-  timeZoneOffset Int
+  timeZoneOffset Int?
 
   sysAdminRef    SysAdminDetails?
   counselorRef   CounselorDetails?
