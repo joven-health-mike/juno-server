@@ -21,6 +21,8 @@ model User {
 
   docsUrl String
 
+  timeZoneOffset Int
+
   sysAdminRef    SysAdminDetails?
   counselorRef   CounselorDetails?
   schoolAdminRef SchoolAdminDetails?
