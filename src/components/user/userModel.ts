@@ -8,10 +8,23 @@ interface UserInfo {
 }
 
 export const createUser = async (userInfo: UserInfo): Promise<User> => {
-  return await prismaClient.user.create({data: userInfo as User})
+  const newUser: User = {
+    id: userInfo.id,
+    email: userInfo.email,
+    firstName: userInfo.name.split(' ')[0],
+    lastName: userInfo.name.split(' ')[1],
+    username: userInfo.name.replace(/\s+/g, '.').toLowerCase(),
+    phone: '',
+    docsUrl: '',
+    timeZoneOffset: 0
+  }
+
+  return await prismaClient.user.create({ data: newUser })
 }
 
-export const findOrCreateUserByEmail = async (userInfo: UserInfo): Promise<User> => {
+export const findOrCreateUserByEmail = async (
+  userInfo: UserInfo
+): Promise<User> => {
   let userInDatabase = await findUserByEmail(userInfo.email)
   if (!userInDatabase) {
     userInDatabase = await createUser(userInfo)
@@ -41,6 +54,6 @@ export const findUserById = async (id: number): Promise<User | null> => {
 export const updateUser = async (userInfo: UserInfo): Promise<User> => {
   return await prismaClient.user.update({
     data: userInfo as User,
-    where: { id: userInfo.id },
+    where: { id: userInfo.id }
   })
 }

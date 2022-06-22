@@ -9,7 +9,7 @@ module.exports = {
       jwksUri: 'https://code-juno.us.auth0.com/.well-known/jwks.json'
     },
     session: {
-      baseUrl: 'http://localhost:3000',
+      baseUrl: 'http://localhost:8080',
       clientId: 'JrS9SGPWc7H55i6mI3Zv7LWQipkcQEUo',
       issuerBaseUrl: 'https://dev-9e-ctbg8.us.auth0.com',
       secret: 'a long, randomly-generated string stored in env'
