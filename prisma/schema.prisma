@@ -7,13 +7,13 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = "postgresql://postgres:postgres@localhost:5555/juno_dev"
+  url      = "postgresql://postgres:postgres@localhost:5555/juno_dev"
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   email    String? @unique
-  username String @unique
+  username String  @unique
   phone    String? @unique
 
   firstName String
@@ -27,10 +27,9 @@ model User {
   counselorRef   CounselorDetails?
   schoolAdminRef SchoolAdminDetails?
   schoolStaffRef SchoolStaffDetails?
-  guardianRef    GuardianDetails?    @relation(name: "GuardianUser")
-  studentRef     StudentDetails?     @relation(name: "StudentUser")
+  guardianRef    GuardianDetails?
+  studentRef     StudentDetails?
 
-  counselorAppointments   Appointment[] @relation(name: "CounselorAppointment")
   participantAppointments Appointment[] @relation(name: "ParticipantAppointment")
 }
 
@@ -41,11 +40,13 @@ model SysAdminDetails {
 }
 
 model CounselorDetails {
-  id               Int              @id @default(autoincrement())
-  user             User             @relation(fields: [userId], references: [id])
-  userId           Int              @unique
-  roomLink         String
+  id       Int    @id @default(autoincrement())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   Int    @unique
+  roomLink String
+
   assignedStudents StudentDetails[] @relation(name: "StudentCounselor")
+  appointments     Appointment[]    @relation(name: "CounselorAppointment")
 }
 
 model SchoolAdminDetails {
@@ -65,33 +66,33 @@ model SchoolStaffDetails {
 }
 
 model GuardianDetails {
-  id              Int            @id @default(autoincrement())
-  user            User           @relation(name: "GuardianUser", fields: [userId], references: [id])
-  userId          Int            @unique
-  assignedStudent StudentDetails @relation(name: "GuardianStudent", fields: [studentId], references: [id])
-  studentId       Int
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  students StudentDetails[]
 }
 
 model StudentDetails {
-  id                Int               @id @default(autoincrement())
-  user              User              @relation(name: "StudentUser", fields: [userId], references: [id])
-  userId            Int               @unique
-  assignedCounselor CounselorDetails  @relation(name: "StudentCounselor", fields: [counselorId], references: [id])
-  counselorId       Int
-  assignedSchool    School            @relation(name: "StudentSchool", fields: [assignedSchoolId], references: [id])
-  assignedSchoolId  Int
-  guardians         GuardianDetails[] @relation(name: "GuardianStudent")
-  status            StudentStatus
+  id                  Int               @id @default(autoincrement())
+  user                User              @relation(fields: [userId], references: [id])
+  userId              Int               @unique
+  assignedSchool      School            @relation(name: "StudentSchool", fields: [assignedSchoolId], references: [id])
+  assignedSchoolId    Int
+  assignedCounselor   CounselorDetails? @relation(name: "StudentCounselor", fields: [assignedCounselorId], references: [id])
+  assignedCounselorId Int
+  guardians           GuardianDetails[]
+  status              StudentStatus
 }
 
 model School {
   id           Int                  @id @default(autoincrement())
   name         String
-  address      String
-  state        String
-  zip          String
-  primaryEmail String
-  primaryPhone String
+  address      String?
+  state        String?
+  zip          String?
+  primaryEmail String?
+  primaryPhone String?
   schoolAdmins SchoolAdminDetails[] @relation(name: "SchoolAdminSchool")
   schoolStaff  SchoolStaffDetails[] @relation(name: "SchoolStaffSchool")
   students     StudentDetails[]     @relation(name: "StudentSchool")
@@ -102,7 +103,7 @@ model Appointment {
   title        String
   start        DateTime
   end          DateTime
-  counselor    User              @relation(name: "CounselorAppointment", fields: [counselorId], references: [id])
+  counselor    CounselorDetails  @relation(name: "CounselorAppointment", fields: [counselorId], references: [id])
   counselorId  Int
   participants User[]            @relation(name: "ParticipantAppointment")
   type         AppointmentType

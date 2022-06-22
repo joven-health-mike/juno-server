@@ -1,13 +1,22 @@
 import { prismaClient } from '../../database'
-import { Appointment } from '@prisma/client'
+import {
+  Appointment,
+  AppointmentStatus,
+  AppointmentType,
+  CounselorDetails,
+  User
+} from '@prisma/client'
 
 interface AppointmentInfo {
   id?: number
   title?: string
-  start?: string
-  end?: string
-  studentId?: number
+  start?: Date
+  end?: Date
+  participants?: User[]
+  counselor?: CounselorDetails
   counselorId?: number
+  type?: AppointmentType
+  status?: AppointmentStatus
 }
 
 export const createAppointment = async (
