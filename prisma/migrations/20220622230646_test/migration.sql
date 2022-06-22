@@ -23,6 +23,7 @@ CREATE TABLE "User" (
     "lastName" TEXT NOT NULL,
     "docsUrl" TEXT,
     "timeZoneOffset" INTEGER,
+    "role" "Role" NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

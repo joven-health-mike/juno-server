@@ -23,7 +23,11 @@ model User {
 
   timeZoneOffset Int?
 
+  role Role
+
   sysAdminRef    SysAdminDetails?
+  jovenAdminRef  JovenAdminDetails?
+  jovenStaffRef  JovenStaffDetails?
   counselorRef   CounselorDetails?
   schoolAdminRef SchoolAdminDetails?
   schoolStaffRef SchoolStaffDetails?
@@ -34,6 +38,18 @@ model User {
 }
 
 model SysAdminDetails {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+}
+
+model JovenAdminDetails {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+}
+
+model JovenStaffDetails {
   id     Int  @id @default(autoincrement())
   user   User @relation(fields: [userId], references: [id])
   userId Int  @unique
