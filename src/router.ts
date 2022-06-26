@@ -9,6 +9,7 @@ import { requestHandler } from './components/handlers/requestHandler'
 import { responseHandler } from './components/handlers/responseHandler'
 import { userRouter } from './components/user/userRouter'
 import { appointmentRouter } from './components/appointment/appointmentRouter'
+import { schoolRouter } from './components/school/schoolRouter'
 
 export class AppRouter {
   constructor(app: Express) {
@@ -27,6 +28,7 @@ export class AppRouter {
     app.use('/', healthRouter)
     app.use('/', userRouter)
     app.use('/', appointmentRouter)
+    app.use('/', schoolRouter)
 
     // ***** End Application Routes *****
 
