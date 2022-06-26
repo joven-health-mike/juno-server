@@ -1,4 +1,3 @@
-import { Role } from '@prisma/client'
 import express from 'express'
 import { ensureUserIsAuthenticated } from '../permissions/permissionsMiddleware'
 import { createUser, getUser, getUsersByRole } from './userMiddleware'
