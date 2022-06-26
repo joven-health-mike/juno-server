@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { findSchoolById } from './schoolModel'
+import { findSchoolById, findAllSchools } from './schoolModel'
 
 export const getSchool = async (
   request: Request,
@@ -9,6 +9,21 @@ export const getSchool = async (
   const schoolId = parseInt(request.params.id)
   try {
     const school = await findSchoolById(schoolId)
+    response.locals.data = school
+    next()
+  } catch (error) {
+    request.log.info('error, calling next')
+    return next(error)
+  }
+}
+
+export const getAllSchools = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const school = await findAllSchools()
     response.locals.data = school
     next()
   } catch (error) {

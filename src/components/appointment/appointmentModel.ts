@@ -27,6 +27,10 @@ export const createAppointment = async (
   })
 }
 
+export const findAllAppointments = async (): Promise<Appointment[]> => {
+  return await prismaClient.appointment.findMany()
+}
+
 export const findAppointmentById = async (
   id: number
 ): Promise<Appointment | null> => {

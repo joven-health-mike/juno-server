@@ -1,5 +1,20 @@
 import { NextFunction, Request, Response } from 'express'
-import { findAppointmentById } from './appointmentModel'
+import { findAllAppointments, findAppointmentById } from './appointmentModel'
+
+export const getAllAppointments = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const appointments = await findAllAppointments()
+    response.locals.data = appointments
+    next()
+  } catch (error) {
+    request.log.info('error, calling next')
+    return next(error)
+  }
+}
 
 export const getAppointment = async (
   request: Request,

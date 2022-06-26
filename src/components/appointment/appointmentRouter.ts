@@ -1,8 +1,18 @@
 import express from 'express'
 import { ensureUserIsAuthenticated } from '../permissions/permissionsMiddleware'
-import { createAppointment, getAppointment } from './appointmentMiddleware'
+import {
+  createAppointment,
+  getAllAppointments,
+  getAppointment
+} from './appointmentMiddleware'
 
 export const appointmentRouter = express.Router()
+
+appointmentRouter.get(
+  '/api/1/appointments/',
+  ensureUserIsAuthenticated,
+  getAllAppointments
+)
 
 appointmentRouter.get(
   '/api/1/appointments/:id',

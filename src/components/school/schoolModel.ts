@@ -25,6 +25,10 @@ export const createSchool = async (schoolInfo: SchoolInfo): Promise<School> => {
   })
 }
 
+export const findAllSchools = async (): Promise<School[]> => {
+  return await prismaClient.school.findMany()
+}
+
 export const findSchoolById = async (id: number): Promise<School | null> => {
   return await prismaClient.school.findUnique({
     where: { id }

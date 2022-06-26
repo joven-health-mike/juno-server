@@ -41,6 +41,10 @@ export const findUserById = async (id: number): Promise<User | null> => {
   })
 }
 
+export const findAllUsers = async (): Promise<User[]> => {
+  return await prismaClient.user.findMany()
+}
+
 export const findUsersByRole = async (role: Role): Promise<User[]> => {
   return await prismaClient.user.findMany({ where: { role: role } })
 }
