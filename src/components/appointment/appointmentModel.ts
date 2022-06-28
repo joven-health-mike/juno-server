@@ -28,14 +28,20 @@ export const createAppointment = async (
 }
 
 export const findAllAppointments = async (): Promise<Appointment[]> => {
-  return await prismaClient.appointment.findMany()
+  return await prismaClient.appointment.findMany({
+    include: { counselor: { include: { user: true } }, participants: true }
+  })
 }
 
 export const findAppointmentById = async (
   id: number
 ): Promise<Appointment | null> => {
   return await prismaClient.appointment.findUnique({
-    where: { id }
+    where: { id },
+    include: {
+      counselor: { include: { user: true } },
+      participants: true
+    }
   })
 }
 

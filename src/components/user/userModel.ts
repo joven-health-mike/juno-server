@@ -1,5 +1,5 @@
-import { prismaClient } from '../../database'
 import { Role, User } from '@prisma/client'
+import { prismaClient } from '../../database'
 
 interface UserInfo {
   id?: number
@@ -36,9 +36,83 @@ export const findUserByEmail = async (email: string): Promise<User | null> => {
 }
 
 export const findUserById = async (id: number): Promise<User | null> => {
-  return await prismaClient.user.findUnique({
+  const user = await prismaClient.user.findUnique({
     where: { id }
   })
+
+  switch (user.role) {
+    case Role.SYSADMIN:
+      return await prismaClient.user.findUnique({
+        where: { id }
+      })
+    case Role.JOVEN_ADMIN:
+      return await prismaClient.user.findUnique({
+        where: { id }
+      })
+    case Role.JOVEN_STAFF:
+      return await prismaClient.user.findUnique({
+        where: { id }
+      })
+    case Role.SCHOOL_ADMIN:
+      return await prismaClient.user.findUnique({
+        where: { id },
+        include: {
+          schoolAdminRef: {
+            include: { assignedSchool: true }
+          }
+        }
+      })
+    case Role.SCHOOL_STAFF:
+      return await prismaClient.user.findUnique({
+        where: { id },
+        include: {
+          schoolStaffRef: {
+            include: { assignedSchool: true }
+          }
+        }
+      })
+    case Role.COUNSELOR:
+      return await prismaClient.user.findUnique({
+        where: { id },
+        include: {
+          counselorRef: true
+        }
+      })
+    case Role.GUARDIAN:
+      return await prismaClient.user.findUnique({
+        where: { id },
+        include: {
+          guardianRef: {
+            include: {
+              students: {
+                include: { user: true }
+              }
+            }
+          }
+        }
+      })
+    case Role.STUDENT:
+      return await prismaClient.user.findUnique({
+        where: { id },
+        include: {
+          studentRef: {
+            include: {
+              assignedSchool: true,
+              assignedCounselor: {
+                include: {
+                  user: true
+                }
+              },
+              guardians: {
+                include: {
+                  user: true
+                }
+              }
+            }
+          }
+        }
+      })
+  }
 }
 
 export const findAllUsers = async (): Promise<User[]> => {
@@ -46,7 +120,79 @@ export const findAllUsers = async (): Promise<User[]> => {
 }
 
 export const findUsersByRole = async (role: Role): Promise<User[]> => {
-  return await prismaClient.user.findMany({ where: { role: role } })
+  switch (role) {
+    case Role.SYSADMIN:
+      return await prismaClient.user.findMany({
+        where: { role: role }
+      })
+    case Role.JOVEN_ADMIN:
+      return await prismaClient.user.findMany({
+        where: { role: role }
+      })
+    case Role.JOVEN_STAFF:
+      return await prismaClient.user.findMany({
+        where: { role: role }
+      })
+    case Role.SCHOOL_ADMIN:
+      return await prismaClient.user.findMany({
+        where: { role: role },
+        include: {
+          schoolAdminRef: {
+            include: { assignedSchool: true }
+          }
+        }
+      })
+    case Role.SCHOOL_STAFF:
+      return await prismaClient.user.findMany({
+        where: { role: role },
+        include: {
+          schoolStaffRef: {
+            include: { assignedSchool: true }
+          }
+        }
+      })
+    case Role.COUNSELOR:
+      return await prismaClient.user.findMany({
+        where: { role: role },
+        include: {
+          counselorRef: true
+        }
+      })
+    case Role.GUARDIAN:
+      return await prismaClient.user.findMany({
+        where: { role: role },
+        include: {
+          guardianRef: {
+            include: {
+              students: {
+                include: { user: true }
+              }
+            }
+          }
+        }
+      })
+    case Role.STUDENT:
+      return await prismaClient.user.findMany({
+        where: { role: role },
+        include: {
+          studentRef: {
+            include: {
+              assignedSchool: true,
+              assignedCounselor: {
+                include: {
+                  user: true
+                }
+              },
+              guardians: {
+                include: {
+                  user: true
+                }
+              }
+            }
+          }
+        }
+      })
+  }
 }
 
 export const updateUser = async (userInfo: User): Promise<User> => {
