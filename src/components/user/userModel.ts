@@ -1,4 +1,4 @@
-import { Role, User } from '@prisma/client'
+import { Prisma, Role, User } from '@prisma/client'
 import { prismaClient } from '../../database'
 
 interface UserInfo {
@@ -39,80 +39,10 @@ export const findUserById = async (id: number): Promise<User | null> => {
   const user = await prismaClient.user.findUnique({
     where: { id }
   })
-
-  switch (user.role) {
-    case Role.SYSADMIN:
-      return await prismaClient.user.findUnique({
-        where: { id }
-      })
-    case Role.JOVEN_ADMIN:
-      return await prismaClient.user.findUnique({
-        where: { id }
-      })
-    case Role.JOVEN_STAFF:
-      return await prismaClient.user.findUnique({
-        where: { id }
-      })
-    case Role.SCHOOL_ADMIN:
-      return await prismaClient.user.findUnique({
-        where: { id },
-        include: {
-          schoolAdminRef: {
-            include: { assignedSchool: true }
-          }
-        }
-      })
-    case Role.SCHOOL_STAFF:
-      return await prismaClient.user.findUnique({
-        where: { id },
-        include: {
-          schoolStaffRef: {
-            include: { assignedSchool: true }
-          }
-        }
-      })
-    case Role.COUNSELOR:
-      return await prismaClient.user.findUnique({
-        where: { id },
-        include: {
-          counselorRef: true
-        }
-      })
-    case Role.GUARDIAN:
-      return await prismaClient.user.findUnique({
-        where: { id },
-        include: {
-          guardianRef: {
-            include: {
-              students: {
-                include: { user: true }
-              }
-            }
-          }
-        }
-      })
-    case Role.STUDENT:
-      return await prismaClient.user.findUnique({
-        where: { id },
-        include: {
-          studentRef: {
-            include: {
-              assignedSchool: true,
-              assignedCounselor: {
-                include: {
-                  user: true
-                }
-              },
-              guardians: {
-                include: {
-                  user: true
-                }
-              }
-            }
-          }
-        }
-      })
-  }
+  return await prismaClient.user.findUnique({
+    where: { id },
+    include: getUserIncludeForRole(user.role)
+  })
 }
 
 export const findAllUsers = async (): Promise<User[]> => {
@@ -120,78 +50,64 @@ export const findAllUsers = async (): Promise<User[]> => {
 }
 
 export const findUsersByRole = async (role: Role): Promise<User[]> => {
+  return await prismaClient.user.findMany({
+    where: { role: role },
+    include: getUserIncludeForRole(role)
+  })
+}
+
+const getUserIncludeForRole = (role: Role): Prisma.UserInclude => {
   switch (role) {
     case Role.SYSADMIN:
-      return await prismaClient.user.findMany({
-        where: { role: role }
-      })
+      return null
     case Role.JOVEN_ADMIN:
-      return await prismaClient.user.findMany({
-        where: { role: role }
-      })
+      return null
     case Role.JOVEN_STAFF:
-      return await prismaClient.user.findMany({
-        where: { role: role }
-      })
+      return null
     case Role.SCHOOL_ADMIN:
-      return await prismaClient.user.findMany({
-        where: { role: role },
-        include: {
-          schoolAdminRef: {
-            include: { assignedSchool: true }
-          }
+      return {
+        schoolAdminRef: {
+          include: { assignedSchool: true }
         }
-      })
+      }
     case Role.SCHOOL_STAFF:
-      return await prismaClient.user.findMany({
-        where: { role: role },
-        include: {
-          schoolStaffRef: {
-            include: { assignedSchool: true }
-          }
+      return {
+        schoolStaffRef: {
+          include: { assignedSchool: true }
         }
-      })
+      }
     case Role.COUNSELOR:
-      return await prismaClient.user.findMany({
-        where: { role: role },
-        include: {
-          counselorRef: true
-        }
-      })
+      return {
+        counselorRef: true
+      }
     case Role.GUARDIAN:
-      return await prismaClient.user.findMany({
-        where: { role: role },
-        include: {
-          guardianRef: {
-            include: {
-              students: {
-                include: { user: true }
-              }
+      return {
+        guardianRef: {
+          include: {
+            students: {
+              include: { user: true }
             }
           }
         }
-      })
+      }
     case Role.STUDENT:
-      return await prismaClient.user.findMany({
-        where: { role: role },
-        include: {
-          studentRef: {
-            include: {
-              assignedSchool: true,
-              assignedCounselor: {
-                include: {
-                  user: true
-                }
-              },
-              guardians: {
-                include: {
-                  user: true
-                }
+      return {
+        studentRef: {
+          include: {
+            assignedSchool: true,
+            assignedCounselor: {
+              include: {
+                user: true
+              }
+            },
+            guardians: {
+              include: {
+                user: true
               }
             }
           }
         }
-      })
+      }
   }
 }
 
