@@ -6,13 +6,23 @@ import { auth } from 'express-openid-connect'
 
 export const authenticationRouter = express.Router()
 
-authenticationRouter.use(auth({
-  auth0Logout: true,
-  authRequired: false,
-  baseURL: config.get('authentication.session.baseUrl'),
-  clientID: config.get('authentication.session.clientId'),
-  issuerBaseURL: config.get('authentication.session.issuerBaseUrl'),
-  secret: config.get('authentication.session.secret'),
-}))
+authenticationRouter.use(
+  auth({
+    auth0Logout: true,
+    authRequired: false,
+    baseURL: config.get('authentication.session.baseUrl'),
+    clientID: config.get('authentication.session.clientId'),
+    issuerBaseURL: config.get('authentication.session.issuerBaseUrl'),
+    secret: config.get('authentication.session.secret'),
+    routes: {
+      postLogoutRedirect: '/api/1/logout'
+    }
+  })
+)
 
 authenticationRouter.use('/', authenticateM2mToken, authenticateSession)
+
+authenticationRouter.get('/api/1/logout', (req, res) => {
+  req.log.debug('/api/1/logout')
+  res.redirect('https://juno-dev.jovenhealth.com')
+})
