@@ -23,6 +23,5 @@ authenticationRouter.use(
 authenticationRouter.use('/', authenticateM2mToken, authenticateSession)
 
 authenticationRouter.get('/api/1/logout', (req, res) => {
-  req.log.debug('/api/1/logout')
-  res.redirect('https://juno-dev.jovenhealth.com')
+  res.redirect(config.get('authentication.session.logoutRedirect'))
 })

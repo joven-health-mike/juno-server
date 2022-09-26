@@ -37,6 +37,22 @@ CREATE TABLE "SysAdminDetails" (
 );
 
 -- CreateTable
+CREATE TABLE "JovenAdminDetails" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+
+    CONSTRAINT "JovenAdminDetails_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "JovenStaffDetails" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+
+    CONSTRAINT "JovenStaffDetails_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "CounselorDetails" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
@@ -133,6 +149,12 @@ CREATE UNIQUE INDEX "User_phone_key" ON "User"("phone");
 CREATE UNIQUE INDEX "SysAdminDetails_userId_key" ON "SysAdminDetails"("userId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "JovenAdminDetails_userId_key" ON "JovenAdminDetails"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "JovenStaffDetails_userId_key" ON "JovenStaffDetails"("userId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "CounselorDetails_userId_key" ON "CounselorDetails"("userId");
 
 -- CreateIndex
@@ -161,6 +183,12 @@ CREATE INDEX "_ParticipantAppointment_B_index" ON "_ParticipantAppointment"("B")
 
 -- AddForeignKey
 ALTER TABLE "SysAdminDetails" ADD CONSTRAINT "SysAdminDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "JovenAdminDetails" ADD CONSTRAINT "JovenAdminDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "JovenStaffDetails" ADD CONSTRAINT "JovenStaffDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "CounselorDetails" ADD CONSTRAINT "CounselorDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -4,11 +4,17 @@ import {
   createUser,
   getUser,
   getUsersByRole,
-  getAllUsers
+  getAllUsers,
+  getLoggedInUser
 } from './userMiddleware'
 
 export const userRouter = express.Router()
 
+userRouter.get(
+  '/api/1/loggedInUser',
+  ensureUserIsAuthenticated,
+  getLoggedInUser
+)
 userRouter.get('/api/1/users/', ensureUserIsAuthenticated, getAllUsers)
 userRouter.get('/api/1/users/:id', ensureUserIsAuthenticated, getUser)
 userRouter.get(

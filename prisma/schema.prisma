@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:postgres@localhost:8081/juno_dev"
+  url      = "postgresql://postgres:postgres@localhost:5555/juno_dev"
 }
 
 model User {

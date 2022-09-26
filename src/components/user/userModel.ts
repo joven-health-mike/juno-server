@@ -13,7 +13,8 @@ export const createUser = async (userInfo: UserInfo): Promise<User> => {
     email: userInfo.email,
     firstName: userInfo.name.split(' ')[0],
     lastName: userInfo.name.split(' ')[1],
-    username: userInfo.name.replace(/\s+/g, '.').toLowerCase()
+    username: userInfo.name.replace(/\s+/g, '.').toLowerCase(),
+    role: Role.JOVEN_STAFF
   }
 
   return await prismaClient.user.create({ data: newUser as User })

@@ -9,10 +9,12 @@ module.exports = {
       jwksUri: 'https://code-juno.us.auth0.com/.well-known/jwks.json'
     },
     session: {
-      baseUrl: 'https://juno-server-dev.jovenhealth.com',
+      baseUrl: 'https://localhost',
       clientId: 'gRTSrWR4kDPpH28Udftm6X3H35kmFUKD',
       issuerBaseUrl: 'https://dev-9e-ctbg8.us.auth0.com',
-      secret: 'a long, randomly-generated string stored in env'
+      secret: 'a long, randomly-generated string stored in env',
+      loginRedirect: 'https://localhost:3000/login',
+      logoutRedirect: 'https://localhost:3000/login'
     }
   },
 
