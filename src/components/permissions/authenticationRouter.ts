@@ -15,12 +15,25 @@ authenticationRouter.use(
     issuerBaseURL: config.get('authentication.session.issuerBaseUrl'),
     secret: config.get('authentication.session.secret'),
     routes: {
+      login: false,
       postLogoutRedirect: '/api/1/logout'
     }
   })
 )
 
 authenticationRouter.use('/', authenticateM2mToken, authenticateSession)
+
+authenticationRouter.get('/api/1/login', (req, res) => {
+  if (req.authenticated) {
+    res.redirect(config.get('authentication.session.loginRedirect'))
+  } else {
+    res.oidc.login({ returnTo: '/api/1/application' })
+  }
+})
+
+authenticationRouter.get('/api/1/application', (req, res) =>
+  res.redirect(config.get('authentication.session.loginRedirect'))
+)
 
 authenticationRouter.get('/api/1/logout', (req, res) => {
   res.redirect(config.get('authentication.session.logoutRedirect'))

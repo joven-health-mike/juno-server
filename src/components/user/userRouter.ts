@@ -10,11 +10,7 @@ import {
 
 export const userRouter = express.Router()
 
-userRouter.get(
-  '/api/1/loggedInUser',
-  ensureUserIsAuthenticated,
-  getLoggedInUser
-)
+userRouter.get('/api/1/loggedInUser', getLoggedInUser)
 userRouter.get('/api/1/users/', ensureUserIsAuthenticated, getAllUsers)
 userRouter.get('/api/1/users/:id', ensureUserIsAuthenticated, getUser)
 userRouter.get(

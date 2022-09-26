@@ -10,11 +10,12 @@ module.exports = {
     },
     session: {
       baseUrl: 'https://localhost',
-      clientId: 'gRTSrWR4kDPpH28Udftm6X3H35kmFUKD',
+      clientId: 'DsMXODwKWpw9oSBMtybu6UCnwEGqxs31',
       issuerBaseUrl: 'https://dev-9e-ctbg8.us.auth0.com',
-      secret: 'a long, randomly-generated string stored in env',
-      loginRedirect: 'https://localhost:3000/login',
-      logoutRedirect: 'https://localhost:3000/login'
+      secret:
+        'Z7-nLOB7Q5ktiEbGXYGBMk0etxlSWM8hpcFnyWHmFPXq5De2uLHm-fFzMkLvcYCz',
+      loginRedirect: 'https://localhost:3000',
+      logoutRedirect: 'https://localhost:3000'
     }
   },
 

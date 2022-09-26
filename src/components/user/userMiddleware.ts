@@ -1,4 +1,5 @@
 import { Role } from '@prisma/client'
+import { Http as HttpStatus } from '@status/codes'
 import { NextFunction, Request, Response } from 'express'
 import { findUserById, findUsersByRole, findAllUsers } from './userModel'
 
@@ -7,15 +8,14 @@ export const getLoggedInUser = async (
   response: Response,
   next: NextFunction
 ): Promise<void> => {
-  const userId = request.user.id
-  try {
-    const user = await findUserById(userId)
+  if (request.user) {
+    const user = await findUserById(request.user.id)
     response.locals.data = user
-    next()
-  } catch (error) {
-    request.log.info('error, calling next')
-    return next(error)
+    response.status(HttpStatus.Ok)
+  } else {
+    response.status(HttpStatus.NoContent)
   }
+  next()
 }
 
 export const getUser = async (
