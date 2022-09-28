@@ -8,7 +8,7 @@ export const getLoggedInUser = async (
   response: Response,
   next: NextFunction
 ): Promise<void> => {
-  if (request.user) {
+  if (typeof request.user !== 'undefined') {
     const user = await findUserById(request.user.id)
     response.locals.data = user
     response.status(HttpStatus.Ok)
