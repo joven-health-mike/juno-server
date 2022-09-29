@@ -4,6 +4,7 @@ import {
   AppointmentStatus,
   AppointmentType,
   CounselorDetails,
+  School,
   User
 } from '@prisma/client'
 
@@ -12,6 +13,8 @@ interface AppointmentInfo {
   title?: string
   start?: Date
   end?: Date
+  school?: School
+  schoolId?: number
   participants?: User[]
   counselor?: CounselorDetails
   counselorId?: number
@@ -29,7 +32,11 @@ export const createAppointment = async (
 
 export const findAllAppointments = async (): Promise<Appointment[]> => {
   return await prismaClient.appointment.findMany({
-    include: { counselor: { include: { user: true } }, participants: true }
+    include: {
+      counselor: { include: { user: true } },
+      participants: true,
+      school: true
+    }
   })
 }
 

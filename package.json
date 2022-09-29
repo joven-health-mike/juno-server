@@ -8,8 +8,9 @@
     "build:info": "tsc --version && tsc --showConfig",
     "eslint:base": "./node_modules/.bin/eslint --fix",
     "eslint": "npm run eslint:base -- '{src,cypress}/**/*.{js,ts,tsx}'",
+    "prisma:format": "prisma format",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate deploy",
+    "prisma:migrate": "prisma migrate dev",
     "start": "NODE_ENV=development ts-node-dev --poll --cache-directory ./.cache src/index.ts",
     "test": "jest --clearCache && jest",
     "ts-node-dev": "ts-node-dev"

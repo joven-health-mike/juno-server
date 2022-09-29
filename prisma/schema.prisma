@@ -112,6 +112,7 @@ model School {
   schoolAdmins SchoolAdminDetails[] @relation(name: "SchoolAdminSchool")
   schoolStaff  SchoolStaffDetails[] @relation(name: "SchoolStaffSchool")
   students     StudentDetails[]     @relation(name: "StudentSchool")
+  Appointment  Appointment[]        @relation(name: "SchoolAppointment")
 }
 
 model Appointment {
@@ -119,11 +120,13 @@ model Appointment {
   title        String
   start        DateTime
   end          DateTime
+  school       School            @relation(name: "SchoolAppointment", fields: [schoolId], references: [id])
   counselor    CounselorDetails  @relation(name: "CounselorAppointment", fields: [counselorId], references: [id])
   counselorId  Int
   participants User[]            @relation(name: "ParticipantAppointment")
   type         AppointmentType
   status       AppointmentStatus
+  schoolId     Int
 }
 
 enum Role {

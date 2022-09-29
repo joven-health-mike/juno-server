@@ -120,6 +120,7 @@ CREATE TABLE "Appointment" (
     "counselorId" INTEGER NOT NULL,
     "type" "AppointmentType" NOT NULL,
     "status" "AppointmentStatus" NOT NULL,
+    "schoolId" INTEGER NOT NULL,
 
     CONSTRAINT "Appointment_pkey" PRIMARY KEY ("id")
 );
@@ -219,6 +220,9 @@ ALTER TABLE "StudentDetails" ADD CONSTRAINT "StudentDetails_assignedSchoolId_fke
 
 -- AddForeignKey
 ALTER TABLE "Appointment" ADD CONSTRAINT "Appointment_counselorId_fkey" FOREIGN KEY ("counselorId") REFERENCES "CounselorDetails"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Appointment" ADD CONSTRAINT "Appointment_schoolId_fkey" FOREIGN KEY ("schoolId") REFERENCES "School"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_GuardianDetailsToStudentDetails" ADD CONSTRAINT "_GuardianDetailsToStudentDetails_A_fkey" FOREIGN KEY ("A") REFERENCES "GuardianDetails"("id") ON DELETE CASCADE ON UPDATE CASCADE;
