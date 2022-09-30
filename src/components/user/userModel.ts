@@ -2,7 +2,7 @@ import { Prisma, Role, User } from '@prisma/client'
 import { prismaClient } from '../../database'
 
 interface UserInfo {
-  id?: number
+  id?: string
   email?: string
   name?: string
 }
@@ -36,7 +36,7 @@ export const findUserByEmail = async (email: string): Promise<User | null> => {
   })
 }
 
-export const findUserById = async (id: number): Promise<User | null> => {
+export const findUserById = async (id: string): Promise<User | null> => {
   const user = await prismaClient.user.findUnique({
     where: { id }
   })

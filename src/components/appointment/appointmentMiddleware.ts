@@ -21,7 +21,7 @@ export const getAppointment = async (
   response: Response,
   next: NextFunction
 ): Promise<void> => {
-  const appointmentId = parseInt(request.params.id)
+  const appointmentId = request.params.id
   try {
     const appointment = await findAppointmentById(appointmentId)
     response.locals.data = appointment

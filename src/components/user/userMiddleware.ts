@@ -23,7 +23,7 @@ export const getUser = async (
   response: Response,
   next: NextFunction
 ): Promise<void> => {
-  const userId = parseInt(request.params.id)
+  const userId = request.params.id
   try {
     const user = await findUserById(userId)
     response.locals.data = user

@@ -9,15 +9,15 @@ import {
 } from '@prisma/client'
 
 interface AppointmentInfo {
-  id?: number
+  id?: string
   title?: string
   start?: Date
   end?: Date
   school?: School
-  schoolId?: number
+  schoolId?: string
   participants?: User[]
   counselor?: CounselorDetails
-  counselorId?: number
+  counselorId?: string
   type?: AppointmentType
   status?: AppointmentStatus
 }
@@ -41,7 +41,7 @@ export const findAllAppointments = async (): Promise<Appointment[]> => {
 }
 
 export const findAppointmentById = async (
-  id: number
+  id: string
 ): Promise<Appointment | null> => {
   return await prismaClient.appointment.findUnique({
     where: { id },

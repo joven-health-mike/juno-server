@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "main": "build/server.js",
+  "prisma": {
+    "seed": "ts-node prisma/seed/seed.ts"
+  },
   "scripts": {
     "build": "tsc",
     "build:info": "tsc --version && tsc --showConfig",

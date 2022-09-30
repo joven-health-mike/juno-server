@@ -15,7 +15,7 @@ CREATE TYPE "AppointmentLocation" AS ENUM ('VIRTUAL_SCHOOL', 'VIRTUAL_HOME', 'IN
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "email" TEXT,
     "username" TEXT NOT NULL,
     "phone" TEXT,
@@ -30,32 +30,32 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "SysAdminDetails" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "SysAdminDetails_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "JovenAdminDetails" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "JovenAdminDetails_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "JovenStaffDetails" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "JovenStaffDetails_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "CounselorDetails" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "roomLink" TEXT NOT NULL,
 
     CONSTRAINT "CounselorDetails_pkey" PRIMARY KEY ("id")
@@ -63,36 +63,36 @@ CREATE TABLE "CounselorDetails" (
 
 -- CreateTable
 CREATE TABLE "SchoolAdminDetails" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
-    "assignedSchoolId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "assignedSchoolId" TEXT NOT NULL,
 
     CONSTRAINT "SchoolAdminDetails_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "SchoolStaffDetails" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
-    "assignedSchoolId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "assignedSchoolId" TEXT NOT NULL,
 
     CONSTRAINT "SchoolStaffDetails_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "GuardianDetails" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "GuardianDetails_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "StudentDetails" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
-    "assignedSchoolId" INTEGER NOT NULL,
-    "assignedCounselorId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "assignedSchoolId" TEXT NOT NULL,
+    "assignedCounselorId" TEXT NOT NULL,
     "status" "StudentStatus" NOT NULL,
 
     CONSTRAINT "StudentDetails_pkey" PRIMARY KEY ("id")
@@ -100,7 +100,7 @@ CREATE TABLE "StudentDetails" (
 
 -- CreateTable
 CREATE TABLE "School" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "address" TEXT,
     "state" TEXT,
@@ -113,28 +113,28 @@ CREATE TABLE "School" (
 
 -- CreateTable
 CREATE TABLE "Appointment" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "start" TIMESTAMP(3) NOT NULL,
     "end" TIMESTAMP(3) NOT NULL,
-    "counselorId" INTEGER NOT NULL,
+    "counselorId" TEXT NOT NULL,
     "type" "AppointmentType" NOT NULL,
     "status" "AppointmentStatus" NOT NULL,
-    "schoolId" INTEGER NOT NULL,
+    "schoolId" TEXT NOT NULL,
 
     CONSTRAINT "Appointment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "_GuardianDetailsToStudentDetails" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE "_ParticipantAppointment" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
 );
 
 -- CreateIndex

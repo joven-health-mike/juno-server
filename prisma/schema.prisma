@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
+  id       String  @id @default(uuid())
   email    String? @unique
   username String  @unique
   phone    String? @unique
@@ -38,27 +38,27 @@ model User {
 }
 
 model SysAdminDetails {
-  id     Int  @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id])
-  userId Int  @unique
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
 }
 
 model JovenAdminDetails {
-  id     Int  @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id])
-  userId Int  @unique
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
 }
 
 model JovenStaffDetails {
-  id     Int  @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id])
-  userId Int  @unique
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
 }
 
 model CounselorDetails {
-  id       Int    @id @default(autoincrement())
+  id       String @id @default(uuid())
   user     User   @relation(fields: [userId], references: [id])
-  userId   Int    @unique
+  userId   String @unique
   roomLink String
 
   assignedStudents StudentDetails[] @relation(name: "StudentCounselor")
@@ -66,43 +66,43 @@ model CounselorDetails {
 }
 
 model SchoolAdminDetails {
-  id               Int    @id @default(autoincrement())
+  id               String @id @default(uuid())
   user             User   @relation(fields: [userId], references: [id])
-  userId           Int    @unique
+  userId           String @unique
   assignedSchool   School @relation(name: "SchoolAdminSchool", fields: [assignedSchoolId], references: [id])
-  assignedSchoolId Int
+  assignedSchoolId String
 }
 
 model SchoolStaffDetails {
-  id               Int    @id @default(autoincrement())
+  id               String @id @default(uuid())
   user             User   @relation(fields: [userId], references: [id])
-  userId           Int    @unique
+  userId           String @unique
   assignedSchool   School @relation(name: "SchoolStaffSchool", fields: [assignedSchoolId], references: [id])
-  assignedSchoolId Int
+  assignedSchoolId String
 }
 
 model GuardianDetails {
-  id     Int  @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id])
-  userId Int  @unique
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
 
   students StudentDetails[]
 }
 
 model StudentDetails {
-  id                  Int               @id @default(autoincrement())
+  id                  String            @id @default(uuid())
   user                User              @relation(fields: [userId], references: [id])
-  userId              Int               @unique
+  userId              String            @unique
   assignedSchool      School            @relation(name: "StudentSchool", fields: [assignedSchoolId], references: [id])
-  assignedSchoolId    Int
+  assignedSchoolId    String
   assignedCounselor   CounselorDetails? @relation(name: "StudentCounselor", fields: [assignedCounselorId], references: [id])
-  assignedCounselorId Int
+  assignedCounselorId String
   guardians           GuardianDetails[]
   status              StudentStatus
 }
 
 model School {
-  id           Int                  @id @default(autoincrement())
+  id           String               @id @default(uuid())
   name         String
   address      String?
   state        String?
@@ -116,17 +116,17 @@ model School {
 }
 
 model Appointment {
-  id           Int               @id @default(autoincrement())
+  id           String            @id @default(uuid())
   title        String
   start        DateTime
   end          DateTime
   school       School            @relation(name: "SchoolAppointment", fields: [schoolId], references: [id])
   counselor    CounselorDetails  @relation(name: "CounselorAppointment", fields: [counselorId], references: [id])
-  counselorId  Int
+  counselorId  String
   participants User[]            @relation(name: "ParticipantAppointment")
   type         AppointmentType
   status       AppointmentStatus
-  schoolId     Int
+  schoolId     String
 }
 
 enum Role {

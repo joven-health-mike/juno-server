@@ -6,7 +6,7 @@ export const getSchool = async (
   response: Response,
   next: NextFunction
 ): Promise<void> => {
-  const schoolId = parseInt(request.params.id)
+  const schoolId = request.params.id
   try {
     const school = await findSchoolById(schoolId)
     response.locals.data = school

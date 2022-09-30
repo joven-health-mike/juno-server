@@ -7,7 +7,7 @@ import {
 } from '@prisma/client'
 
 interface SchoolInfo {
-  id?: number
+  id?: string
   name?: string
   address?: string
   state?: string
@@ -29,7 +29,7 @@ export const findAllSchools = async (): Promise<School[]> => {
   return await prismaClient.school.findMany()
 }
 
-export const findSchoolById = async (id: number): Promise<School | null> => {
+export const findSchoolById = async (id: string): Promise<School | null> => {
   return await prismaClient.school.findUnique({
     where: { id }
   })
