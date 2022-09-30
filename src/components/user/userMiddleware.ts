@@ -58,22 +58,22 @@ export const getUsersByRole = async (
     const roleStr = request.params.role.toLowerCase()
     let role: Role
     switch (roleStr) {
-      case 'sysAdmin':
+      case 'sysadmin':
         role = Role.SYSADMIN
         break
-      case 'schoolAdmin':
+      case 'schooladmin':
         role = Role.SCHOOL_ADMIN
         break
-      case 'schoolStaff':
+      case 'schoolstaff':
         role = Role.SCHOOL_STAFF
         break
       case 'counselor':
         role = Role.COUNSELOR
         break
-      case 'jovenAdmin':
+      case 'jovenadmin':
         role = Role.JOVEN_ADMIN
         break
-      case 'jovenStaff':
+      case 'jovenstaff':
         role = Role.JOVEN_STAFF
         break
       case 'guardian':
