@@ -55,7 +55,7 @@ export const getUsersByRole = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const roleStr = request.params.role
+    const roleStr = request.params.role.toLowerCase()
     let role: Role
     switch (roleStr) {
       case 'sysAdmin':
