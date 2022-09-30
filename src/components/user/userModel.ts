@@ -3,21 +3,49 @@ import { prismaClient } from '../../database'
 
 interface UserInfo {
   id?: string
+  firstName?: string
+  lastName?: string
   email?: string
-  name?: string
+  username?: string
+  phone?: string
+  docsUrl?: string
+  timeZoneOffset?: number
+  role?: Role
+  counselorRef?: CounselorRef
+}
+
+interface CounselorRef {
+  id?: string
+  userId?: string
+  roomLink?: string
+}
+
+const getUserFromUserInfo = (userInfo: UserInfo) => {
+  return {
+    firstName: userInfo.firstName,
+    lastName: userInfo.lastName,
+    email: userInfo.email,
+    username: userInfo.username,
+    phone: userInfo.phone,
+    docsUrl: userInfo.docsUrl,
+    timeZoneOffset: userInfo.timeZoneOffset,
+    role: userInfo.role,
+    counselorRef: undefined
+  }
 }
 
 export const createUser = async (userInfo: UserInfo): Promise<User> => {
-  const newUser = {
-    id: userInfo.id,
-    email: userInfo.email,
-    firstName: userInfo.name.split(' ')[0],
-    lastName: userInfo.name.split(' ')[1],
-    username: userInfo.name.replace(/\s+/g, '.').toLowerCase(),
-    role: Role.JOVEN_STAFF
-  }
+  const newUser = getUserFromUserInfo(userInfo)
+  return await prismaClient.user.create({ data: newUser })
+}
 
-  return await prismaClient.user.create({ data: newUser as User })
+export const createCounselorRef = async (userInfo: UserInfo): Promise<User> => {
+  const user = getUserFromUserInfo(userInfo)
+  // TODO: create the counselorRef object associated with this user.
+  // user.counselorRef = {
+  //   create: { roomLink: userInfo.counselorRef.roomLink }
+  // }
+  return await prismaClient.user.create({ data: user })
 }
 
 export const findOrCreateUserByEmail = async (

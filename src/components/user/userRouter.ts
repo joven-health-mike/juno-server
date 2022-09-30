@@ -1,7 +1,7 @@
 import express from 'express'
 import { ensureUserIsAuthenticated } from '../permissions/permissionsMiddleware'
 import {
-  createUser,
+  createNewUser,
   getUser,
   getUsersByRole,
   getAllUsers,
@@ -18,4 +18,5 @@ userRouter.get(
   ensureUserIsAuthenticated,
   getUsersByRole
 )
-userRouter.put('/api/1/users', ensureUserIsAuthenticated, createUser)
+userRouter.post('/api/1/users', ensureUserIsAuthenticated, createNewUser)
+userRouter.put('/api/1/users', ensureUserIsAuthenticated, createNewUser)

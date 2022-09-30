@@ -34,7 +34,12 @@ export const authenticateSession = async (
       // user value is now available in all requests.
       req.user = await findOrCreateUserByEmail({
         email: req.oidc.user.email,
-        name: req.oidc.user.name
+        firstName: req.oidc.user.name.split(' ')[0],
+        lastName: req.oidc.user.name.split(' ')[1],
+        username:
+          req.oidc.user.name.split(' ')[0] +
+          '.' +
+          req.oidc.user.name.split(' ')[1]
       })
 
       // Mark the request as authenticated

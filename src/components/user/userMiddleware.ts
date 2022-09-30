@@ -1,7 +1,13 @@
 import { Role } from '@prisma/client'
 import { Http as HttpStatus } from '@status/codes'
 import { NextFunction, Request, Response } from 'express'
-import { findUserById, findUsersByRole, findAllUsers } from './userModel'
+import {
+  findUserById,
+  findUsersByRole,
+  findAllUsers,
+  createUser,
+  createCounselorRef
+} from './userModel'
 
 export const getLoggedInUser = async (
   request: Request,
@@ -94,16 +100,17 @@ export const getUsersByRole = async (
   }
 }
 
-export const createUser = async (
+export const createNewUser = async (
   request: Request,
   response: Response,
   next: NextFunction
 ): Promise<void> => {
-  // TODO: Create user in database
-  const user = {
-    id: 2,
-    name: 'Jake Smith'
-  }
+  const user = request.body
+  createUser(user)
+  // TODO: create counselorRef object associated with this user
+  // if (typeof user.counselorRef !== undefined) {
+  //   createCounselorRef(user)
+  // }
   response.locals.data = user
   next()
 }
