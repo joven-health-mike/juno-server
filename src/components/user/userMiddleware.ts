@@ -5,8 +5,7 @@ import {
   findUserById,
   findUsersByRole,
   findAllUsers,
-  createUser,
-  createCounselorRef
+  createUser
 } from './userModel'
 
 export const getLoggedInUser = async (
@@ -46,7 +45,7 @@ export const getAllUsers = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const user = await findAllUsers()
+    const user = await findAllUsers(request.user)
     response.locals.data = user
     next()
   } catch (error) {

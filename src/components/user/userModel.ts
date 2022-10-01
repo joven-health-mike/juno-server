@@ -74,8 +74,60 @@ export const findUserById = async (id: string): Promise<User | null> => {
   })
 }
 
-export const findAllUsers = async (): Promise<User[]> => {
-  return await prismaClient.user.findMany()
+export const findAllUsers = async (loggedInUser: User): Promise<User[]> => {
+  const allUsers = await prismaClient.user.findMany()
+  let counselorDetails
+  let result = []
+  switch (loggedInUser.role) {
+    case 'SYSADMIN' as Role:
+    case 'JOVEN_ADMIN' as Role:
+    case 'JOVEN_STAFF' as Role:
+      // return all values for sys admin
+      result = [...allUsers]
+      break
+    case 'COUNSELOR' as Role:
+      // counselors get access to themselves, their students, and facilitators associated with the schools they're assigned to
+      counselorDetails = await prismaClient.counselorDetails.findUnique({
+        where: { userId: loggedInUser.id }
+      })
+      for (const dbUser of allUsers) {
+        if (dbUser.id === loggedInUser.id) {
+          result.push(dbUser)
+        } else if (dbUser.role === ('STUDENT' as Role)) {
+          const studentDetails = await prismaClient.studentDetails.findUnique({
+            where: { userId: dbUser.id }
+          })
+          if (counselorDetails.id === studentDetails.assignedCounselorId) {
+            result.push(dbUser)
+          }
+        } else if (
+          dbUser.role === ('SCHOOL_ADMIN' as Role) ||
+          dbUser.role === ('SCHOOL_STAFF' as Role)
+        ) {
+          // TODO: include this user if the counselor is assigned to their school
+        }
+      }
+      break
+    case 'SCHOOL_ADMIN' as Role:
+      // return all values for now
+      result = [...allUsers]
+      break
+    case 'SCHOOL_STAFF' as Role:
+      // return all values for now
+      result = [...allUsers]
+      break
+    case 'STUDENT' as Role:
+      // return all values for now
+      result = [...allUsers]
+      break
+    case 'GUARDIAN' as Role:
+      // return all values for now
+      result = [...allUsers]
+      break
+    default:
+      break
+  }
+  return result
 }
 
 export const findUsersByRole = async (role: Role): Promise<User[]> => {
