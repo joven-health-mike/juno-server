@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import config from 'config'
-import { findOrCreateUserByEmail } from '../user/userModel'
+import { findOrCreateUserByEmail, findUserByUsername } from '../user/userModel'
 
 // User session information returned from Auth0
 export interface UserSession {
@@ -33,16 +33,23 @@ export const authenticateSession = async (
 
       // Make sure the authenticated user exists in the database.
       // user value is now available in all requests.
-      req.user = await findOrCreateUserByEmail({
-        email: req.oidc.user.email,
-        firstName: req.oidc.user.name.split(' ')[0],
-        lastName: req.oidc.user.name.split(' ')[1],
-        username:
-          req.oidc.user.name.split(' ')[0] +
-          '.' +
-          req.oidc.user.name.split(' ')[1],
-        role: config.get('authentication.user.defaultRole')
-      })
+      const configUsername = config.get(
+        'authentication.user.loggedInUsername'
+      ) as string
+      if (typeof configUsername !== undefined) {
+        req.user = await findUserByUsername(configUsername)
+      } else {
+        req.user = await findOrCreateUserByEmail({
+          email: req.oidc.user.email,
+          firstName: req.oidc.user.name.split(' ')[0],
+          lastName: req.oidc.user.name.split(' ')[1],
+          username:
+            req.oidc.user.name.split(' ')[0] +
+            '.' +
+            req.oidc.user.name.split(' ')[1],
+          role: config.get('authentication.user.defaultRole')
+        })
+      }
 
       // Mark the request as authenticated
       req.authenticated = true

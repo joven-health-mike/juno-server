@@ -46,9 +46,9 @@ export const createCounselorRef = async (
   return await prismaClient.counselorDetails.create({ data: counselorDetails })
 }
 
-export const findUserByUsername = async (userInfo: UserInfo): Promise<User> => {
+export const findUserByUsername = async (username: string): Promise<User> => {
   return await prismaClient.user.findUnique({
-    where: { username: userInfo.username }
+    where: { username }
   })
 }
 

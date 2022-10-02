@@ -18,7 +18,8 @@ module.exports = {
       logoutRedirect: 'https://localhost:3000'
     },
     user: {
-      defaultRole: 'JOVEN_STAFF'
+      defaultRole: 'JOVEN_STAFF',
+      loggedInUsername: 'jacek.mcguinness' // this overrides the actual login information
     }
   },
 
