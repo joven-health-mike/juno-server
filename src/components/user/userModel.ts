@@ -1,4 +1,4 @@
-import { Prisma, Role, User } from '@prisma/client'
+import { CounselorDetails, Prisma, Role, User } from '@prisma/client'
 import { prismaClient } from '../../database'
 
 interface UserInfo {
@@ -11,17 +11,12 @@ interface UserInfo {
   docsUrl?: string
   timeZoneOffset?: number
   role?: Role
-  counselorRef?: CounselorRef
-}
-
-interface CounselorRef {
-  id?: string
-  userId?: string
-  roomLink?: string
+  counselorRef?: CounselorDetails
 }
 
 const getUserFromUserInfo = (userInfo: UserInfo) => {
   return {
+    id: userInfo.id === '-1' ? undefined : userInfo.id,
     firstName: userInfo.firstName,
     lastName: userInfo.lastName,
     email: userInfo.email,
@@ -29,8 +24,7 @@ const getUserFromUserInfo = (userInfo: UserInfo) => {
     phone: userInfo.phone,
     docsUrl: userInfo.docsUrl,
     timeZoneOffset: userInfo.timeZoneOffset,
-    role: userInfo.role,
-    counselorRef: undefined
+    role: userInfo.role
   }
 }
 
@@ -39,13 +33,23 @@ export const createUser = async (userInfo: UserInfo): Promise<User> => {
   return await prismaClient.user.create({ data: newUser })
 }
 
-export const createCounselorRef = async (userInfo: UserInfo): Promise<User> => {
-  const user = getUserFromUserInfo(userInfo)
-  // TODO: create the counselorRef object associated with this user.
-  // user.counselorRef = {
-  //   create: { roomLink: userInfo.counselorRef.roomLink }
-  // }
-  return await prismaClient.user.create({ data: user })
+export const createCounselorRef = async (
+  userInfo: UserInfo,
+  userId: string
+): Promise<CounselorDetails> => {
+  const counselorDetails: CounselorDetails = {
+    id:
+      userInfo.counselorRef.id === '-1' ? undefined : userInfo.counselorRef.id,
+    userId: userId,
+    roomLink: userInfo.counselorRef.roomLink
+  }
+  return await prismaClient.counselorDetails.create({ data: counselorDetails })
+}
+
+export const findUserByUsername = async (userInfo: UserInfo): Promise<User> => {
+  return await prismaClient.user.findUnique({
+    where: { username: userInfo.username }
+  })
 }
 
 export const findOrCreateUserByEmail = async (
@@ -76,21 +80,29 @@ export const findUserById = async (id: string): Promise<User | null> => {
 
 export const findAllUsers = async (loggedInUser: User): Promise<User[]> => {
   const allUsers = await prismaClient.user.findMany()
-  let counselorDetails
+  return filterUsers(loggedInUser, allUsers)
+}
+
+// only return users that are related to the logged-in user somehow
+const filterUsers = async (
+  loggedInUser: User,
+  users: User[]
+): Promise<User[]> => {
+  let counselorDetails: CounselorDetails
   let result = []
   switch (loggedInUser.role) {
     case 'SYSADMIN' as Role:
     case 'JOVEN_ADMIN' as Role:
     case 'JOVEN_STAFF' as Role:
-      // return all values for sys admin
-      result = [...allUsers]
+      // return all values for Joven employees
+      result = [...users]
       break
     case 'COUNSELOR' as Role:
       // counselors get access to themselves, their students, and facilitators associated with the schools they're assigned to
       counselorDetails = await prismaClient.counselorDetails.findUnique({
         where: { userId: loggedInUser.id }
       })
-      for (const dbUser of allUsers) {
+      for (const dbUser of users) {
         if (dbUser.id === loggedInUser.id) {
           result.push(dbUser)
         } else if (dbUser.role === ('STUDENT' as Role)) {
@@ -105,24 +117,39 @@ export const findAllUsers = async (loggedInUser: User): Promise<User[]> => {
           dbUser.role === ('SCHOOL_STAFF' as Role)
         ) {
           // TODO: include this user if the counselor is assigned to their school
+          const schoolAdminDetails =
+            await prismaClient.schoolAdminDetails.findUnique({
+              where: { userId: dbUser.id }
+            })
+          // query all students at the school associated with this user
+          const studentDetailss = await prismaClient.studentDetails.findMany({
+            where: { assignedSchoolId: schoolAdminDetails.assignedSchoolId }
+          })
+          // loop through the students, if any of them are assigned to this counselor, add the user to the counselor's list
+          for (const studentDetails of studentDetailss) {
+            if (studentDetails.assignedCounselorId === counselorDetails.id) {
+              result.push(dbUser)
+              break
+            }
+          }
         }
       }
       break
     case 'SCHOOL_ADMIN' as Role:
       // return all values for now
-      result = [...allUsers]
+      result = [...users]
       break
     case 'SCHOOL_STAFF' as Role:
       // return all values for now
-      result = [...allUsers]
+      result = [...users]
       break
     case 'STUDENT' as Role:
       // return all values for now
-      result = [...allUsers]
+      result = [...users]
       break
     case 'GUARDIAN' as Role:
       // return all values for now
-      result = [...allUsers]
+      result = [...users]
       break
     default:
       break
@@ -130,11 +157,15 @@ export const findAllUsers = async (loggedInUser: User): Promise<User[]> => {
   return result
 }
 
-export const findUsersByRole = async (role: Role): Promise<User[]> => {
-  return await prismaClient.user.findMany({
+export const findUsersByRole = async (
+  loggedInUser: User,
+  role: Role
+): Promise<User[]> => {
+  const allUsers = await prismaClient.user.findMany({
     where: { role: role },
     include: getUserIncludeForRole(role)
   })
+  return filterUsers(loggedInUser, allUsers)
 }
 
 const getUserIncludeForRole = (role: Role): Prisma.UserInclude => {

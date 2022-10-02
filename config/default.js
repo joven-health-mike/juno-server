@@ -16,6 +16,9 @@ module.exports = {
         'Z7-nLOB7Q5ktiEbGXYGBMk0etxlSWM8hpcFnyWHmFPXq5De2uLHm-fFzMkLvcYCz',
       loginRedirect: 'https://localhost:3000',
       logoutRedirect: 'https://localhost:3000'
+    },
+    user: {
+      defaultRole: 'JOVEN_STAFF'
     }
   },
 

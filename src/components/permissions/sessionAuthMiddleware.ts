@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import config from 'config'
 import { findOrCreateUserByEmail } from '../user/userModel'
 
 // User session information returned from Auth0
@@ -39,7 +40,8 @@ export const authenticateSession = async (
         username:
           req.oidc.user.name.split(' ')[0] +
           '.' +
-          req.oidc.user.name.split(' ')[1]
+          req.oidc.user.name.split(' ')[1],
+        role: config.get('authentication.user.defaultRole')
       })
 
       // Mark the request as authenticated

@@ -5,7 +5,8 @@ import {
   findUserById,
   findUsersByRole,
   findAllUsers,
-  createUser
+  createUser,
+  createCounselorRef
 } from './userModel'
 
 export const getLoggedInUser = async (
@@ -90,7 +91,7 @@ export const getUsersByRole = async (
       default:
         throw new Error('Requested role does not exist.')
     }
-    const users = await findUsersByRole(role)
+    const users = await findUsersByRole(request.user, role)
     response.locals.data = users
     next()
   } catch (error) {
@@ -104,12 +105,11 @@ export const createNewUser = async (
   response: Response,
   next: NextFunction
 ): Promise<void> => {
-  const user = request.body
-  createUser(user)
-  // TODO: create counselorRef object associated with this user
-  // if (typeof user.counselorRef !== undefined) {
-  //   createCounselorRef(user)
-  // }
+  const requestData = request.body
+  const user = await createUser(requestData)
+  if (typeof requestData.counselorRef !== undefined) {
+    createCounselorRef(requestData, user.id)
+  }
   response.locals.data = user
   next()
 }
