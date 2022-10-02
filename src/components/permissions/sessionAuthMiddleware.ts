@@ -36,7 +36,7 @@ export const authenticateSession = async (
       const configUsername = config.get(
         'authentication.user.loggedInUsername'
       ) as string
-      if (typeof configUsername !== undefined) {
+      if (configUsername) {
         req.user = await findUserByUsername(configUsername)
       } else {
         req.user = await findOrCreateUserByEmail({
