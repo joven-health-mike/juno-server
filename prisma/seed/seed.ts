@@ -4,6 +4,8 @@ import seedCounselorDetailsData from './data/counselorDetails'
 import seedSchoolsData from './data/schools'
 import seedStudentDetailsData from './data/studentDetails'
 import seedUsersData from './data/users'
+import seedSchoolAdminDetailsData from './data/schoolAdminDetails'
+import seedSchoolStaffDetailsData from './data/schoolStaffDetails'
 
 const prisma = new PrismaClient()
 
@@ -49,6 +51,26 @@ async function seedDatabaseData() {
         where: { id: studentDetails.id },
         update: {},
         create: studentDetails as Prisma.StudentDetailsCreateInput
+      })
+    )
+  )
+  // SchoolAdminDetails
+  await Promise.all(
+    seedSchoolAdminDetailsData.map(async schoolAdminDetails =>
+      prisma.schoolAdminDetails.upsert({
+        where: { id: schoolAdminDetails.id },
+        update: {},
+        create: schoolAdminDetails as Prisma.SchoolAdminDetailsCreateInput
+      })
+    )
+  )
+  // SchoolStaffDetails
+  await Promise.all(
+    seedSchoolStaffDetailsData.map(async schoolStaffDetails =>
+      prisma.schoolStaffDetails.upsert({
+        where: { id: schoolStaffDetails.id },
+        update: {},
+        create: schoolStaffDetails as Prisma.SchoolStaffDetailsCreateInput
       })
     )
   )

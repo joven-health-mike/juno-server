@@ -130,5 +130,27 @@ module.exports = [
     phone: '094-765-4324',
     docsUrl: 'https://docs.link',
     timeZoneOffset: -6
+  },
+  {
+    id: '12',
+    firstName: 'Sally',
+    lastName: 'Williams',
+    email: 'sally@someschool.com',
+    username: 'sally.williams',
+    role: 'SCHOOL_ADMIN',
+    phone: '094-765-4354',
+    docsUrl: 'https://docs.link',
+    timeZoneOffset: -6
+  },
+  {
+    id: '13',
+    firstName: 'Evan',
+    lastName: 'MacPherson',
+    email: 'evan@someschool.com',
+    username: 'evan.macPherson',
+    role: 'SCHOOL_STAFF',
+    phone: '094-765-4584',
+    docsUrl: 'https://docs.link',
+    timeZoneOffset: -6
   }
 ]
