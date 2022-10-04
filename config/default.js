@@ -19,7 +19,7 @@ module.exports = {
     },
     user: {
       defaultRole: 'JOVEN_STAFF',
-      loggedInUsername: 'jacek.mcguinness' // this overrides the actual login information
+      simulatedLoginUsername: '' // this overrides the actual login information
     }
   },
 
