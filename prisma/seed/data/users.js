@@ -147,9 +147,20 @@ module.exports = [
     firstName: 'Evan',
     lastName: 'MacPherson',
     email: 'evan@someschool.com',
-    username: 'evan.macPherson',
+    username: 'evan.macpherson',
     role: 'SCHOOL_STAFF',
     phone: '094-765-4584',
+    docsUrl: 'https://docs.link',
+    timeZoneOffset: -6
+  },
+  {
+    id: '14',
+    firstName: 'Aaron',
+    lastName: 'Whalord',
+    email: 'aaron@parent.com',
+    username: 'aaron.whalord',
+    role: 'GUARDIAN',
+    phone: '094-785-9584',
     docsUrl: 'https://docs.link',
     timeZoneOffset: -6
   }

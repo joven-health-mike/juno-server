@@ -6,6 +6,7 @@ import seedStudentDetailsData from './data/studentDetails'
 import seedUsersData from './data/users'
 import seedSchoolAdminDetailsData from './data/schoolAdminDetails'
 import seedSchoolStaffDetailsData from './data/schoolStaffDetails'
+import seedGuardianDetailsData from './data/guardianDetails'
 
 const prisma = new PrismaClient()
 
@@ -74,6 +75,16 @@ async function seedDatabaseData() {
       })
     )
   )
+  // GuardianDetails
+  await Promise.all(
+    seedGuardianDetailsData.map(async guardianDetails =>
+      prisma.guardianDetails.upsert({
+        where: { id: guardianDetails.id },
+        update: {},
+        create: guardianDetails as Prisma.GuardianDetailsCreateInput
+      })
+    )
+  )
   // Appointments
   await Promise.all(
     seedAppointmentsData.map(async appointments =>
@@ -90,7 +101,7 @@ main()
   .then(async () => {
     await prisma.$disconnect()
   })
-  .catch(async e => {
+  .catch(async () => {
     await prisma.$disconnect()
     process.exit(1)
   })
