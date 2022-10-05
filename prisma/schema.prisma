@@ -63,6 +63,7 @@ model CounselorDetails {
 
   assignedStudents StudentDetails[] @relation(name: "StudentCounselor")
   appointments     Appointment[]    @relation(name: "CounselorAppointment")
+  assignedSchools  School[]         @relation(name: "CounselorSchool")
 }
 
 model SchoolAdminDetails {
@@ -112,7 +113,8 @@ model School {
   schoolAdmins SchoolAdminDetails[] @relation(name: "SchoolAdminSchool")
   schoolStaff  SchoolStaffDetails[] @relation(name: "SchoolStaffSchool")
   students     StudentDetails[]     @relation(name: "StudentSchool")
-  Appointment  Appointment[]        @relation(name: "SchoolAppointment")
+  counselors   CounselorDetails[]   @relation(name: "CounselorSchool")
+  appointment  Appointment[]        @relation(name: "SchoolAppointment")
 }
 
 model Appointment {

@@ -11,7 +11,7 @@ module.exports = [
     user: { connect: { id: '6' } },
     status: 'ACTIVE',
     assignedSchool: { connect: { id: '0' } },
-    assignedCounselor: { connect: { id: '3' } }
+    assignedCounselor: { connect: { id: '0' } }
   },
   {
     id: '2',
@@ -46,6 +46,6 @@ module.exports = [
     user: { connect: { id: '11' } },
     status: 'ACTIVE',
     assignedSchool: { connect: { id: '3' } },
-    assignedCounselor: { connect: { id: '0' } }
+    assignedCounselor: { connect: { id: '3' } }
   }
 ]

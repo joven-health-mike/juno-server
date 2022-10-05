@@ -88,7 +88,7 @@ const filterUsers = async (
   loggedInUser: User,
   users: User[]
 ): Promise<User[]> => {
-  let counselorDetails: CounselorDetails
+  let counselorDetails
   let result = []
   switch (loggedInUser.role) {
     case 'SYSADMIN' as Role:
@@ -100,34 +100,51 @@ const filterUsers = async (
     case 'COUNSELOR' as Role:
       // counselors get access to themselves, their students, and facilitators associated with the schools they're assigned to
       counselorDetails = await prismaClient.counselorDetails.findUnique({
-        where: { userId: loggedInUser.id }
+        where: { userId: loggedInUser.id },
+        include: {
+          assignedSchools: true
+        }
       })
+      // loop through users looking for associated users
       for (const dbUser of users) {
+        // counselor has access to their own user
         if (dbUser.id === loggedInUser.id) {
           result.push(dbUser)
-        } else if (dbUser.role === ('STUDENT' as Role)) {
+        }
+        // counselor has access to students that are assigned to their caseload
+        else if (dbUser.role === ('STUDENT' as Role)) {
           const studentDetails = await prismaClient.studentDetails.findUnique({
             where: { userId: dbUser.id }
           })
           if (counselorDetails.id === studentDetails.assignedCounselorId) {
             result.push(dbUser)
           }
-        } else if (
-          dbUser.role === ('SCHOOL_ADMIN' as Role) ||
-          dbUser.role === ('SCHOOL_STAFF' as Role)
-        ) {
-          // TODO: include this user if the counselor is assigned to their school
+        }
+        // counselor has access to schoolAdmins for the schools they're working with
+        else if (dbUser.role === ('SCHOOL_ADMIN' as Role)) {
           const schoolAdminDetails =
             await prismaClient.schoolAdminDetails.findUnique({
               where: { userId: dbUser.id }
             })
-          // query all students at the school associated with this user
-          const studentDetailss = await prismaClient.studentDetails.findMany({
-            where: { assignedSchoolId: schoolAdminDetails.assignedSchoolId }
-          })
-          // loop through the students, if any of them are assigned to this counselor, add the user to the counselor's list
-          for (const studentDetails of studentDetailss) {
-            if (studentDetails.assignedCounselorId === counselorDetails.id) {
+          const schoolAdminSchoolId = schoolAdminDetails.assignedSchoolId
+
+          for (const counselorSchool of counselorDetails.assignedSchools) {
+            // if the school admin is assigned to the same school as the counselor, add the user
+            if (counselorSchool.id === schoolAdminSchoolId) {
+              result.push(dbUser)
+              break
+            }
+          }
+        } else if (dbUser.role === ('SCHOOL_STAFF' as Role)) {
+          const schoolStaffDetails =
+            await prismaClient.schoolStaffDetails.findUnique({
+              where: { userId: dbUser.id }
+            })
+          const schoolStaffSchoolId = schoolStaffDetails.assignedSchoolId
+
+          for (const counselorSchool of counselorDetails.assignedSchools) {
+            // if the school admin is assigned to the same school as the counselor, add the user
+            if (counselorSchool.id === schoolStaffSchoolId) {
               result.push(dbUser)
               break
             }

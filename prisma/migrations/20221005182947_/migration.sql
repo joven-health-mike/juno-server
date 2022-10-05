@@ -126,6 +126,12 @@ CREATE TABLE "Appointment" (
 );
 
 -- CreateTable
+CREATE TABLE "_CounselorSchool" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "_GuardianDetailsToStudentDetails" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
@@ -171,6 +177,12 @@ CREATE UNIQUE INDEX "GuardianDetails_userId_key" ON "GuardianDetails"("userId");
 CREATE UNIQUE INDEX "StudentDetails_userId_key" ON "StudentDetails"("userId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "_CounselorSchool_AB_unique" ON "_CounselorSchool"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_CounselorSchool_B_index" ON "_CounselorSchool"("B");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_GuardianDetailsToStudentDetails_AB_unique" ON "_GuardianDetailsToStudentDetails"("A", "B");
 
 -- CreateIndex
@@ -213,16 +225,22 @@ ALTER TABLE "GuardianDetails" ADD CONSTRAINT "GuardianDetails_userId_fkey" FOREI
 ALTER TABLE "StudentDetails" ADD CONSTRAINT "StudentDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "StudentDetails" ADD CONSTRAINT "StudentDetails_assignedSchoolId_fkey" FOREIGN KEY ("assignedSchoolId") REFERENCES "School"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "StudentDetails" ADD CONSTRAINT "StudentDetails_assignedCounselorId_fkey" FOREIGN KEY ("assignedCounselorId") REFERENCES "CounselorDetails"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StudentDetails" ADD CONSTRAINT "StudentDetails_assignedSchoolId_fkey" FOREIGN KEY ("assignedSchoolId") REFERENCES "School"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Appointment" ADD CONSTRAINT "Appointment_schoolId_fkey" FOREIGN KEY ("schoolId") REFERENCES "School"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Appointment" ADD CONSTRAINT "Appointment_counselorId_fkey" FOREIGN KEY ("counselorId") REFERENCES "CounselorDetails"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Appointment" ADD CONSTRAINT "Appointment_schoolId_fkey" FOREIGN KEY ("schoolId") REFERENCES "School"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "_CounselorSchool" ADD CONSTRAINT "_CounselorSchool_A_fkey" FOREIGN KEY ("A") REFERENCES "CounselorDetails"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_CounselorSchool" ADD CONSTRAINT "_CounselorSchool_B_fkey" FOREIGN KEY ("B") REFERENCES "School"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_GuardianDetailsToStudentDetails" ADD CONSTRAINT "_GuardianDetailsToStudentDetails_A_fkey" FOREIGN KEY ("A") REFERENCES "GuardianDetails"("id") ON DELETE CASCADE ON UPDATE CASCADE;
