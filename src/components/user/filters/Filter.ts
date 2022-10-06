@@ -1,5 +1,6 @@
 import { User } from '@prisma/client'
 import { CounselorFilter } from './CounselorFilter'
+import { GuardianFilter } from './GuardianFilter'
 import { SchoolFilter } from './SchoolFilter'
 import { StudentFilter } from './StudentFilter'
 
@@ -33,8 +34,8 @@ export class FilterDelegate {
         return new SchoolFilter()
       case 'STUDENT':
         return new StudentFilter()
-      // case 'GUARDIAN':
-      //   return new GuardianFilter()
+      case 'GUARDIAN':
+        return new GuardianFilter()
       default:
         return new ShowNothingFilter()
     }
