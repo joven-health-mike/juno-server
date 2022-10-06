@@ -1,5 +1,6 @@
-import { CounselorDetails, Prisma, Role, School, User } from '@prisma/client'
+import { CounselorDetails, Prisma, Role, User } from '@prisma/client'
 import { prismaClient } from '../../database'
+import { FilterDelegate } from './filters/Filter'
 
 interface UserInfo {
   id?: string
@@ -88,129 +89,7 @@ const filterUsers = async (
   loggedInUser: User,
   users: User[]
 ): Promise<User[]> => {
-  let counselorDetails
-  let result = []
-  switch (loggedInUser.role) {
-    case 'SYSADMIN' as Role:
-    case 'JOVEN_ADMIN' as Role:
-    case 'JOVEN_STAFF' as Role:
-      // return all values for Joven employees
-      result = [...users]
-      break
-    case 'COUNSELOR' as Role:
-      // counselors get access to themselves, their students, and facilitators associated with the schools they're assigned to
-      counselorDetails = await prismaClient.counselorDetails.findUnique({
-        where: { userId: loggedInUser.id },
-        include: {
-          assignedSchools: true
-        }
-      })
-      // loop through users looking for associated users
-      for (const dbUser of users) {
-        // counselor has access to their own user
-        if (dbUser.id === loggedInUser.id) {
-          result.push(dbUser)
-        } else if (dbUser.role === ('STUDENT' as Role)) {
-          const studentDetails = await prismaClient.studentDetails.findUnique({
-            where: { userId: dbUser.id }
-          })
-          // counselor has access to students that are assigned to their caseload
-          if (counselorDetails.id === studentDetails.assignedCounselorId) {
-            result.push(dbUser)
-          }
-        } else if (dbUser.role === ('SCHOOL_ADMIN' as Role)) {
-          const schoolAdminDetails =
-            await prismaClient.schoolAdminDetails.findUnique({
-              where: { userId: dbUser.id }
-            })
-          const schoolAdminSchoolId = schoolAdminDetails.assignedSchoolId
-
-          for (const counselorSchool of counselorDetails.assignedSchools) {
-            // counselor has access to schoolAdmins for the schools they're working with
-            if (counselorSchool.id === schoolAdminSchoolId) {
-              result.push(dbUser)
-              break // because we only want to include this user one time.
-            }
-          }
-        } else if (dbUser.role === ('SCHOOL_STAFF' as Role)) {
-          const schoolStaffDetails =
-            await prismaClient.schoolStaffDetails.findUnique({
-              where: { userId: dbUser.id }
-            })
-          const schoolStaffSchoolId = schoolStaffDetails.assignedSchoolId
-
-          for (const counselorSchool of counselorDetails.assignedSchools) {
-            // counselor has access to schoolStaff for the schools they're working with
-            if (counselorSchool.id === schoolStaffSchoolId) {
-              result.push(dbUser)
-              break // because we only want to include this user one time.
-            }
-          }
-        } else if (dbUser.role === ('GUARDIAN' as Role)) {
-          const guardianDetails = await prismaClient.guardianDetails.findUnique(
-            {
-              where: { userId: dbUser.id },
-              include: { students: true }
-            }
-          )
-          for (const student of guardianDetails.students) {
-            // counselor has access to their students' guardians
-            if (student.assignedCounselorId == counselorDetails.id) {
-              result.push(dbUser)
-              break // because we only want to include this user one time.
-            }
-          }
-        } else if (dbUser.role === ('COUNSELOR' as Role)) {
-          const dbCounselorDetails =
-            await prismaClient.counselorDetails.findUnique({
-              where: { userId: dbUser.id },
-              include: { assignedSchools: true }
-            })
-
-          const schoolsInCommon = (counselorDetails.assignedSchools as School[])
-            .map(school => school.id) // create an array of counselor's school IDs
-            .filter(
-              value =>
-                dbCounselorDetails.assignedSchools
-                  .map(school => school.id) // create an array of db counselor's school IDs
-                  .includes(value) // apply filter to only include common elements
-            )
-
-          // counselor has access to other counselors assigned to the same school
-          if (schoolsInCommon.length > 0) {
-            result.push(dbUser)
-          }
-        } else if (dbUser.role === ('SYSADMIN' as Role)) {
-          // counselors aren't allowed to view SYSADMIN info - do nothing.
-        } else if (dbUser.role === ('JOVEN_ADMIN' as Role)) {
-          // counselors aren't allowed to view JOVEN_ADMIN info - do nothing.
-        } else if (dbUser.role === ('JOVEN_STAFF' as Role)) {
-          // counselors aren't allowed to view JOVEN_STAFF info - do nothing.
-        } else {
-          // something bad happened...
-        }
-      }
-      break
-    case 'SCHOOL_ADMIN' as Role:
-      // return all values for now
-      result = [...users]
-      break
-    case 'SCHOOL_STAFF' as Role:
-      // return all values for now
-      result = [...users]
-      break
-    case 'STUDENT' as Role:
-      // return all values for now
-      result = [...users]
-      break
-    case 'GUARDIAN' as Role:
-      // return all values for now
-      result = [...users]
-      break
-    default:
-      break
-  }
-  return result
+  return new FilterDelegate().get(loggedInUser).apply(users, loggedInUser)
 }
 
 export const findUsersByRole = async (
