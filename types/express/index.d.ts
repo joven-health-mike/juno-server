@@ -32,7 +32,7 @@ declare module 'Express' {
     // Machine-to-Machine authentication information, returned from Auth0.
     m2mAuth: M2mAuth | undefined
     // The authenticated user's information.
-    user: User | undefined
+    user: object | undefined
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

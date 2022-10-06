@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { auth } from 'express-openid-connect'
 import config from 'config'
+import { User } from '@prisma/client'
 
 export const authConfig = auth({
   auth0Logout: true,
@@ -17,7 +18,7 @@ export const authConfig = auth({
 
 export const handleLogin = async (req: Request, res: Response) => {
   if (req.authenticated) {
-    req.log.debug('user: ' + req.user.username)
+    req.log.debug('user: ' + (req.user as User).username)
     res.redirect(config.get('authentication.session.loginRedirect'))
   } else {
     res.oidc.login({ returnTo: '/api/1/application' })

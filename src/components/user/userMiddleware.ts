@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client'
+import { Role, User } from '@prisma/client'
 import { Http as HttpStatus } from '@status/codes'
 import { NextFunction, Request, Response } from 'express'
 import {
@@ -16,7 +16,7 @@ export const getLoggedInUser = async (
   next: NextFunction
 ): Promise<void> => {
   if (typeof request.user !== 'undefined') {
-    const user = await findUserByUsername(request.user.username)
+    const user = await findUserByUsername((request.user as User).username)
     response.locals.data = user
     response.status(HttpStatus.Ok)
   } else {
@@ -47,7 +47,7 @@ export const getAllUsers = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const user = await findAllUsers(request.user)
+    const user = await findAllUsers(request.user as User)
     response.locals.data = user
     next()
   } catch (error) {
@@ -92,7 +92,7 @@ export const getUsersByRole = async (
       default:
         throw new Error('Requested role does not exist.')
     }
-    const users = await findUsersByRole(request.user, role)
+    const users = await findUsersByRole(request.user as User, role)
     response.locals.data = users
     next()
   } catch (error) {
