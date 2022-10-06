@@ -1,4 +1,4 @@
-import { Role, School, User } from '@prisma/client'
+import { Role, User } from '@prisma/client'
 import {
   CounselorDetailsInfo,
   findUserDetails,
@@ -9,8 +9,8 @@ import {
 } from '../userDetailsModel'
 import { Filter } from './Filter'
 
-// counselors get access to themselves, their students, and facilitators associated with the schools they're assigned to
-export class CounselorFilter implements Filter<User> {
+// schools get access to themselves, their students and guardians, other facilitators from their school, and counselors assigned to their school
+export class SchoolFilter implements Filter<User> {
   async apply(allItems: User[], reference: User): Promise<User[]> {
     const result = []
 
@@ -26,64 +26,56 @@ export class CounselorFilter implements Filter<User> {
 }
 
 async function isUserRelated(reference: User, target: User): Promise<boolean> {
-  const counselorDetails = (await findUserDetails(
-    reference
-  )) as CounselorDetailsInfo
+  const schoolDetails = await findUserDetails(reference)
+  let schoolId: string
+  if (reference.role === ('SCHOOL_ADMIN' as Role)) {
+    schoolId = (schoolDetails as SchoolAdminDetailsInfo).assignedSchoolId
+  } else {
+    schoolId = (schoolDetails as SchoolStaffDetailsInfo).assignedSchoolId
+  }
 
-  // counselor has access to their own user
+  // school users have access to their own user
   if (target.id === reference.id) {
     return true
   } else if (target.role === ('STUDENT' as Role)) {
-    // counselor has access to students that are assigned to their caseload
+    // school has access to students that are assigned to their school
     const studentDetails = (await findUserDetails(target)) as StudentDetailsInfo
-    return counselorDetails.id === studentDetails.assignedCounselorId
+    return schoolId === studentDetails.assignedCounselorId
   } else if (target.role === ('SCHOOL_ADMIN' as Role)) {
+    // school has access to other school facilitators
     const schoolAdminDetails = (await findUserDetails(
       target
     )) as SchoolAdminDetailsInfo
     const schoolAdminSchoolId = schoolAdminDetails.assignedSchoolId
-
-    for (const counselorSchool of counselorDetails.assignedSchools) {
-      // counselor has access to schoolAdmins for the schools they're working with
-      if (counselorSchool.id === schoolAdminSchoolId) {
-        return true
-      }
-    }
+    return schoolAdminSchoolId === schoolId
   } else if (target.role === ('SCHOOL_STAFF' as Role)) {
+    // school has access to other school facilitators
     const schoolStaffDetails = (await findUserDetails(
       target
     )) as SchoolStaffDetailsInfo
     const schoolStaffSchoolId = schoolStaffDetails.assignedSchoolId
-
-    for (const counselorSchool of counselorDetails.assignedSchools) {
-      // counselor has access to schoolStaff for the schools they're working with
-      return counselorSchool.id === schoolStaffSchoolId
-    }
+    return schoolStaffSchoolId === schoolId
   } else if (target.role === ('GUARDIAN' as Role)) {
+    // school has access to their students' guardians
     const guardianDetails = (await findUserDetails(
       target
     )) as GuardianDetailsInfo
 
     for (const student of guardianDetails.students) {
       // counselor has access to their students' guardians
-      return student.assignedCounselorId === counselorDetails.id
+      return student.assignedSchoolId === schoolId
     }
   } else if (target.role === ('COUNSELOR' as Role)) {
+    // school has access to counselors assigned to their school
     const dbCounselorDetails = (await findUserDetails(
       target
     )) as CounselorDetailsInfo
 
-    const schoolsInCommon = (counselorDetails.assignedSchools as School[])
-      .map(school => school.id) // create an array of counselor's school IDs
-      .filter(
-        value =>
-          dbCounselorDetails.assignedSchools
-            .map(school => school.id) // create an array of db counselor's school IDs
-            .includes(value) // apply filter to only include common elements
-      )
-
-    // counselor has access to other counselors assigned to the same school
-    return schoolsInCommon.length > 0
+    for (const counselorSchool of dbCounselorDetails.assignedSchools) {
+      if (counselorSchool.id === schoolId) {
+        return true
+      }
+    }
   }
   return false // if we haven't returned true yet, assume it's false.
 }

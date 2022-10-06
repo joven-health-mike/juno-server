@@ -1,5 +1,6 @@
 import { User } from '@prisma/client'
 import { CounselorFilter } from './CounselorFilter'
+import { SchoolFilter } from './SchoolFilter'
 
 export interface Filter<T> {
   apply: (allItems: T[], reference: T) => Promise<T[]>
@@ -20,6 +21,9 @@ export class FilterDelegate {
         return new DoNothingFilter()
       case 'COUNSELOR':
         return new CounselorFilter()
+      case 'SCHOOL_ADMIN':
+      case 'SCHOOL_STAFF':
+        return new SchoolFilter()
     }
   }
 }
