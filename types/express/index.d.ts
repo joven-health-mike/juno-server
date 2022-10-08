@@ -1,7 +1,6 @@
 // Application Specific Typescript definitions for Express
 // This file defines typescript definitions that are specific to the application and the Express types.
 
-import { User } from '@prisma/client'
 import { Response as CoreResponse } from 'express-serve-static-core'
 import { Logger } from 'pino'
 import { M2mAuth } from '../../src/components/permissions/m2mAuthMiddleware'

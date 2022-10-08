@@ -1,7 +1,7 @@
 import express from 'express'
 import { ensureUserIsAuthenticated } from '../permissions/permissionsMiddleware'
 import {
-  createAppointment,
+  createNewAppointment,
   getAllAppointments,
   getAppointment
 } from './appointmentMiddleware'
@@ -22,5 +22,5 @@ appointmentRouter.get(
 appointmentRouter.put(
   '/api/1/appointments',
   ensureUserIsAuthenticated,
-  createAppointment
+  createNewAppointment
 )

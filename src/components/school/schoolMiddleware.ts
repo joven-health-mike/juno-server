@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { findSchoolById, findAllSchools } from './schoolModel'
+import { findSchoolById, findAllSchools, createSchool } from './schoolModel'
 
 export const getSchool = async (
   request: Request,
@@ -32,21 +32,13 @@ export const getAllSchools = async (
   }
 }
 
-export const createSchool = async (
+export const createNewSchool = async (
   request: Request,
   response: Response,
   next: NextFunction
 ): Promise<void> => {
-  // TODO: Create school in database
-  const school = {
-    id: 2,
-    name: 'Aardvark Academy',
-    address: '123 Aardvark St',
-    state: 'CO',
-    zip: '80013',
-    primaryEmail: 'aardvark-academy@jovenhealth.com',
-    primaryPhone: '123-456-7890'
-  }
+  const requestData = request.body
+  const school = await createSchool(requestData)
   response.locals.data = school
   next()
 }

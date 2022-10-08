@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { findAllAppointments, findAppointmentById } from './appointmentModel'
+import {
+  createAppointment,
+  findAllAppointments,
+  findAppointmentById
+} from './appointmentModel'
 
 export const getAllAppointments = async (
   request: Request,
@@ -32,20 +36,13 @@ export const getAppointment = async (
   }
 }
 
-export const createAppointment = async (
+export const createNewAppointment = async (
   request: Request,
   response: Response,
   next: NextFunction
 ): Promise<void> => {
-  // TODO: Create appointment in database
-  const appointment = {
-    id: 2,
-    title: 'Jake Smith',
-    start: '2022-06-06',
-    end: '2022-06-06',
-    studentId: 0,
-    counselorId: 0
-  }
+  const requestData = request.body
+  const appointment = await createAppointment(requestData)
   response.locals.data = appointment
   next()
 }
