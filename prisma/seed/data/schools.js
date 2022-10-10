@@ -1,6 +1,6 @@
 module.exports = [
   {
-    id: '0',
+    id: 'a7e56e1c-f1c2-4bf9-a3fd-9fdef3fb87df',
     name: 'Aardvark Academy',
     primaryEmail: 'aardvark-academy@jovenhealth.com',
     primaryPhone: '123-456-7890',
@@ -9,7 +9,7 @@ module.exports = [
     zip: '80013'
   },
   {
-    id: '1',
+    id: '5ac1c4ab-725b-4a5c-bb0a-e3ab5c882aca',
     name: 'Iguana Institute',
     primaryEmail: 'iguana-institute@jovenhealth.com',
     primaryPhone: '123-456-7892',
@@ -18,7 +18,7 @@ module.exports = [
     zip: '80013'
   },
   {
-    id: '2',
+    id: '6265a973-0f32-421e-b378-9d7caefb1e6a',
     name: 'Moose Middle School',
     primaryEmail: 'moose-middle-school@jovenhealth.com',
     primaryPhone: '123-456-7893',
@@ -27,7 +27,7 @@ module.exports = [
     zip: '80013'
   },
   {
-    id: '3',
+    id: 'af96c257-8ee5-4902-b4cc-ddb086f81570',
     name: 'Rattlesnake School',
     primaryEmail: 'rattlesnake-school@jovenhealth.com',
     primaryPhone: '123-456-7894',

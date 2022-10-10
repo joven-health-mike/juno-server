@@ -1,34 +1,40 @@
 module.exports = [
   {
-    id: '0',
+    id: 'd148dbd0-325d-4eed-8819-66bde5d35364',
     title: 'Bolat Fairbairn (Aardvark Academy) - Clinical Therapy',
     start: new Date(),
     end: new Date(),
-    counselor: { connect: { id: '4' } },
-    participants: { connect: [{ id: '5' }] },
-    school: { connect: { id: '0' } },
+    counselor: { connect: { id: 'd6d029d7-34e2-44ad-8fee-fc3e91c374ed' } },
+    participants: { connect: [{ id: '722f30bf-c589-4e09-9b61-4c3c9e08b957' }] },
+    school: { connect: { id: 'a7e56e1c-f1c2-4bf9-a3fd-9fdef3fb87df' } },
     type: 'CLINICAL',
     status: 'SCHEDULED'
   },
   {
-    id: '1',
+    id: '1d55fc1d-8838-46a7-a94d-8dd56a5e6e7d',
     title: 'Francois Chaves (Aardvark Academy) - Evaluation',
     start: new Date(),
     end: new Date(),
-    counselor: { connect: { id: '3' } },
-    participants: { connect: [{ id: '6' }, { id: '12' }, { id: '13' }] },
-    school: { connect: { id: '0' } },
+    counselor: { connect: { id: '8e21b012-0662-48f7-8777-f9baa59d8ba3' } },
+    participants: {
+      connect: [
+        { id: '6f466fc1-6b7f-46a0-a0a9-c2a6a3808e1a' },
+        { id: '3b5c063c-4c5f-456d-94da-69c93e9ed18d' },
+        { id: '8a1b8490-22ce-4ec5-9aeb-b33c2eff582a' }
+      ]
+    },
+    school: { connect: { id: 'a7e56e1c-f1c2-4bf9-a3fd-9fdef3fb87df' } },
     type: 'EVALUATION',
     status: 'SCHEDULED'
   },
   {
-    id: '2',
+    id: '4276c55f-0e03-48ac-a54d-aedbe9816c81',
     title: 'Karsten Alger (Iguana Institute) - Consultation',
     start: new Date(),
     end: new Date(),
-    counselor: { connect: { id: '2' } },
-    participants: { connect: [{ id: '6' }] },
-    school: { connect: { id: '1' } },
+    counselor: { connect: { id: '5cc83e4f-2be8-4d29-b875-b85df62cdd7b' } },
+    participants: { connect: [{ id: '6f466fc1-6b7f-46a0-a0a9-c2a6a3808e1a' }] },
+    school: { connect: { id: '5ac1c4ab-725b-4a5c-bb0a-e3ab5c882aca' } },
     type: 'CONSULTATION',
     status: 'SCHEDULED'
   }
