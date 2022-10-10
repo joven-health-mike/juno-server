@@ -19,7 +19,14 @@ appointmentRouter.get(
   ensureUserIsAuthenticated,
   getAppointment
 )
+
 appointmentRouter.put(
+  '/api/1/appointments',
+  ensureUserIsAuthenticated,
+  createNewAppointment
+)
+
+appointmentRouter.post(
   '/api/1/appointments',
   ensureUserIsAuthenticated,
   createNewAppointment

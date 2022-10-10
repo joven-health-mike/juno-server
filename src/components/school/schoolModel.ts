@@ -19,9 +19,24 @@ interface SchoolInfo {
   students?: StudentDetails[]
 }
 
+const getSchoolFromSchoolInfo = (schoolInfo: SchoolInfo) => {
+  return {
+    id: schoolInfo.id === '-1' ? undefined : schoolInfo.id,
+    name: schoolInfo.name,
+    address: schoolInfo.address,
+    state: schoolInfo.state,
+    zip: schoolInfo.zip,
+    primaryEmail: schoolInfo.primaryEmail,
+    primaryPhone: schoolInfo.primaryPhone,
+    schoolAdmins: schoolInfo.schoolAdmins,
+    schoolStaff: schoolInfo.schoolStaff,
+    students: schoolInfo.students
+  }
+}
+
 export const createSchool = async (schoolInfo: SchoolInfo): Promise<School> => {
   return await prismaClient.school.create({
-    data: schoolInfo as School
+    data: getSchoolFromSchoolInfo(schoolInfo) as School
   })
 }
 
@@ -37,7 +52,7 @@ export const findSchoolById = async (id: string): Promise<School | null> => {
 
 export const updateSchool = async (schoolInfo: SchoolInfo): Promise<School> => {
   return await prismaClient.school.update({
-    data: schoolInfo as School,
+    data: getSchoolFromSchoolInfo(schoolInfo) as School,
     where: { id: schoolInfo.id }
   })
 }

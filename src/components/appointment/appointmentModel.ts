@@ -22,11 +22,45 @@ interface AppointmentInfo {
   status?: AppointmentStatus
 }
 
+const getAppointmentFromAppointmentInfo = (
+  appointmentInfo: AppointmentInfo
+) => {
+  return {
+    id: appointmentInfo.id === '-1' ? undefined : appointmentInfo.id,
+    title: appointmentInfo.title,
+    start: appointmentInfo.start,
+    end: appointmentInfo.end,
+    school: appointmentInfo.school,
+    schoolId: appointmentInfo.schoolId,
+    counselor: appointmentInfo.counselor,
+    counselorId: appointmentInfo.counselorId,
+    type: appointmentInfo.type,
+    status: appointmentInfo.status,
+    participants: getParticipantConnectionsFromAppointmentInfo(appointmentInfo)
+  }
+}
+
+const getParticipantConnectionsFromAppointmentInfo = (
+  appointmentInfo: AppointmentInfo
+) => {
+  const result: any = {}
+  result.connect = []
+
+  for (const participant of appointmentInfo.participants) {
+    result.connect.push({
+      id: participant.id
+    })
+  }
+
+  return result
+}
+
 export const createAppointment = async (
   appointmentInfo: AppointmentInfo
 ): Promise<Appointment> => {
   return await prismaClient.appointment.create({
-    data: appointmentInfo as Appointment
+    data: getAppointmentFromAppointmentInfo(appointmentInfo) as Appointment,
+    include: { participants: true, counselor: true, school: true }
   })
 }
 
@@ -56,7 +90,7 @@ export const updateAppointment = async (
   appointmentInfo: AppointmentInfo
 ): Promise<Appointment> => {
   return await prismaClient.appointment.update({
-    data: appointmentInfo as Appointment,
+    data: getAppointmentFromAppointmentInfo(appointmentInfo) as Appointment,
     where: { id: appointmentInfo.id }
   })
 }
