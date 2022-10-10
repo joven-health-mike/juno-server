@@ -1,4 +1,12 @@
-import { CounselorDetails, Prisma, Role, User } from '@prisma/client'
+import {
+  CounselorDetails,
+  Prisma,
+  Role,
+  SchoolAdminDetails,
+  SchoolStaffDetails,
+  StudentDetails,
+  User
+} from '@prisma/client'
 import { prismaClient } from '../../database'
 import { FilterDelegate } from './filters/Filter'
 
@@ -13,6 +21,9 @@ interface UserInfo {
   timeZoneOffset?: number
   role?: Role
   counselorRef?: CounselorDetails
+  schoolAdminRef?: SchoolAdminDetails
+  schoolStaffRef?: SchoolStaffDetails
+  studentRef?: StudentDetails
 }
 
 const getUserFromUserInfo = (userInfo: UserInfo) => {
@@ -45,6 +56,56 @@ export const createCounselorRef = async (
     roomLink: userInfo.counselorRef.roomLink
   }
   return await prismaClient.counselorDetails.create({ data: counselorDetails })
+}
+
+export const createSchoolAdminRef = async (
+  userInfo: UserInfo,
+  userId: string
+): Promise<SchoolAdminDetails> => {
+  const schoolAdminDetails: SchoolAdminDetails = {
+    id:
+      userInfo.schoolAdminRef.id === '-1'
+        ? undefined
+        : userInfo.schoolAdminRef.id,
+    userId: userId,
+    assignedSchoolId: userInfo.schoolAdminRef.assignedSchoolId
+  }
+  return await prismaClient.schoolAdminDetails.create({
+    data: schoolAdminDetails
+  })
+}
+
+export const createSchoolStaffRef = async (
+  userInfo: UserInfo,
+  userId: string
+): Promise<SchoolStaffDetails> => {
+  const schoolStaffDetails: SchoolStaffDetails = {
+    id:
+      userInfo.schoolStaffRef.id === '-1'
+        ? undefined
+        : userInfo.schoolStaffRef.id,
+    userId: userId,
+    assignedSchoolId: userInfo.schoolStaffRef.assignedSchoolId
+  }
+  return await prismaClient.schoolStaffDetails.create({
+    data: schoolStaffDetails
+  })
+}
+
+export const createStudentRef = async (
+  userInfo: UserInfo,
+  userId: string
+): Promise<StudentDetails> => {
+  const studentDetails: StudentDetails = {
+    id: userInfo.studentRef.id === '-1' ? undefined : userInfo.studentRef.id,
+    userId: userId,
+    assignedSchoolId: userInfo.studentRef.assignedSchoolId,
+    assignedCounselorId: userInfo.studentRef.assignedCounselorId,
+    status: userInfo.studentRef.status
+  }
+  return await prismaClient.studentDetails.create({
+    data: studentDetails
+  })
 }
 
 export const findUserByUsername = async (username: string): Promise<User> => {

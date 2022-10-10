@@ -7,7 +7,10 @@ import {
   findAllUsers,
   createUser,
   createCounselorRef,
-  findUserByUsername
+  findUserByUsername,
+  createSchoolAdminRef,
+  createSchoolStaffRef,
+  createStudentRef
 } from './userModel'
 
 export const getLoggedInUser = async (
@@ -108,9 +111,21 @@ export const createNewUser = async (
 ): Promise<void> => {
   const requestData = request.body
   const user = await createUser(requestData)
-  if (typeof requestData.counselorRef !== undefined) {
-    createCounselorRef(requestData, user.id)
+
+  // if the user has any ref data, create that object too
+  if (typeof requestData.counselorRef !== 'undefined') {
+    await createCounselorRef(requestData, user.id)
+  } else if (typeof requestData.schoolAdminRef !== 'undefined') {
+    await createSchoolAdminRef(requestData, user.id)
+  } else if (typeof requestData.schoolStaffRef !== 'undefined') {
+    await createSchoolStaffRef(requestData, user.id)
+  } else if (typeof requestData.studentRef !== 'undefined') {
+    await createStudentRef(requestData, user.id)
   }
-  response.locals.data = user
+
+  // after everything is created and linked, query the new user to return
+  const result = await findUserById(user.id)
+
+  response.locals.data = result
   next()
 }
