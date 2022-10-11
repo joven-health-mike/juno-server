@@ -46,6 +46,7 @@ check: install-nvm
 
 db-build:
 	@echo "\n🚀  Building Prisma database artifacts."
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:format
 	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:generate
 
 db-migrate:

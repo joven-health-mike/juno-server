@@ -5,5 +5,8 @@
   },
   "editor.tabSize": 2,
   "typescript.tsdk": "node_modules/typescript/lib",
-  "eslint.debug": true
+  "eslint.debug": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

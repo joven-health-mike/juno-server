@@ -1,10 +1,10 @@
-import { getUser } from '../userMiddleware'
+import { getSchool } from '../schoolMiddleware'
 import { Request, Response } from 'express'
-import { mockUser, findUserById} from '../__mocks__/userModel'
+import { mockSchool } from '../__mocks__/schoolModel'
 
-jest.mock('../userModel')
+jest.mock('../schoolModel')
 
-describe('UserMiddleware', () => {
+describe('SchoolMiddleware', () => {
   let request: Request
   let response: Response
   let mockNext: jest.Mock
@@ -21,13 +21,13 @@ describe('UserMiddleware', () => {
     // mockNext.mockReset()
   })
 
-  describe('getUser', () => {
+  describe('getSchool', () => {
     it('should ', async () => {
       request.params.id = '22'
-      await getUser(request, response, mockNext)
+      await getSchool(request, response, mockNext)
       expect(mockNext).toHaveBeenCalledTimes(1)
       // expect(findUserById).toHaveBeenCalledWith(22)
-      expect(response.locals.data).toEqual(mockUser)
+      expect(response.locals.data).toEqual(mockSchool)
     })
   })
 

@@ -1,0 +1,12 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/mikeburke/Documents/GitHub/juno-server'
+echo "\nAvailable Commands:\n"
+echo "🚧  build          \t build project for distribution"
+echo "✅  check          \t run all static analysis tools"
+echo "🐳  docker-start   \t build and run in a production environment"
+echo "🏗   install        \t install project dependencies"
+echo "🚀  start          \t start the service"
+echo "🧪  test           \t run all tests"
+echo "\n\nSee the \"Makefile\" or use command \"make list\" for a complete list of commands.\n"
+make: Leaving directory `/Users/mikeburke/Documents/GitHub/juno-server'
+ 

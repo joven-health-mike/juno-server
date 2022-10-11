@@ -9,10 +9,17 @@ module.exports = {
       jwksUri: 'https://code-juno.us.auth0.com/.well-known/jwks.json'
     },
     session: {
-      baseUrl: 'http://localhost:8080',
-      clientId: 'JrS9SGPWc7H55i6mI3Zv7LWQipkcQEUo',
+      baseUrl: 'https://localhost',
+      clientId: 'DsMXODwKWpw9oSBMtybu6UCnwEGqxs31',
       issuerBaseUrl: 'https://dev-9e-ctbg8.us.auth0.com',
-      secret: 'a long, randomly-generated string stored in env'
+      secret:
+        'Z7-nLOB7Q5ktiEbGXYGBMk0etxlSWM8hpcFnyWHmFPXq5De2uLHm-fFzMkLvcYCz',
+      loginRedirect: 'https://localhost:3000',
+      logoutRedirect: 'https://localhost:3000'
+    },
+    user: {
+      defaultRole: 'JOVEN_STAFF',
+      simulatedLoginUsername: '' // this overrides the actual login information
     }
   },
 
