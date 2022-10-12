@@ -44,6 +44,5 @@ async function isUserRelated(
           .includes(value) // apply filter to only include common elements
     )
 
-  // counselor has access to other counselors assigned to the same school
   return studentsInCommon.length > 0
 }

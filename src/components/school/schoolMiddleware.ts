@@ -1,3 +1,4 @@
+import { User } from '@prisma/client'
 import { NextFunction, Request, Response } from 'express'
 import { findSchoolById, findAllSchools, createSchool } from './schoolModel'
 
@@ -23,7 +24,7 @@ export const getAllSchools = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const school = await findAllSchools()
+    const school = await findAllSchools(request.user as User)
     response.locals.data = school
     next()
   } catch (error) {

@@ -3,8 +3,10 @@ import {
   School,
   SchoolAdminDetails,
   SchoolStaffDetails,
-  StudentDetails
+  StudentDetails,
+  User
 } from '@prisma/client'
+import { SchoolFilterDelegate } from './filters/SchoolFilterDelegate'
 
 interface SchoolInfo {
   id?: string
@@ -40,8 +42,9 @@ export const createSchool = async (schoolInfo: SchoolInfo): Promise<School> => {
   })
 }
 
-export const findAllSchools = async (): Promise<School[]> => {
-  return await prismaClient.school.findMany()
+export const findAllSchools = async (loggedInUser: User): Promise<School[]> => {
+  const allSchools = await prismaClient.school.findMany()
+  return await filterSchools(allSchools, loggedInUser)
 }
 
 export const findSchoolById = async (id: string): Promise<School | null> => {
@@ -55,4 +58,14 @@ export const updateSchool = async (schoolInfo: SchoolInfo): Promise<School> => {
     data: getSchoolFromSchoolInfo(schoolInfo) as School,
     where: { id: schoolInfo.id }
   })
+}
+
+// only return users that are related to the logged-in user somehow
+const filterSchools = async (
+  schools: School[],
+  loggedInUser: User
+): Promise<School[]> => {
+  return new SchoolFilterDelegate()
+    .get(loggedInUser)
+    .apply(schools, loggedInUser)
 }

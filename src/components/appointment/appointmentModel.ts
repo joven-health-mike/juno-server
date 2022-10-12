@@ -99,7 +99,7 @@ export const updateAppointment = async (
   })
 }
 
-// only return users that are related to the logged-in user somehow
+// only return appointments that are related to the logged-in user somehow
 const filterAppointments = async (
   appointments: Appointment[],
   loggedInUser: User
