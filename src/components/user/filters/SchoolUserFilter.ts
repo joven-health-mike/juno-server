@@ -7,10 +7,10 @@ import {
   SchoolStaffDetailsInfo,
   StudentDetailsInfo
 } from '../userDetailsModel'
-import { Filter } from './Filter'
+import { Filter } from '../../Filter'
 
 // schools get access to themselves, their students and guardians, other facilitators from their school, and counselors assigned to their school
-export class StudentFilter implements Filter<User> {
+export class SchoolUserFilter implements Filter<User> {
   async apply(allItems: User[], reference: User): Promise<User[]> {
     const result = []
 
@@ -26,42 +26,55 @@ export class StudentFilter implements Filter<User> {
 }
 
 async function isUserRelated(reference: User, target: User): Promise<boolean> {
-  const studentDetails = (await findUserDetails(
-    reference
-  )) as StudentDetailsInfo
+  const schoolDetails = await findUserDetails(reference)
+  let schoolId: string
+  if (reference.role === ('SCHOOL_ADMIN' as Role)) {
+    schoolId = (schoolDetails as SchoolAdminDetailsInfo).assignedSchoolId
+  } else {
+    schoolId = (schoolDetails as SchoolStaffDetailsInfo).assignedSchoolId
+  }
 
-  // student users have access to their own user
+  // school users have access to their own user
   if (target.id === reference.id) {
     return true
+  } else if (target.role === ('STUDENT' as Role)) {
+    // school has access to students that are assigned to their school
+    const studentDetails = (await findUserDetails(target)) as StudentDetailsInfo
+    return schoolId === studentDetails.assignedCounselorId
   } else if (target.role === ('SCHOOL_ADMIN' as Role)) {
-    // student has access to school facilitators
+    // school has access to other school facilitators
     const schoolAdminDetails = (await findUserDetails(
       target
     )) as SchoolAdminDetailsInfo
     const schoolAdminSchoolId = schoolAdminDetails.assignedSchoolId
-    return schoolAdminSchoolId === studentDetails.assignedSchoolId
+    return schoolAdminSchoolId === schoolId
   } else if (target.role === ('SCHOOL_STAFF' as Role)) {
-    // student has access to school facilitators
+    // school has access to other school facilitators
     const schoolStaffDetails = (await findUserDetails(
       target
     )) as SchoolStaffDetailsInfo
     const schoolStaffSchoolId = schoolStaffDetails.assignedSchoolId
-    return schoolStaffSchoolId === studentDetails.assignedSchoolId
+    return schoolStaffSchoolId === schoolId
   } else if (target.role === ('GUARDIAN' as Role)) {
-    // student has access to their guardians
+    // school has access to their students' guardians
     const guardianDetails = (await findUserDetails(
       target
     )) as GuardianDetailsInfo
 
     for (const student of guardianDetails.students) {
-      if (student.id === studentDetails.id) return true
+      if (student.assignedSchoolId === schoolId) return true
     }
   } else if (target.role === ('COUNSELOR' as Role)) {
-    // students have access to their assigned counselor
+    // school has access to counselors assigned to their school
     const dbCounselorDetails = (await findUserDetails(
       target
     )) as CounselorDetailsInfo
-    return dbCounselorDetails.id === studentDetails.assignedCounselorId
+
+    for (const counselorSchool of dbCounselorDetails.assignedSchools) {
+      if (counselorSchool.id === schoolId) {
+        return true
+      }
+    }
   }
   return false // if we haven't returned true yet, assume it's false.
 }

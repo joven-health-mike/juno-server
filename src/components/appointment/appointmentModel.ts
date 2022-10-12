@@ -7,8 +7,9 @@ import {
   School,
   User
 } from '@prisma/client'
+import { AppointmentFilterDelegate } from './filters/AppointmentFilterDelegate'
 
-interface AppointmentInfo {
+export interface AppointmentInfo {
   id?: string
   title?: string
   start?: Date
@@ -64,14 +65,17 @@ export const createAppointment = async (
   })
 }
 
-export const findAllAppointments = async (): Promise<Appointment[]> => {
-  return await prismaClient.appointment.findMany({
+export const findAllAppointments = async (
+  loggedInUser: User
+): Promise<Appointment[]> => {
+  const allAppointments = await prismaClient.appointment.findMany({
     include: {
       counselor: { include: { user: true } },
       participants: true,
       school: true
     }
   })
+  return await filterAppointments(allAppointments, loggedInUser)
 }
 
 export const findAppointmentById = async (
@@ -93,4 +97,14 @@ export const updateAppointment = async (
     data: getAppointmentFromAppointmentInfo(appointmentInfo) as Appointment,
     where: { id: appointmentInfo.id }
   })
+}
+
+// only return users that are related to the logged-in user somehow
+const filterAppointments = async (
+  appointments: Appointment[],
+  loggedInUser: User
+): Promise<Appointment[]> => {
+  return new AppointmentFilterDelegate()
+    .get(loggedInUser)
+    .apply(appointments, loggedInUser)
 }

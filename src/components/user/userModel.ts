@@ -8,7 +8,7 @@ import {
   User
 } from '@prisma/client'
 import { prismaClient } from '../../database'
-import { FilterDelegate } from './filters/Filter'
+import { UserFilterDelegate } from './filters/UserFilterDelegate'
 
 interface UserInfo {
   id?: string
@@ -150,7 +150,7 @@ const filterUsers = async (
   loggedInUser: User,
   users: User[]
 ): Promise<User[]> => {
-  return new FilterDelegate().get(loggedInUser).apply(users, loggedInUser)
+  return new UserFilterDelegate().get(loggedInUser).apply(users, loggedInUser)
 }
 
 export const findUsersByRole = async (
