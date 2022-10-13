@@ -39,25 +39,25 @@ model User {
 
 model SysAdminDetails {
   id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 }
 
 model JovenAdminDetails {
   id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 }
 
 model JovenStaffDetails {
   id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 }
 
 model CounselorDetails {
   id       String @id @default(uuid())
-  user     User   @relation(fields: [userId], references: [id])
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String @unique
   roomLink String
 
@@ -68,23 +68,23 @@ model CounselorDetails {
 
 model SchoolAdminDetails {
   id               String @id @default(uuid())
-  user             User   @relation(fields: [userId], references: [id])
+  user             User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           String @unique
-  assignedSchool   School @relation(name: "SchoolAdminSchool", fields: [assignedSchoolId], references: [id])
+  assignedSchool   School @relation(name: "SchoolAdminSchool", fields: [assignedSchoolId], references: [id], onDelete: Cascade)
   assignedSchoolId String
 }
 
 model SchoolStaffDetails {
   id               String @id @default(uuid())
-  user             User   @relation(fields: [userId], references: [id])
+  user             User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           String @unique
-  assignedSchool   School @relation(name: "SchoolStaffSchool", fields: [assignedSchoolId], references: [id])
+  assignedSchool   School @relation(name: "SchoolStaffSchool", fields: [assignedSchoolId], references: [id], onDelete: Cascade)
   assignedSchoolId String
 }
 
 model GuardianDetails {
   id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 
   students StudentDetails[]
@@ -92,11 +92,11 @@ model GuardianDetails {
 
 model StudentDetails {
   id                  String            @id @default(uuid())
-  user                User              @relation(fields: [userId], references: [id])
+  user                User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId              String            @unique
-  assignedSchool      School            @relation(name: "StudentSchool", fields: [assignedSchoolId], references: [id])
+  assignedSchool      School            @relation(name: "StudentSchool", fields: [assignedSchoolId], references: [id], onDelete: Cascade)
   assignedSchoolId    String
-  assignedCounselor   CounselorDetails? @relation(name: "StudentCounselor", fields: [assignedCounselorId], references: [id])
+  assignedCounselor   CounselorDetails? @relation(name: "StudentCounselor", fields: [assignedCounselorId], references: [id], onDelete: SetNull)
   assignedCounselorId String
   guardians           GuardianDetails[]
   status              StudentStatus
@@ -123,8 +123,8 @@ model Appointment {
   title        String
   start        DateTime
   end          DateTime
-  school       School            @relation(name: "SchoolAppointment", fields: [schoolId], references: [id])
-  counselor    CounselorDetails  @relation(name: "CounselorAppointment", fields: [counselorId], references: [id])
+  school       School            @relation(name: "SchoolAppointment", fields: [schoolId], references: [id], onDelete: Cascade)
+  counselor    CounselorDetails  @relation(name: "CounselorAppointment", fields: [counselorId], references: [id], onDelete: Cascade)
   counselorId  String
   participants User[]            @relation(name: "ParticipantAppointment")
   type         AppointmentType
@@ -148,6 +148,7 @@ enum Role {
 enum StudentStatus {
   ACTIVE
   DISCHARGED
+  DELETED
 }
 
 enum AppointmentType {

@@ -99,6 +99,12 @@ export const updateAppointment = async (
   })
 }
 
+export const deleteAppointment = async (id: string): Promise<Appointment> => {
+  return await prismaClient.appointment.delete({
+    where: { id: id }
+  })
+}
+
 // only return appointments that are related to the logged-in user somehow
 const filterAppointments = async (
   appointments: Appointment[],

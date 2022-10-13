@@ -2,8 +2,10 @@ import express from 'express'
 import { ensureUserIsAuthenticated } from '../permissions/permissionsMiddleware'
 import {
   createNewAppointment,
+  deleteExistingAppointment,
   getAllAppointments,
-  getAppointment
+  getAppointment,
+  updateExistingAppointment
 } from './appointmentMiddleware'
 
 export const appointmentRouter = express.Router()
@@ -20,14 +22,20 @@ appointmentRouter.get(
   getAppointment
 )
 
-appointmentRouter.put(
+appointmentRouter.post(
   '/api/1/appointments',
   ensureUserIsAuthenticated,
   createNewAppointment
 )
 
-appointmentRouter.post(
-  '/api/1/appointments',
+appointmentRouter.put(
+  '/api/1/appointments/:id',
   ensureUserIsAuthenticated,
-  createNewAppointment
+  updateExistingAppointment
+)
+
+appointmentRouter.delete(
+  '/api/1/appointments/:id',
+  ensureUserIsAuthenticated,
+  deleteExistingAppointment
 )

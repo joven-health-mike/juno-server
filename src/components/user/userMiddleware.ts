@@ -1,4 +1,11 @@
-import { Role, User } from '@prisma/client'
+import {
+  CounselorDetails,
+  Role,
+  SchoolAdminDetails,
+  SchoolStaffDetails,
+  StudentDetails,
+  User
+} from '@prisma/client'
 import { Http as HttpStatus } from '@status/codes'
 import { NextFunction, Request, Response } from 'express'
 import {
@@ -10,7 +17,21 @@ import {
   findUserByUsername,
   createSchoolAdminRef,
   createSchoolStaffRef,
-  createStudentRef
+  createStudentRef,
+  updateUser,
+  deleteUser,
+  updateCounselorRef,
+  updateSchoolAdminRef,
+  updateSchoolStaffRef,
+  updateStudentRef,
+  deleteCounselorRef,
+  deleteSchoolAdminRef,
+  deleteSchoolStaffRef,
+  deleteStudentRef,
+  readCounselorRef,
+  readSchoolAdminRef,
+  readSchoolStaffRef,
+  readStudentRef
 } from './userModel'
 
 export const getLoggedInUser = async (
@@ -127,5 +148,77 @@ export const createNewUser = async (
   const result = await findUserById(user.id)
 
   response.locals.data = result
+  next()
+}
+export const updateExistingUser = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
+  const requestData = request.body
+  const urlParamId = request.params.id
+  if (urlParamId === requestData.id) {
+    const user = await updateUser(requestData)
+
+    // if the user has any ref data, update that object too
+    if (typeof requestData.counselorRef !== 'undefined') {
+      await updateCounselorRef(requestData, user.id)
+    } else if (typeof requestData.schoolAdminRef !== 'undefined') {
+      await updateSchoolAdminRef(requestData, user.id)
+    } else if (typeof requestData.schoolStaffRef !== 'undefined') {
+      await updateSchoolStaffRef(requestData, user.id)
+    } else if (typeof requestData.studentRef !== 'undefined') {
+      await updateStudentRef(requestData, user.id)
+    }
+
+    // after everything is created and linked, query the new user to return
+    const result = await findUserById(user.id)
+
+    response.locals.data = result
+  } else {
+    // TODO: ID of the passed-in object didn't match ID of the URL
+  }
+  next()
+}
+export const deleteExistingUser = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
+  const userInfo = request.body
+  const userIdToDelete = request.params.id
+
+  // if the user has any ref data, delete that object first
+  let counselorRef: CounselorDetails,
+    schoolAdminRef: SchoolAdminDetails,
+    schoolStaffRef: SchoolStaffDetails,
+    studentRef: StudentDetails
+  switch (userInfo.role) {
+    case 'SYSADMIN':
+    case 'JOVEN_STAFF':
+    case 'JOVEN_ADMIN':
+    case 'GUARDIAN':
+      break
+    case 'COUNSELOR':
+      counselorRef = await readCounselorRef(userInfo)
+      await deleteCounselorRef(counselorRef.id)
+      break
+    case 'SCHOOL_ADMIN':
+      schoolAdminRef = await readSchoolAdminRef(userInfo)
+      await deleteSchoolAdminRef(schoolAdminRef.id)
+      break
+    case 'SCHOOL_STAFF':
+      schoolStaffRef = await readSchoolStaffRef(userInfo)
+      await deleteSchoolStaffRef(schoolStaffRef.id)
+      break
+    case 'STUDENT':
+      studentRef = await readStudentRef(userInfo)
+      await deleteStudentRef(studentRef.id)
+      break
+  }
+
+  const deletedUser = await deleteUser(userIdToDelete)
+
+  response.locals.data = deletedUser
   next()
 }

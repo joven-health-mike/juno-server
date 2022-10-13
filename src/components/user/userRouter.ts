@@ -5,7 +5,9 @@ import {
   getUser,
   getUsersByRole,
   getAllUsers,
-  getLoggedInUser
+  getLoggedInUser,
+  updateExistingUser,
+  deleteExistingUser
 } from './userMiddleware'
 
 export const userRouter = express.Router()
@@ -19,4 +21,13 @@ userRouter.get(
   getUsersByRole
 )
 userRouter.post('/api/1/users', ensureUserIsAuthenticated, createNewUser)
-userRouter.put('/api/1/users', ensureUserIsAuthenticated, createNewUser)
+userRouter.put(
+  '/api/1/users/:id',
+  ensureUserIsAuthenticated,
+  updateExistingUser
+)
+userRouter.delete(
+  '/api/1/users/:id',
+  ensureUserIsAuthenticated,
+  deleteExistingUser
+)

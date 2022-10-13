@@ -1,6 +1,12 @@
 import { User } from '@prisma/client'
 import { NextFunction, Request, Response } from 'express'
-import { findSchoolById, findAllSchools, createSchool } from './schoolModel'
+import {
+  findSchoolById,
+  findAllSchools,
+  createSchool,
+  updateSchool,
+  deleteSchool
+} from './schoolModel'
 
 export const getSchool = async (
   request: Request,
@@ -40,6 +46,33 @@ export const createNewSchool = async (
 ): Promise<void> => {
   const requestData = request.body
   const school = await createSchool(requestData)
+  response.locals.data = school
+  next()
+}
+
+export const updateExistingSchool = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
+  const requestData = request.body
+  const urlParamId = request.params.id
+  if (urlParamId === requestData.id) {
+    const school = await updateSchool(requestData)
+    response.locals.data = school
+  } else {
+    // TODO: ID of the passed-in object didn't match ID of the URL
+  }
+  next()
+}
+
+export const deleteExistingSchool = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
+  const appointmentIdToDelete = request.params.id
+  const school = await deleteSchool(appointmentIdToDelete)
   response.locals.data = school
   next()
 }

@@ -45,6 +45,14 @@ export const createUser = async (userInfo: UserInfo): Promise<User> => {
   return await prismaClient.user.create({ data: newUser })
 }
 
+export const readCounselorRef = async (
+  userId: string
+): Promise<CounselorDetails> => {
+  return await prismaClient.counselorDetails.findFirst({
+    where: { userId: userId }
+  })
+}
+
 export const createCounselorRef = async (
   userInfo: UserInfo,
   userId: string
@@ -56,6 +64,38 @@ export const createCounselorRef = async (
     roomLink: userInfo.counselorRef.roomLink
   }
   return await prismaClient.counselorDetails.create({ data: counselorDetails })
+}
+
+export const updateCounselorRef = async (
+  userInfo: UserInfo,
+  userId: string
+): Promise<CounselorDetails> => {
+  const counselorDetails: CounselorDetails = {
+    id:
+      userInfo.counselorRef.id === '-1' ? undefined : userInfo.counselorRef.id,
+    userId: userId,
+    roomLink: userInfo.counselorRef.roomLink
+  }
+  return await prismaClient.counselorDetails.update({
+    data: counselorDetails,
+    where: { userId: userId }
+  })
+}
+
+export const deleteCounselorRef = async (
+  userId: string
+): Promise<CounselorDetails> => {
+  return await prismaClient.counselorDetails.delete({
+    where: { userId: userId }
+  })
+}
+
+export const readSchoolAdminRef = async (
+  userId: string
+): Promise<SchoolAdminDetails> => {
+  return await prismaClient.schoolAdminDetails.findFirst({
+    where: { userId: userId }
+  })
 }
 
 export const createSchoolAdminRef = async (
@@ -72,6 +112,40 @@ export const createSchoolAdminRef = async (
   }
   return await prismaClient.schoolAdminDetails.create({
     data: schoolAdminDetails
+  })
+}
+
+export const updateSchoolAdminRef = async (
+  userInfo: UserInfo,
+  userId: string
+): Promise<SchoolAdminDetails> => {
+  const schoolAdminDetails: SchoolAdminDetails = {
+    id:
+      userInfo.schoolAdminRef.id === '-1'
+        ? undefined
+        : userInfo.schoolAdminRef.id,
+    userId: userId,
+    assignedSchoolId: userInfo.schoolAdminRef.assignedSchoolId
+  }
+  return await prismaClient.schoolAdminDetails.update({
+    data: schoolAdminDetails,
+    where: { userId: userId }
+  })
+}
+
+export const deleteSchoolAdminRef = async (
+  userId: string
+): Promise<SchoolAdminDetails> => {
+  return await prismaClient.schoolAdminDetails.delete({
+    where: { userId: userId }
+  })
+}
+
+export const readSchoolStaffRef = async (
+  userId: string
+): Promise<SchoolStaffDetails> => {
+  return await prismaClient.schoolStaffDetails.findFirst({
+    where: { userId: userId }
   })
 }
 
@@ -92,6 +166,40 @@ export const createSchoolStaffRef = async (
   })
 }
 
+export const updateSchoolStaffRef = async (
+  userInfo: UserInfo,
+  userId: string
+): Promise<SchoolStaffDetails> => {
+  const schoolStaffDetails: SchoolStaffDetails = {
+    id:
+      userInfo.schoolStaffRef.id === '-1'
+        ? undefined
+        : userInfo.schoolStaffRef.id,
+    userId: userId,
+    assignedSchoolId: userInfo.schoolStaffRef.assignedSchoolId
+  }
+  return await prismaClient.schoolStaffDetails.update({
+    data: schoolStaffDetails,
+    where: { userId: userId }
+  })
+}
+
+export const deleteSchoolStaffRef = async (
+  userId: string
+): Promise<SchoolStaffDetails> => {
+  return await prismaClient.schoolStaffDetails.delete({
+    where: { userId: userId }
+  })
+}
+
+export const readStudentRef = async (
+  userId: string
+): Promise<StudentDetails> => {
+  return await prismaClient.studentDetails.findFirst({
+    where: { userId: userId }
+  })
+}
+
 export const createStudentRef = async (
   userInfo: UserInfo,
   userId: string
@@ -105,6 +213,31 @@ export const createStudentRef = async (
   }
   return await prismaClient.studentDetails.create({
     data: studentDetails
+  })
+}
+
+export const updateStudentRef = async (
+  userInfo: UserInfo,
+  userId: string
+): Promise<StudentDetails> => {
+  const studentDetails: StudentDetails = {
+    id: userInfo.studentRef.id === '-1' ? undefined : userInfo.studentRef.id,
+    userId: userId,
+    assignedSchoolId: userInfo.studentRef.assignedSchoolId,
+    assignedCounselorId: userInfo.studentRef.assignedCounselorId,
+    status: userInfo.studentRef.status
+  }
+  return await prismaClient.studentDetails.update({
+    data: studentDetails,
+    where: { userId: userId }
+  })
+}
+
+export const deleteStudentRef = async (
+  userId: string
+): Promise<StudentDetails> => {
+  return await prismaClient.studentDetails.delete({
+    where: { userId: userId }
   })
 }
 
@@ -223,5 +356,12 @@ export const updateUser = async (userInfo: User): Promise<User> => {
   return await prismaClient.user.update({
     data: userInfo,
     where: { id: userInfo.id }
+  })
+}
+
+export const deleteUser = async (id: string): Promise<User> => {
+  // TODO: Mark user as deleted instead of actually deleting them
+  return await prismaClient.user.delete({
+    where: { id: id }
   })
 }

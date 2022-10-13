@@ -44,6 +44,12 @@ export const createSchool = async (schoolInfo: SchoolInfo): Promise<School> => {
   })
 }
 
+export const deleteSchool = async (id: string): Promise<School> => {
+  return await prismaClient.school.delete({
+    where: { id: id }
+  })
+}
+
 export const findAllSchools = async (loggedInUser: User): Promise<School[]> => {
   const allSchools = await prismaClient.school.findMany()
   return await filterSchools(allSchools, loggedInUser)

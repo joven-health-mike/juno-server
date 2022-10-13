@@ -2,7 +2,7 @@
 CREATE TYPE "Role" AS ENUM ('JOVEN_ADMIN', 'JOVEN_STAFF', 'SCHOOL_ADMIN', 'SCHOOL_STAFF', 'STUDENT', 'GUARDIAN', 'COUNSELOR', 'SYSADMIN');
 
 -- CreateEnum
-CREATE TYPE "StudentStatus" AS ENUM ('ACTIVE', 'DISCHARGED');
+CREATE TYPE "StudentStatus" AS ENUM ('ACTIVE', 'DISCHARGED', 'DELETED');
 
 -- CreateEnum
 CREATE TYPE "AppointmentType" AS ENUM ('CLINICAL', 'CONSULTATION', 'EVALUATION');
@@ -196,46 +196,46 @@ CREATE UNIQUE INDEX "_ParticipantAppointment_AB_unique" ON "_ParticipantAppointm
 CREATE INDEX "_ParticipantAppointment_B_index" ON "_ParticipantAppointment"("B");
 
 -- AddForeignKey
-ALTER TABLE "SysAdminDetails" ADD CONSTRAINT "SysAdminDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "SysAdminDetails" ADD CONSTRAINT "SysAdminDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "JovenAdminDetails" ADD CONSTRAINT "JovenAdminDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "JovenAdminDetails" ADD CONSTRAINT "JovenAdminDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "JovenStaffDetails" ADD CONSTRAINT "JovenStaffDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "JovenStaffDetails" ADD CONSTRAINT "JovenStaffDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "CounselorDetails" ADD CONSTRAINT "CounselorDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "CounselorDetails" ADD CONSTRAINT "CounselorDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SchoolAdminDetails" ADD CONSTRAINT "SchoolAdminDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "SchoolAdminDetails" ADD CONSTRAINT "SchoolAdminDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SchoolAdminDetails" ADD CONSTRAINT "SchoolAdminDetails_assignedSchoolId_fkey" FOREIGN KEY ("assignedSchoolId") REFERENCES "School"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "SchoolAdminDetails" ADD CONSTRAINT "SchoolAdminDetails_assignedSchoolId_fkey" FOREIGN KEY ("assignedSchoolId") REFERENCES "School"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SchoolStaffDetails" ADD CONSTRAINT "SchoolStaffDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "SchoolStaffDetails" ADD CONSTRAINT "SchoolStaffDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SchoolStaffDetails" ADD CONSTRAINT "SchoolStaffDetails_assignedSchoolId_fkey" FOREIGN KEY ("assignedSchoolId") REFERENCES "School"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "SchoolStaffDetails" ADD CONSTRAINT "SchoolStaffDetails_assignedSchoolId_fkey" FOREIGN KEY ("assignedSchoolId") REFERENCES "School"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "GuardianDetails" ADD CONSTRAINT "GuardianDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "GuardianDetails" ADD CONSTRAINT "GuardianDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StudentDetails" ADD CONSTRAINT "StudentDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StudentDetails" ADD CONSTRAINT "StudentDetails_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StudentDetails" ADD CONSTRAINT "StudentDetails_assignedSchoolId_fkey" FOREIGN KEY ("assignedSchoolId") REFERENCES "School"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StudentDetails" ADD CONSTRAINT "StudentDetails_assignedSchoolId_fkey" FOREIGN KEY ("assignedSchoolId") REFERENCES "School"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StudentDetails" ADD CONSTRAINT "StudentDetails_assignedCounselorId_fkey" FOREIGN KEY ("assignedCounselorId") REFERENCES "CounselorDetails"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StudentDetails" ADD CONSTRAINT "StudentDetails_assignedCounselorId_fkey" FOREIGN KEY ("assignedCounselorId") REFERENCES "CounselorDetails"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Appointment" ADD CONSTRAINT "Appointment_schoolId_fkey" FOREIGN KEY ("schoolId") REFERENCES "School"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Appointment" ADD CONSTRAINT "Appointment_schoolId_fkey" FOREIGN KEY ("schoolId") REFERENCES "School"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Appointment" ADD CONSTRAINT "Appointment_counselorId_fkey" FOREIGN KEY ("counselorId") REFERENCES "CounselorDetails"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Appointment" ADD CONSTRAINT "Appointment_counselorId_fkey" FOREIGN KEY ("counselorId") REFERENCES "CounselorDetails"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_CounselorSchool" ADD CONSTRAINT "_CounselorSchool_A_fkey" FOREIGN KEY ("A") REFERENCES "CounselorDetails"("id") ON DELETE CASCADE ON UPDATE CASCADE;
