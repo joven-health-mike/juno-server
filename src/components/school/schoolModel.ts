@@ -12,6 +12,7 @@ interface SchoolInfo {
   id?: string
   name?: string
   address?: string
+  city?: string
   state?: string
   zip?: string
   primaryEmail?: string
@@ -26,6 +27,7 @@ const getSchoolFromSchoolInfo = (schoolInfo: SchoolInfo) => {
     id: schoolInfo.id === '-1' ? undefined : schoolInfo.id,
     name: schoolInfo.name,
     address: schoolInfo.address,
+    city: schoolInfo.city,
     state: schoolInfo.state,
     zip: schoolInfo.zip,
     primaryEmail: schoolInfo.primaryEmail,

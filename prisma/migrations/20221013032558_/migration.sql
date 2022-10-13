@@ -104,6 +104,7 @@ CREATE TABLE "School" (
     "name" TEXT NOT NULL,
     "address" TEXT,
     "state" TEXT,
+    "city" TEXT,
     "zip" TEXT,
     "primaryEmail" TEXT,
     "primaryPhone" TEXT,

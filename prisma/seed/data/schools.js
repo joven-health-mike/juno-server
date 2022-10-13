@@ -5,6 +5,7 @@ module.exports = [
     primaryEmail: 'aardvark-academy@jovenhealth.com',
     primaryPhone: '123-456-7890',
     address: '1234 Main St.',
+    city: 'Denver',
     state: 'CO',
     zip: '80013'
   },
@@ -14,6 +15,7 @@ module.exports = [
     primaryEmail: 'iguana-institute@jovenhealth.com',
     primaryPhone: '123-456-7892',
     address: '1234 Main St.',
+    city: 'New York',
     state: 'NY',
     zip: '80013'
   },
@@ -23,6 +25,7 @@ module.exports = [
     primaryEmail: 'moose-middle-school@jovenhealth.com',
     primaryPhone: '123-456-7893',
     address: '1234 Main St.',
+    city: 'Philadelphia',
     state: 'PA',
     zip: '80013'
   },
@@ -32,6 +35,7 @@ module.exports = [
     primaryEmail: 'rattlesnake-school@jovenhealth.com',
     primaryPhone: '123-456-7894',
     address: '1234 Main St.',
+    city: 'Phoenix',
     state: 'AZ',
     zip: '80013'
   }

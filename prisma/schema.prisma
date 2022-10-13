@@ -107,6 +107,7 @@ model School {
   name         String
   address      String?
   state        String?
+  city         String?
   zip          String?
   primaryEmail String?
   primaryPhone String?

@@ -40,7 +40,7 @@ async function isUserRelated(reference: User, target: User): Promise<boolean> {
   } else if (target.role === ('STUDENT' as Role)) {
     // school has access to students that are assigned to their school
     const studentDetails = (await findUserDetails(target)) as StudentDetailsInfo
-    return schoolId === studentDetails.assignedCounselorId
+    return schoolId === studentDetails.assignedSchoolId
   } else if (target.role === ('SCHOOL_ADMIN' as Role)) {
     // school has access to other school facilitators
     const schoolAdminDetails = (await findUserDetails(
