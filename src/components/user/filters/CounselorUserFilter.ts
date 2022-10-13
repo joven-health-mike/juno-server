@@ -7,10 +7,10 @@ import {
   SchoolStaffDetailsInfo,
   StudentDetailsInfo
 } from '../userDetailsModel'
-import { Filter } from './Filter'
+import { Filter } from '../../Filter'
 
 // counselors get access to themselves, their students, and facilitators associated with the schools they're assigned to
-export class CounselorFilter implements Filter<User> {
+export class CounselorUserFilter implements Filter<User> {
   async apply(allItems: User[], reference: User): Promise<User[]> {
     const result = []
 

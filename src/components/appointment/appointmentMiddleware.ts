@@ -1,3 +1,4 @@
+import { User } from '@prisma/client'
 import { NextFunction, Request, Response } from 'express'
 import {
   createAppointment,
@@ -11,7 +12,7 @@ export const getAllAppointments = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const appointments = await findAllAppointments()
+    const appointments = await findAllAppointments(request.user as User)
     response.locals.data = appointments
     next()
   } catch (error) {
