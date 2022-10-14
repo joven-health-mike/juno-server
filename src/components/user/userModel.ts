@@ -45,14 +45,6 @@ export const createUser = async (userInfo: UserInfo): Promise<User> => {
   return await prismaClient.user.create({ data: newUser })
 }
 
-export const readCounselorRef = async (
-  userId: string
-): Promise<CounselorDetails> => {
-  return await prismaClient.counselorDetails.findFirst({
-    where: { userId: userId }
-  })
-}
-
 export const createCounselorRef = async (
   userInfo: UserInfo,
   userId: string
@@ -78,22 +70,6 @@ export const updateCounselorRef = async (
   }
   return await prismaClient.counselorDetails.update({
     data: counselorDetails,
-    where: { userId: userId }
-  })
-}
-
-export const deleteCounselorRef = async (
-  userId: string
-): Promise<CounselorDetails> => {
-  return await prismaClient.counselorDetails.delete({
-    where: { userId: userId }
-  })
-}
-
-export const readSchoolAdminRef = async (
-  userId: string
-): Promise<SchoolAdminDetails> => {
-  return await prismaClient.schoolAdminDetails.findFirst({
     where: { userId: userId }
   })
 }
@@ -133,22 +109,6 @@ export const updateSchoolAdminRef = async (
   })
 }
 
-export const deleteSchoolAdminRef = async (
-  userId: string
-): Promise<SchoolAdminDetails> => {
-  return await prismaClient.schoolAdminDetails.delete({
-    where: { userId: userId }
-  })
-}
-
-export const readSchoolStaffRef = async (
-  userId: string
-): Promise<SchoolStaffDetails> => {
-  return await prismaClient.schoolStaffDetails.findFirst({
-    where: { userId: userId }
-  })
-}
-
 export const createSchoolStaffRef = async (
   userInfo: UserInfo,
   userId: string
@@ -184,22 +144,6 @@ export const updateSchoolStaffRef = async (
   })
 }
 
-export const deleteSchoolStaffRef = async (
-  userId: string
-): Promise<SchoolStaffDetails> => {
-  return await prismaClient.schoolStaffDetails.delete({
-    where: { userId: userId }
-  })
-}
-
-export const readStudentRef = async (
-  userId: string
-): Promise<StudentDetails> => {
-  return await prismaClient.studentDetails.findFirst({
-    where: { userId: userId }
-  })
-}
-
 export const createStudentRef = async (
   userInfo: UserInfo,
   userId: string
@@ -229,14 +173,6 @@ export const updateStudentRef = async (
   }
   return await prismaClient.studentDetails.update({
     data: studentDetails,
-    where: { userId: userId }
-  })
-}
-
-export const deleteStudentRef = async (
-  userId: string
-): Promise<StudentDetails> => {
-  return await prismaClient.studentDetails.delete({
     where: { userId: userId }
   })
 }

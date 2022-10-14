@@ -1,13 +1,7 @@
-import {
-  CounselorDetails,
-  Role,
-  SchoolAdminDetails,
-  SchoolStaffDetails,
-  StudentDetails,
-  User
-} from '@prisma/client'
+import { Role, User } from '@prisma/client'
 import { Http as HttpStatus } from '@status/codes'
 import { NextFunction, Request, Response } from 'express'
+import { getDelegate } from './userDetailsModel'
 import {
   findUserById,
   findUsersByRole,
@@ -23,15 +17,7 @@ import {
   updateCounselorRef,
   updateSchoolAdminRef,
   updateSchoolStaffRef,
-  updateStudentRef,
-  deleteCounselorRef,
-  deleteSchoolAdminRef,
-  deleteSchoolStaffRef,
-  deleteStudentRef,
-  readCounselorRef,
-  readSchoolAdminRef,
-  readSchoolStaffRef,
-  readStudentRef
+  updateStudentRef
 } from './userModel'
 
 export const getLoggedInUser = async (
@@ -189,34 +175,7 @@ export const deleteExistingUser = async (
   const userIdToDelete = request.params.id
 
   // if the user has any ref data, delete that object first
-  let counselorRef: CounselorDetails,
-    schoolAdminRef: SchoolAdminDetails,
-    schoolStaffRef: SchoolStaffDetails,
-    studentRef: StudentDetails
-  switch (userInfo.role) {
-    case 'SYSADMIN':
-    case 'JOVEN_STAFF':
-    case 'JOVEN_ADMIN':
-    case 'GUARDIAN':
-      break
-    case 'COUNSELOR':
-      counselorRef = await readCounselorRef(userInfo)
-      await deleteCounselorRef(counselorRef.id)
-      break
-    case 'SCHOOL_ADMIN':
-      schoolAdminRef = await readSchoolAdminRef(userInfo)
-      await deleteSchoolAdminRef(schoolAdminRef.id)
-      break
-    case 'SCHOOL_STAFF':
-      schoolStaffRef = await readSchoolStaffRef(userInfo)
-      await deleteSchoolStaffRef(schoolStaffRef.id)
-      break
-    case 'STUDENT':
-      studentRef = await readStudentRef(userInfo)
-      await deleteStudentRef(studentRef.id)
-      break
-  }
-
+  await getDelegate(userInfo.role).delete(userInfo.id)
   const deletedUser = await deleteUser(userIdToDelete)
 
   response.locals.data = deletedUser

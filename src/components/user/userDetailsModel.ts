@@ -42,6 +42,7 @@ export interface StudentDetailsInfo extends BasicDetailsInfo {
 
 export interface UserDetailsDelegate {
   read: (user: User) => Promise<BasicDetailsInfo>
+  delete: (user: User) => Promise<BasicDetailsInfo>
 }
 
 export async function findUserDetails(user: User): Promise<BasicDetailsInfo> {
@@ -74,6 +75,13 @@ export class SysAdminUserDetailsDelegate implements UserDetailsDelegate {
     const sysAdminDetails = await prismaClient.sysAdminDetails.findUnique({
       where: { userId: user.id }
     })
+    return sysAdminDetails
+  }
+
+  async delete(user: User): Promise<BasicDetailsInfo> {
+    const sysAdminDetails = await prismaClient.sysAdminDetails.delete({
+      where: { userId: user.id }
+    })
     return { id: sysAdminDetails.id, userId: sysAdminDetails.userId }
   }
 }
@@ -81,6 +89,13 @@ export class SysAdminUserDetailsDelegate implements UserDetailsDelegate {
 export class JovenAdminUserDetailsDelegate implements UserDetailsDelegate {
   async read(user: User): Promise<BasicDetailsInfo> {
     const jovenAdminDetails = await prismaClient.jovenAdminDetails.findUnique({
+      where: { userId: user.id }
+    })
+    return jovenAdminDetails
+  }
+
+  async delete(user: User): Promise<BasicDetailsInfo> {
+    const jovenAdminDetails = await prismaClient.jovenAdminDetails.delete({
       where: { userId: user.id }
     })
     return { id: jovenAdminDetails.id, userId: jovenAdminDetails.userId }
@@ -92,7 +107,14 @@ export class JovenStaffUserDetailsDelegate implements UserDetailsDelegate {
     const jovenStaffDetails = await prismaClient.jovenStaffDetails.findUnique({
       where: { userId: user.id }
     })
-    return { id: jovenStaffDetails.id, userId: jovenStaffDetails.userId }
+    return jovenStaffDetails
+  }
+
+  async delete(user: User): Promise<BasicDetailsInfo> {
+    const jovenStaffDetails = await prismaClient.jovenStaffDetails.delete({
+      where: { userId: user.id }
+    })
+    return jovenStaffDetails
   }
 }
 
@@ -103,6 +125,17 @@ export class SchoolAdminUserDetailsDelegate implements UserDetailsDelegate {
         where: { userId: user.id }
       }
     )
+    return {
+      id: schoolAdminDetails.id,
+      userId: schoolAdminDetails.userId,
+      assignedSchoolId: schoolAdminDetails.assignedSchoolId
+    } as SchoolAdminDetailsInfo
+  }
+
+  async delete(user: User): Promise<BasicDetailsInfo> {
+    const schoolAdminDetails = await prismaClient.schoolAdminDetails.delete({
+      where: { userId: user.id }
+    })
     return {
       id: schoolAdminDetails.id,
       userId: schoolAdminDetails.userId,
@@ -124,11 +157,35 @@ export class SchoolStaffUserDetailsDelegate implements UserDetailsDelegate {
       assignedSchoolId: schoolStaffDetails.assignedSchoolId
     } as SchoolStaffDetailsInfo
   }
+
+  async delete(user: User): Promise<BasicDetailsInfo> {
+    const schoolStaffDetails = await prismaClient.schoolStaffDetails.delete({
+      where: { userId: user.id }
+    })
+    return {
+      id: schoolStaffDetails.id,
+      userId: schoolStaffDetails.userId,
+      assignedSchoolId: schoolStaffDetails.assignedSchoolId
+    } as SchoolAdminDetailsInfo
+  }
 }
 
 export class CounselorUserDetailsDelegate implements UserDetailsDelegate {
   async read(user: User): Promise<BasicDetailsInfo> {
     const counselorDetails = await prismaClient.counselorDetails.findUnique({
+      where: { userId: user.id },
+      include: { assignedSchools: true }
+    })
+    return {
+      id: counselorDetails.id,
+      userId: counselorDetails.userId,
+      roomLink: counselorDetails.roomLink,
+      assignedSchools: counselorDetails.assignedSchools
+    } as CounselorDetailsInfo
+  }
+
+  async delete(user: User): Promise<BasicDetailsInfo> {
+    const counselorDetails = await prismaClient.counselorDetails.delete({
       where: { userId: user.id },
       include: { assignedSchools: true }
     })
@@ -151,13 +208,38 @@ export class GuardianUserDetailsDelegate implements UserDetailsDelegate {
       id: guardianDetails.id,
       userId: guardianDetails.userId,
       students: guardianDetails.students
-    }
+    } as GuardianDetailsInfo
+  }
+
+  async delete(user: User): Promise<BasicDetailsInfo> {
+    const guardianDetails = await prismaClient.guardianDetails.delete({
+      where: { userId: user.id },
+      include: { students: true }
+    })
+    return {
+      id: guardianDetails.id,
+      userId: guardianDetails.userId,
+      students: guardianDetails.students
+    } as GuardianDetailsInfo
   }
 }
 
 export class StudentUserDetailsDelegate implements UserDetailsDelegate {
   async read(user: User): Promise<BasicDetailsInfo> {
     const studentDetails = await prismaClient.studentDetails.findUnique({
+      where: { userId: user.id }
+    })
+    return {
+      id: studentDetails.id,
+      userId: studentDetails.userId,
+      assignedCounselorId: studentDetails.assignedCounselorId,
+      assignedSchoolId: studentDetails.assignedSchoolId,
+      status: studentDetails.status
+    } as StudentDetailsInfo
+  }
+
+  async delete(user: User): Promise<BasicDetailsInfo> {
+    const studentDetails = await prismaClient.studentDetails.delete({
       where: { userId: user.id }
     })
     return {
