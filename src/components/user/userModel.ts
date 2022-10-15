@@ -210,7 +210,9 @@ export const findUserById = async (id: string): Promise<User | null> => {
 }
 
 export const findAllUsers = async (loggedInUser: User): Promise<User[]> => {
-  const allUsers = await prismaClient.user.findMany()
+  const allUsers = await prismaClient.user.findMany({
+    include: getAllUsersInclude()
+  })
   return filterUsers(loggedInUser, allUsers)
 }
 
@@ -231,6 +233,33 @@ export const findUsersByRole = async (
     include: getUserIncludeForRole(role)
   })
   return filterUsers(loggedInUser, allUsers)
+}
+
+const getAllUsersInclude = (): Prisma.UserInclude => {
+  return {
+    schoolAdminRef: {
+      include: { assignedSchool: true }
+    },
+    schoolStaffRef: {
+      include: { assignedSchool: true }
+    },
+    counselorRef: true,
+    studentRef: {
+      include: {
+        assignedSchool: true,
+        assignedCounselor: {
+          include: {
+            user: true
+          }
+        },
+        guardians: {
+          include: {
+            user: true
+          }
+        }
+      }
+    }
+  }
 }
 
 const getUserIncludeForRole = (role: Role): Prisma.UserInclude => {

@@ -142,9 +142,14 @@ export const updateExistingUser = async (
   next: NextFunction
 ): Promise<void> => {
   const requestData = request.body
+  const basicUserData = { ...requestData }
+  basicUserData.counselorRef = undefined
+  basicUserData.schoolAdminRef = undefined
+  basicUserData.schoolStaffRef = undefined
+  basicUserData.studentRef = undefined
   const urlParamId = request.params.id
   if (urlParamId === requestData.id) {
-    const user = await updateUser(requestData)
+    const user = await updateUser(basicUserData)
 
     // if the user has any ref data, update that object too
     if (typeof requestData.counselorRef !== 'undefined') {
@@ -166,6 +171,7 @@ export const updateExistingUser = async (
   }
   next()
 }
+
 export const deleteExistingUser = async (
   request: Request,
   response: Response,
