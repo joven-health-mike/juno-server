@@ -181,7 +181,7 @@ export const deleteExistingUser = async (
   const userIdToDelete = request.params.id
 
   // if the user has any ref data, delete that object first
-  await getDelegate(userInfo.role).delete(userInfo.id)
+  await getDelegate(userInfo.role)?.delete(userInfo.id)
   const deletedUser = await deleteUser(userIdToDelete)
 
   response.locals.data = deletedUser
