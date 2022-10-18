@@ -94,7 +94,6 @@ export const createRecurringAppointments = async (
     loopEndDate: Date = originalEndDate
   const appointments: Appointment[] = []
   for (let i = 0; i < numOccurrences - 1; i++) {
-    console.log('loopStartDate: ' + loopStartDate.toISOString())
     loopStartDate = new Date(loopStartDate)
     loopEndDate = new Date(loopEndDate)
     switch (occurrenceRepeatFrequency) {
@@ -131,7 +130,6 @@ export const createRecurringAppointments = async (
         )
         break
     }
-    console.log('loopStartDate(post-op): ' + loopStartDate.toISOString())
 
     const appointment = {
       ...appointmentInfo,
