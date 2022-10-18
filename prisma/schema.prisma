@@ -127,14 +127,14 @@ model Appointment {
   numOccurrences Int?
   numRepeats     Int?
   frequency      RepeatFrequency?
-  school         School               @relation(name: "SchoolAppointment", fields: [schoolId], references: [id], onDelete: Cascade)
+  school         School?              @relation(name: "SchoolAppointment", fields: [schoolId], references: [id], onDelete: Cascade)
   counselor      CounselorDetails     @relation(name: "CounselorAppointment", fields: [counselorId], references: [id], onDelete: Cascade)
   counselorId    String
   participants   User[]               @relation(name: "ParticipantAppointment")
   type           AppointmentType
   status         AppointmentStatus
   location       AppointmentLocation?
-  schoolId       String
+  schoolId       String?
 }
 
 enum RepeatFrequency {

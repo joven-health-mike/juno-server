@@ -129,7 +129,7 @@ CREATE TABLE "Appointment" (
     "type" "AppointmentType" NOT NULL,
     "status" "AppointmentStatus" NOT NULL,
     "location" "AppointmentLocation",
-    "schoolId" TEXT NOT NULL,
+    "schoolId" TEXT,
 
     CONSTRAINT "Appointment_pkey" PRIMARY KEY ("id")
 );

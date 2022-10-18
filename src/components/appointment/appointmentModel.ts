@@ -42,9 +42,13 @@ const getAppointmentFromAppointmentInfo = (
     numRepeats: appointmentInfo.numRepeats,
     frequency: appointmentInfo.frequency,
     school: appointmentInfo.school,
-    schoolId: appointmentInfo.schoolId,
+    schoolId:
+      appointmentInfo.schoolId === '-1' ? undefined : appointmentInfo.schoolId,
     counselor: appointmentInfo.counselor,
-    counselorId: appointmentInfo.counselorId,
+    counselorId:
+      appointmentInfo.counselorId === '-1'
+        ? undefined
+        : appointmentInfo.counselorId,
     type: appointmentInfo.type,
     status: appointmentInfo.status,
     location: appointmentInfo.location,
