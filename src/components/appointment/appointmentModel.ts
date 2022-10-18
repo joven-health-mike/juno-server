@@ -1,6 +1,7 @@
 import { prismaClient } from '../../database'
 import {
   Appointment,
+  AppointmentLocation,
   AppointmentStatus,
   AppointmentType,
   CounselorDetails,
@@ -14,6 +15,10 @@ export interface AppointmentInfo {
   title?: string
   start?: Date
   end?: Date
+  isRecurring?: boolean
+  numOccurrences?: number
+  numRepeats: number
+  frequency?: string
   school?: School
   schoolId?: string
   participants?: User[]
@@ -21,6 +26,7 @@ export interface AppointmentInfo {
   counselorId?: string
   type?: AppointmentType
   status?: AppointmentStatus
+  location?: AppointmentLocation
 }
 
 const getAppointmentFromAppointmentInfo = (
@@ -31,14 +37,19 @@ const getAppointmentFromAppointmentInfo = (
     title: appointmentInfo.title,
     start: appointmentInfo.start,
     end: appointmentInfo.end,
+    isRecurring: appointmentInfo.isRecurring,
+    numOccurrences: appointmentInfo.numOccurrences,
+    numRepeats: appointmentInfo.numRepeats,
+    frequency: appointmentInfo.frequency,
     school: appointmentInfo.school,
     schoolId: appointmentInfo.schoolId,
     counselor: appointmentInfo.counselor,
     counselorId: appointmentInfo.counselorId,
     type: appointmentInfo.type,
     status: appointmentInfo.status,
+    location: appointmentInfo.location,
     participants: getParticipantConnectionsFromAppointmentInfo(appointmentInfo)
-  }
+  } as Appointment
 }
 
 const getParticipantConnectionsFromAppointmentInfo = (
@@ -65,6 +76,75 @@ export const createAppointment = async (
   })
 }
 
+export const createRecurringAppointments = async (
+  appointmentInfo: AppointmentInfo,
+  originalAppointment: Appointment
+): Promise<Appointment[]> => {
+  const openRequests: Promise<Appointment>[] = []
+  const originalStartDate = originalAppointment.start
+  const originalEndDate = originalAppointment.end
+  const numOccurrences = appointmentInfo.numOccurrences
+  const occurrenceRepeatFrequency = appointmentInfo.frequency
+  const occurrenceRepeatNumber = appointmentInfo.numRepeats
+  let loopStartDate: Date = originalStartDate,
+    loopEndDate: Date = originalEndDate
+  const appointments: Appointment[] = []
+  for (let i = 0; i < numOccurrences - 1; i++) {
+    console.log('loopStartDate: ' + loopStartDate.toISOString())
+    loopStartDate = new Date(loopStartDate)
+    loopEndDate = new Date(loopEndDate)
+    switch (occurrenceRepeatFrequency) {
+      case 'DAYS':
+        loopStartDate.setDate(loopStartDate.getDate() + occurrenceRepeatNumber)
+        loopEndDate.setDate(loopEndDate.getDate() + occurrenceRepeatNumber)
+        break
+      case 'WEEKS':
+        loopStartDate.setDate(
+          loopStartDate.getDate() + occurrenceRepeatNumber * 7
+        )
+        loopEndDate.setDate(loopEndDate.getDate() + occurrenceRepeatNumber * 7)
+        break
+      case 'MONTHS':
+        loopStartDate = new Date(
+          loopStartDate.setMonth(
+            loopStartDate.getMonth() + occurrenceRepeatNumber
+          )
+        )
+        loopEndDate = new Date(
+          loopEndDate.setMonth(loopEndDate.getMonth() + occurrenceRepeatNumber)
+        )
+        break
+      case 'YEARS':
+        loopStartDate = new Date(
+          loopStartDate.setFullYear(
+            loopStartDate.getFullYear() + occurrenceRepeatNumber
+          )
+        )
+        loopEndDate = new Date(
+          loopEndDate.setFullYear(
+            loopEndDate.getFullYear() + occurrenceRepeatNumber
+          )
+        )
+        break
+    }
+    console.log('loopStartDate(post-op): ' + loopStartDate.toISOString())
+
+    const appointment = {
+      ...appointmentInfo,
+      id: undefined, // we want a new ID for each appointment, clear the old one
+      participants: undefined,
+      counselor: undefined,
+      school: undefined,
+      start: loopStartDate,
+      end: loopEndDate
+    } as Appointment
+    appointments.push(appointment)
+    openRequests.push(prismaClient.appointment.create({ data: appointment }))
+  }
+
+  return Promise.all(openRequests)
+}
+
 export const findAllAppointments = async (
   loggedInUser: User
 ): Promise<Appointment[]> => {
@@ -85,6 +165,7 @@ export const findAppointmentById = async (
     where: { id },
     include: {
       counselor: { include: { user: true } },
+      school: true,
       participants: true
     }
   })
@@ -93,6 +174,9 @@ export const findAppointmentById = async (
 export const updateAppointment = async (
   appointmentInfo: AppointmentInfo
 ): Promise<Appointment> => {
+  appointmentInfo.counselor = undefined
+  appointmentInfo.school = undefined
+  appointmentInfo.participants = undefined
   return await prismaClient.appointment.update({
     data: getAppointmentFromAppointmentInfo(appointmentInfo) as Appointment,
     where: { id: appointmentInfo.id }
