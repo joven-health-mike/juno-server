@@ -115,21 +115,33 @@ model School {
   schoolStaff  SchoolStaffDetails[] @relation(name: "SchoolStaffSchool")
   students     StudentDetails[]     @relation(name: "StudentSchool")
   counselors   CounselorDetails[]   @relation(name: "CounselorSchool")
-  appointment  Appointment[]        @relation(name: "SchoolAppointment")
+  appointments Appointment[]        @relation(name: "SchoolAppointment")
 }
 
 model Appointment {
-  id           String            @id @default(uuid())
-  title        String
-  start        DateTime
-  end          DateTime
-  school       School            @relation(name: "SchoolAppointment", fields: [schoolId], references: [id], onDelete: Cascade)
-  counselor    CounselorDetails  @relation(name: "CounselorAppointment", fields: [counselorId], references: [id], onDelete: Cascade)
-  counselorId  String
-  participants User[]            @relation(name: "ParticipantAppointment")
-  type         AppointmentType
-  status       AppointmentStatus
-  schoolId     String
+  id             String               @id @default(uuid())
+  title          String
+  start          DateTime
+  end            DateTime
+  isRecurring    Boolean?             @default(false)
+  numOccurrences Int?
+  numRepeats     Int?
+  frequency      RepeatFrequency?
+  school         School?              @relation(name: "SchoolAppointment", fields: [schoolId], references: [id], onDelete: Cascade)
+  counselor      CounselorDetails     @relation(name: "CounselorAppointment", fields: [counselorId], references: [id], onDelete: Cascade)
+  counselorId    String
+  participants   User[]               @relation(name: "ParticipantAppointment")
+  type           AppointmentType
+  status         AppointmentStatus
+  location       AppointmentLocation?
+  schoolId       String?
+}
+
+enum RepeatFrequency {
+  DAYS
+  WEEKS
+  MONTHS
+  YEARS
 }
 
 enum Role {
@@ -169,4 +181,5 @@ enum AppointmentLocation {
   VIRTUAL_SCHOOL
   VIRTUAL_HOME
   IN_PERSON
+  UNKNOWN
 }
