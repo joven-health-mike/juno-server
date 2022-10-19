@@ -92,7 +92,6 @@ export const createRecurringAppointments = async (
   const occurrenceRepeatNumber = appointmentInfo.numRepeats
   let loopStartDate: Date = originalStartDate,
     loopEndDate: Date = originalEndDate
-  const appointments: Appointment[] = []
   for (let i = 0; i < numOccurrences - 1; i++) {
     loopStartDate = new Date(loopStartDate)
     loopEndDate = new Date(loopEndDate)
@@ -134,14 +133,15 @@ export const createRecurringAppointments = async (
     const appointment = {
       ...appointmentInfo,
       id: undefined, // we want a new ID for each appointment, clear the old one
-      participants: undefined,
-      counselor: undefined,
-      school: undefined,
       start: loopStartDate,
       end: loopEndDate
-    } as Appointment
-    appointments.push(appointment)
-    openRequests.push(prismaClient.appointment.create({ data: appointment }))
+    }
+
+    openRequests.push(
+      prismaClient.appointment.create({
+        data: getAppointmentFromAppointmentInfo(appointment) as Appointment
+      })
+    )
   }
 
   return Promise.all(openRequests)
