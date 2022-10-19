@@ -8,7 +8,6 @@ import {
   findAllUsers,
   createUser,
   createCounselorRef,
-  findUserByUsername,
   createSchoolAdminRef,
   createSchoolStaffRef,
   createStudentRef,
@@ -17,7 +16,8 @@ import {
   updateCounselorRef,
   updateSchoolAdminRef,
   updateSchoolStaffRef,
-  updateStudentRef
+  updateStudentRef,
+  findDetailedUserByUsername
 } from './userModel'
 
 export const getLoggedInUser = async (
@@ -26,7 +26,7 @@ export const getLoggedInUser = async (
   next: NextFunction
 ): Promise<void> => {
   if (typeof request.user !== 'undefined') {
-    const user = await findUserByUsername((request.user as User).username)
+    const user = await findDetailedUserByUsername(request.user as User)
     response.locals.data = user
     response.status(HttpStatus.Ok)
   } else {

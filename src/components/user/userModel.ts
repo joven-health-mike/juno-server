@@ -179,7 +179,16 @@ export const updateStudentRef = async (
 
 export const findUserByUsername = async (username: string): Promise<User> => {
   return await prismaClient.user.findUnique({
-    where: { username }
+    where: { username: username }
+  })
+}
+
+export const findDetailedUserByUsername = async (
+  userInfo: UserInfo
+): Promise<User> => {
+  return await prismaClient.user.findUnique({
+    where: { username: userInfo.username },
+    include: getUserIncludeForRole(userInfo.role)
   })
 }
 
