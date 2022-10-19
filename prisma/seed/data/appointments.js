@@ -1,7 +1,7 @@
 module.exports = [
   {
     id: 'd148dbd0-325d-4eed-8819-66bde5d35364',
-    title: 'Bolat F (Aardvark Academy) - Clinical Therapy',
+    title: 'Bolat F (Aardvark Academy) - CLINICAL',
     start: new Date(),
     end: new Date(),
     isRecurring: false,
@@ -13,7 +13,7 @@ module.exports = [
   },
   {
     id: '1d55fc1d-8838-46a7-a94d-8dd56a5e6e7d',
-    title: 'Francois C (Aardvark Academy) - Evaluation',
+    title: 'Francois C (Aardvark Academy) - EVALUATION',
     start: new Date(),
     end: new Date(),
     counselor: { connect: { id: '8e21b012-0662-48f7-8777-f9baa59d8ba3' } },
@@ -30,7 +30,7 @@ module.exports = [
   },
   {
     id: '4276c55f-0e03-48ac-a54d-aedbe9816c81',
-    title: 'Karsten A (Iguana Institute) - Consultation',
+    title: 'Karsten A (Iguana Institute) - CONSULTATION',
     start: new Date(),
     end: new Date(),
     counselor: { connect: { id: '5cc83e4f-2be8-4d29-b875-b85df62cdd7b' } },
