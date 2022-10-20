@@ -16,7 +16,7 @@ module.exports = [
     title: 'Francois C (Aardvark Academy) - EVALUATION',
     start: new Date(),
     end: new Date(),
-    counselor: { connect: { id: '8e21b012-0662-48f7-8777-f9baa59d8ba3' } },
+    counselor: { connect: { id: 'cb5239fe-6d3a-41b7-b192-b0d6fa5e6aa3' } },
     participants: {
       connect: [
         { id: '6f466fc1-6b7f-46a0-a0a9-c2a6a3808e1a' },
