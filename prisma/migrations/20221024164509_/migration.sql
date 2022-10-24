@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "RepeatFrequency" AS ENUM ('DAYS', 'WEEKS', 'MONTHS', 'YEARS');
+
+-- CreateEnum
 CREATE TYPE "Role" AS ENUM ('JOVEN_ADMIN', 'JOVEN_STAFF', 'SCHOOL_ADMIN', 'SCHOOL_STAFF', 'STUDENT', 'GUARDIAN', 'COUNSELOR', 'SYSADMIN');
 
 -- CreateEnum
@@ -11,7 +14,7 @@ CREATE TYPE "AppointmentType" AS ENUM ('CLINICAL', 'CONSULTATION', 'EVALUATION')
 CREATE TYPE "AppointmentStatus" AS ENUM ('SCHEDULED', 'CANCELLED', 'ONGOING', 'FINISHED', 'DELETED');
 
 -- CreateEnum
-CREATE TYPE "AppointmentLocation" AS ENUM ('VIRTUAL_SCHOOL', 'VIRTUAL_HOME', 'IN_PERSON');
+CREATE TYPE "AppointmentLocation" AS ENUM ('VIRTUAL_SCHOOL', 'VIRTUAL_HOME', 'IN_PERSON', 'UNKNOWN');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -118,10 +121,15 @@ CREATE TABLE "Appointment" (
     "title" TEXT NOT NULL,
     "start" TIMESTAMP(3) NOT NULL,
     "end" TIMESTAMP(3) NOT NULL,
+    "isRecurring" BOOLEAN DEFAULT false,
+    "numOccurrences" INTEGER,
+    "numRepeats" INTEGER,
+    "frequency" "RepeatFrequency",
     "counselorId" TEXT NOT NULL,
     "type" "AppointmentType" NOT NULL,
     "status" "AppointmentStatus" NOT NULL,
-    "schoolId" TEXT NOT NULL,
+    "location" "AppointmentLocation",
+    "schoolId" TEXT,
 
     CONSTRAINT "Appointment_pkey" PRIMARY KEY ("id")
 );
