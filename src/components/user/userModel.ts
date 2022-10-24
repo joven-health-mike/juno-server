@@ -7,7 +7,6 @@ import {
   StudentDetails,
   User
 } from '@prisma/client'
-import { IANAZone } from 'luxon'
 import { prismaClient } from '../../database'
 import { UserFilterDelegate } from './filters/UserFilterDelegate'
 
@@ -19,7 +18,7 @@ interface UserInfo {
   username?: string
   phone?: string
   docsUrl?: string
-  timeZone?: IANAZone
+  timeZone?: string
   role?: Role
   counselorRef?: CounselorDetails
   schoolAdminRef?: SchoolAdminDetails
