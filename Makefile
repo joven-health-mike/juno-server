@@ -55,7 +55,7 @@ db-migrate:
 
 db-ui:
 	@echo "\n🚀  Launching Prisma Studio."
-	@npx prisma studio
+	@npx prisma studio --port 5556
 
 docker-build:
 	@echo "\n🐳  Building a new docker image called \"juno:latest\".\n"
@@ -104,8 +104,6 @@ docker-stop:
 	@docker rm juno 2>&1 >/dev/null || true
 
 install: install-nvm
-	@echo "\n🏗  Install VSCode extensions\n"
-	@code --install-extension dbaeumer.vscode-eslint@2.2.2
 	@echo "\n🏗  Installing node and dependencies\n"
 	@source $(HOME)/.nvm/nvm.sh ; nvm install ; nvm exec npm install
 
