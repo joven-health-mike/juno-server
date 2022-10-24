@@ -1,8 +1,7 @@
-import { createAppointment, getAppointment } from '../appointmentMiddleware'
+import { getAppointment } from '../appointmentMiddleware'
 import { Request, Response } from 'express'
 import {
   mockAppointment,
-  findAppointmentById
 } from '../__mocks__/appointmentModel'
 
 jest.mock('../appointmentModel')

@@ -7,6 +7,7 @@ import {
   StudentDetails,
   User
 } from '@prisma/client'
+import { IANAZone } from 'luxon'
 import { prismaClient } from '../../database'
 import { UserFilterDelegate } from './filters/UserFilterDelegate'
 
@@ -18,7 +19,7 @@ interface UserInfo {
   username?: string
   phone?: string
   docsUrl?: string
-  timeZoneOffset?: number
+  timeZone?: IANAZone
   role?: Role
   counselorRef?: CounselorDetails
   schoolAdminRef?: SchoolAdminDetails
@@ -35,7 +36,7 @@ const getUserFromUserInfo = (userInfo: UserInfo) => {
     username: userInfo.username,
     phone: userInfo.phone,
     docsUrl: userInfo.docsUrl,
-    timeZoneOffset: userInfo.timeZoneOffset,
+    timeZone: userInfo.timeZone,
     role: userInfo.role
   }
 }

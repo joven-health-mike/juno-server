@@ -55,7 +55,7 @@ db-migrate:
 
 db-ui:
 	@echo "\n🚀  Launching Prisma Studio."
-	@npx prisma studio
+	@npx prisma studio --port 5556
 
 docker-build:
 	@echo "\n🐳  Building a new docker image called \"juno:latest\".\n"
