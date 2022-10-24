@@ -2,6 +2,7 @@ import { User } from '@prisma/client'
 import { NextFunction, Request, Response } from 'express'
 import {
   createAppointment,
+  createRecurringAppointments,
   deleteAppointment,
   findAllAppointments,
   findAppointmentById,
@@ -45,8 +46,17 @@ export const createNewAppointment = async (
   next: NextFunction
 ): Promise<void> => {
   const requestData = request.body
+  const appointments = []
   const appointment = await createAppointment(requestData)
-  response.locals.data = appointment
+  appointments.push(appointment)
+  if (appointment.isRecurring) {
+    const recurringAppointment = await createRecurringAppointments(
+      requestData,
+      appointment
+    )
+    appointments.push(recurringAppointment)
+  }
+  response.locals.data = appointments
   next()
 }
 

@@ -7,7 +7,8 @@ module.exports = [
     username: 'jacek.mcguinness',
     role: 'COUNSELOR',
     phone: '098-765-4321',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1fj41x5TdG9rZiSbOPr5YGndkBbPwrNz_?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -18,7 +19,8 @@ module.exports = [
     username: 'bernhard.thorpe',
     role: 'COUNSELOR',
     phone: '098-765-4324',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1Fm3vBBFkt_ZTapl4S1WpXpQmwH_-nOD7?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -29,7 +31,8 @@ module.exports = [
     username: 'hephzibah.greenberg',
     role: 'COUNSELOR',
     phone: '098-775-4321',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1wZtni7NcBYQm8EdhA9NyLKBIBPzmB6SO?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -40,7 +43,8 @@ module.exports = [
     username: 'randi.de.angelis',
     role: 'COUNSELOR',
     phone: '098-767-4321',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1Kbes-PxBshBdY8G_zjI4Wz43UcU3kSE9?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -51,7 +55,8 @@ module.exports = [
     username: 'fatema.radev',
     role: 'COUNSELOR',
     phone: '098-765-4341',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1AjdSduiVfsJ8d0H602tb99Ynq65zK64t?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -62,7 +67,8 @@ module.exports = [
     username: 'bolat.fairbairn',
     role: 'STUDENT',
     phone: '098-765-4322',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1kvMdEnDnINA0cViE7IRJWDChf4-KgKfW?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -73,7 +79,8 @@ module.exports = [
     username: 'francois.chaves',
     role: 'STUDENT',
     phone: '098-765-4344',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1dO26MVndA_owj81U24BD1AyDsF4fTgXB?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -84,7 +91,8 @@ module.exports = [
     username: 'karsten.alger',
     role: 'STUDENT',
     phone: '098-765-4442',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/18opvWVefLmyFqBNIwaDnWJ2dg2Q0jP7S?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -95,7 +103,8 @@ module.exports = [
     username: 'klaudio.genkov',
     role: 'STUDENT',
     phone: '098-764-4322',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1ngBzJJt75wXquh28Oe7N_4iD8upV2JiW?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -106,7 +115,8 @@ module.exports = [
     username: 'krista.firmin',
     role: 'STUDENT',
     phone: '094-765-4322',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/10OQ5q0c95VUDbQ64izrKMObha_vSPdgy?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -117,7 +127,8 @@ module.exports = [
     username: 'ligita.montero',
     role: 'STUDENT',
     phone: '098-745-4322',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1PKUNvu4mceQ8v5wvhDK-1p6ZliLOcPJU?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -128,7 +139,8 @@ module.exports = [
     username: 'nemanja.disney',
     role: 'STUDENT',
     phone: '094-765-4324',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1iO-Sq8VxJ1YjxT0xrk0blFGq3YDGhE1x?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -139,7 +151,8 @@ module.exports = [
     username: 'sally.williams',
     role: 'SCHOOL_ADMIN',
     phone: '094-765-4354',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1wkqmvWyv2z-81aU-YGAKj4jI9AZ_p4J6?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -150,7 +163,8 @@ module.exports = [
     username: 'evan.macpherson',
     role: 'SCHOOL_STAFF',
     phone: '094-765-4584',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1gm-JB6imd_rgqDGzH6uRwo7Ed79PWOKQ?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -161,7 +175,8 @@ module.exports = [
     username: 'aaron.whalord',
     role: 'GUARDIAN',
     phone: '094-785-9584',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1Loo_TqwdSVVxURHwDpepHsuOwMhuKeTg?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   },
   {
@@ -172,7 +187,8 @@ module.exports = [
     username: 'amanda.whalord',
     role: 'GUARDIAN',
     phone: '094-785-9555',
-    docsUrl: 'https://docs.link',
+    docsUrl:
+      'https://drive.google.com/drive/folders/16d_yDJIqo0xOoTuSMmUTJGxC7NPlBCKN?usp=sharing',
     timeZoneIanaName: 'America/Denver'
   }
 ]
