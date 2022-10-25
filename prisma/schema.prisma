@@ -21,7 +21,7 @@ model User {
 
   docsUrl String?
 
-  timeZoneIanaName String?
+  timeZoneIanaName String? @default("America/Denver")
 
   role Role
 

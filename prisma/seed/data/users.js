@@ -21,7 +21,7 @@ module.exports = [
     phone: '098-765-4324',
     docsUrl:
       'https://drive.google.com/drive/folders/1Fm3vBBFkt_ZTapl4S1WpXpQmwH_-nOD7?usp=sharing',
-    timeZoneIanaName: 'America/Denver'
+    timeZoneIanaName: 'America/Los_Angeles'
   },
   {
     id: 'd80602a2-8419-49b1-b6ac-5690628d0e0e',
@@ -33,7 +33,7 @@ module.exports = [
     phone: '098-775-4321',
     docsUrl:
       'https://drive.google.com/drive/folders/1wZtni7NcBYQm8EdhA9NyLKBIBPzmB6SO?usp=sharing',
-    timeZoneIanaName: 'America/Denver'
+    timeZoneIanaName: 'America/Phoenix'
   },
   {
     id: '11773989-d315-4c13-bc71-bba6ec3ed0ca',
@@ -45,7 +45,7 @@ module.exports = [
     phone: '098-767-4321',
     docsUrl:
       'https://drive.google.com/drive/folders/1Kbes-PxBshBdY8G_zjI4Wz43UcU3kSE9?usp=sharing',
-    timeZoneIanaName: 'America/Denver'
+    timeZoneIanaName: 'America/New_York'
   },
   {
     id: 'a95b2457-1a58-48b1-a590-0140887930a9',
@@ -57,7 +57,7 @@ module.exports = [
     phone: '098-765-4341',
     docsUrl:
       'https://drive.google.com/drive/folders/1AjdSduiVfsJ8d0H602tb99Ynq65zK64t?usp=sharing',
-    timeZoneIanaName: 'America/Denver'
+    timeZoneIanaName: 'America/Chicago'
   },
   {
     id: '722f30bf-c589-4e09-9b61-4c3c9e08b957',
@@ -93,7 +93,7 @@ module.exports = [
     phone: '098-765-4442',
     docsUrl:
       'https://drive.google.com/drive/folders/18opvWVefLmyFqBNIwaDnWJ2dg2Q0jP7S?usp=sharing',
-    timeZoneIanaName: 'America/Denver'
+    timeZoneIanaName: 'America/New_York'
   },
   {
     id: '663edb77-62f1-4998-ad2e-badb80a9cbcf',
@@ -105,7 +105,7 @@ module.exports = [
     phone: '098-764-4322',
     docsUrl:
       'https://drive.google.com/drive/folders/1ngBzJJt75wXquh28Oe7N_4iD8upV2JiW?usp=sharing',
-    timeZoneIanaName: 'America/Denver'
+    timeZoneIanaName: 'America/New_York'
   },
   {
     id: '24d59901-6dd8-4865-b871-292863e83d6f',
@@ -117,7 +117,7 @@ module.exports = [
     phone: '094-765-4322',
     docsUrl:
       'https://drive.google.com/drive/folders/10OQ5q0c95VUDbQ64izrKMObha_vSPdgy?usp=sharing',
-    timeZoneIanaName: 'America/Denver'
+    timeZoneIanaName: 'America/New_York'
   },
   {
     id: '64ea8a3a-2934-418b-8ac9-48892d7b2570',
@@ -129,7 +129,7 @@ module.exports = [
     phone: '098-745-4322',
     docsUrl:
       'https://drive.google.com/drive/folders/1PKUNvu4mceQ8v5wvhDK-1p6ZliLOcPJU?usp=sharing',
-    timeZoneIanaName: 'America/Denver'
+    timeZoneIanaName: 'America/Phoenix'
   },
   {
     id: '135a7e88-4fbf-49d2-b332-66dde1965a7f',
@@ -141,7 +141,7 @@ module.exports = [
     phone: '094-765-4324',
     docsUrl:
       'https://drive.google.com/drive/folders/1iO-Sq8VxJ1YjxT0xrk0blFGq3YDGhE1x?usp=sharing',
-    timeZoneIanaName: 'America/Denver'
+    timeZoneIanaName: 'America/Phoenix'
   },
   {
     id: '3b5c063c-4c5f-456d-94da-69c93e9ed18d',
