@@ -18,7 +18,7 @@ interface UserInfo {
   username?: string
   phone?: string
   docsUrl?: string
-  timeZone?: string
+  timeZoneIanaName?: string
   role?: Role
   counselorRef?: CounselorDetails
   schoolAdminRef?: SchoolAdminDetails
@@ -35,7 +35,7 @@ const getUserFromUserInfo = (userInfo: UserInfo) => {
     username: userInfo.username,
     phone: userInfo.phone,
     docsUrl: userInfo.docsUrl,
-    timeZone: userInfo.timeZone,
+    timeZoneIanaName: userInfo.timeZoneIanaName,
     role: userInfo.role
   }
 }
