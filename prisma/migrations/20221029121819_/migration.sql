@@ -25,7 +25,7 @@ CREATE TABLE "User" (
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
     "docsUrl" TEXT,
-    "timeZoneIanaName" TEXT,
+    "timeZoneIanaName" TEXT DEFAULT 'America/Denver',
     "role" "Role" NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
