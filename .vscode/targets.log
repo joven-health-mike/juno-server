@@ -1,0 +1,480 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# This program built for i386-apple-darwin11.3.0
+ 
+make: *** No rule to make target `all'.  Stop.
+
+
+# Make data base, printed on Mon Jun  6 21:31:51 2022
+
+# Variables
+
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# environment
+VSCODE_LOG_NATIVE = false
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
+# makefile
+CURDIR := /Users/mikeburke/Documents/GitHub/juno-server
+# makefile
+SHELL = /bin/sh
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# environment
+_ = /usr/bin/make
+# makefile (from `Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+__CFBundleIdentifier = com.microsoft.VSCode
+# environment
+INFOPATH = /opt/homebrew/share/info:
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/3p/yc45z11x1hvcp31fmyc72kd00000gn/T/vscode-ipc-59415606-e9a2-4513-ba7c-e2e98e480ef9.sock
+# environment
+VSCODE_CWD = /
+# environment
+PATH = /opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+# environment
+VSCODE_LOG_STACK = false
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# default
+.FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.ifanMQno95/Listeners
+# automatic
+%F = $(notdir $%)
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+PWD = /Users/mikeburke/Documents/GitHub/juno-server
+# environment
+HOMEBREW_CELLAR = /opt/homebrew/Cellar
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# environment
+MANPATH = /opt/homebrew/share/man::
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /Users/mikeburke
+# default
+MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
+# environment
+VSCODE_CODE_CACHE_PATH = /Users/mikeburke/Library/Application Support/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+# environment
+LOGNAME = mikeburke
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+XPC_FLAGS = 0x0
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 1
+# default
+MAKE_VERSION := 3.81
+# environment
+USER = mikeburke
+# makefile
+.DEFAULT_GOAL := default
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# default
+MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
+# default
+.VARIABLES := 
+# environment
+TMPDIR = /var/folders/3p/yc45z11x1hvcp31fmyc72kd00000gn/T/
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /Users/mikeburke/Library/Application Support/Code/1.67.2-main.sock
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+MFLAGS = -Rrqp
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.285380.285386
+# environment
+HOMEBREW_PREFIX = /opt/homebrew
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# environment
+HOMEBREW_REPOSITORY = /opt/homebrew
+# environment
+__CF_USER_TEXT_ENCODING = 0x1F5:0x0:0x0
+# environment
+COMMAND_MODE = unix2003
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# environment
+LC_ALL = C
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# default
+.INCLUDE_DIRS = /usr/local/include
+# environment
+MAKELEVEL := 0
+# environment
+LANG = C
+# environment
+VSCODE_PID = 19047
+# variable set hash-table stats:
+# Load=67/1024=7%, Rehash=0, Collisions=1/105=1%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 16777232, inode 2037899): 24 files, no impossibilities.
+
+# 24 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+install-tfenv:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+docker-shell:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 86):
+	@echo "\n🐳  Starting a shell in the local docker container \"create-node-app\". (Enter command \"exit\" to Quit)\n"
+	@docker run -it create-node-app /bin/sh
+	
+
+docker-db-stop:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 69):
+	@echo "\n🐳  Starting a PostgreSQL database in a docker container called \"postgres\".\n"
+	@docker container stop postgres
+	
+
+# Not a target:
+all:
+#  Command-line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+docker-build:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 56):
+	@echo "\n🐳  Building a new docker image called \"create-node-app:latest\".\n"
+	NPMRC=$$(cat ~/.npmrc) docker image build --secret id=npmrc,env=NPMRC -t create-node-app:latest .
+	
+
+.PHONY: list
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+docker-scan:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 77):
+	$(MAKE) docker-build
+	@echo "\n🐳  Scanning docker \"create-node-app:latest\" with Snyk.\n"
+	docker scan create-node-app:latest
+	
+
+docker-start:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 90):
+	@$(MAKE) docker-build
+	@$(MAKE) docker-stop
+	@echo "🐳  Starting the server in a docker container on port \"8080\" in \"production\" mode called \"create-node-app\""
+	@docker run -d --env NODE_ENV=production --env PORT=8080 -p 8080:8080 --name create-node-app create-node-app:latest 2>&1 >/dev/null
+	@$(MAKE) docker-logs
+	
+
+stop-proxy: install-caddy
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 148):
+	@echo "\n🔑  The proxy from https://localhost to http://localhost:8080 is not running.\n"
+	
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-06-06 21:30:40
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+start: install-nvm
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 132):
+	@echo "\n🚀  Starting Service"
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm start --quiet | ./node_modules/.bin/pino-pretty
+	
+
+test: install-nvm
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 152):
+	@echo "\n🧪  Running all unit tests"
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent \
+	npm test --quiet
+	
+
+build: install-nvm db-build
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 26):
+	@echo "\n🏗  Building project for distribution"
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent \
+	npm run-script build
+	@echo "🎉  Finished build, distribution files can be found in the ./build folder\n"
+	
+
+docker-logs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 82):
+	@echo "\n🐳  Streaming docker container logs from \"create-node-app\". (CTRL+C to Quit)\n"
+	@source $(HOME)/.nvm/nvm.sh ; docker logs -f create-node-app | ./node_modules/.bin/pino-pretty
+	
+
+db-ui:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+ 
+#  commands to execute (from `Makefile', line 52):
+	@echo "\n🚀  Launching Prisma Studio."
+	@npx prisma studio
+	
+
+docker-build-no-cache:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 73):
+	@echo "\n🐳  Building a new docker image from scratch called \"create-node-app:latest\".\n"
+	docker build --no-cache --progress=plain -t create-node-app:latest .
+	
+
+default: menu
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+start-proxy: install-caddy
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 137):
+	@echo "\n🔑  Starting a proxy from https://localhost to http://localhost:8080"
+	caddy start --config caddy.json
+	
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+install-homebrew:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+install-caddy: install-homebrew
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 109):
+	@echo "\n🦫 Install caddy using homebrew, see https://caddyserver.com\n"
+	@brew update && brew install caddy
+	
+
+list:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 20):
+	@echo $(MAKEFILE_LIST)
+	@echo "\n🧭  List of all available make commands:\n"
+	@$(MAKE) -pRrq -f $(lastword Makefile) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$'
+	@echo ""
+	
+
+docker-db:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 60):
+	@echo "\n🐳  Starting a PostgreSQL database in a docker container called \"postgres\".\n"
+	@docker stop postgres &>/dev/null || true && docker rm postgres &>/dev/null || true
+	@mkdir -p $(PWD)/.docker && docker run --name postgres -p 5555:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=create-node-app -v $(PWD)/.docker/postgres:/var/lib/postgresql/data/ -d postgres
+	
+
+install-nvm:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+check: install-nvm
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 37):
+	@echo "\n✅  Running all static analysis tools\n"
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script eslint
+	@echo "\n✅  Checking for outdated dependencies\n"
+	@-source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm outdated
+	@echo "\n✅  Validating Caddy configuration\n"
+	@caddy validate --config caddy.json 2>/dev/null | grep -q "Valid configuration" || echo "\n🚨  The \"caddy.json\" file is invalid, to see the validation errors run \"caddy validate --config caddy.json\"\n"
+	@echo "\n✅  Checking for newer node.js versions. Review the list for newer versions.\n"
+	@source $(HOME)/.nvm/nvm.sh ; nvm ls-remote v18
+	@echo "\n🎉  Done. Review the output for warnings and errors.\n"
+	
+
+uninstall-nvm:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+build-start:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 32):
+	@$(MAKE) build
+	@echo "\n🚀  Starting Service using files in ./build"
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent node ./build/src/index.js
+	
+
+db-build:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 48):
+	@echo "\n🚀  Building Prisma database artifacts."
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:generate
+	
+
+docker-db-psql:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 65):
+	@echo "\n🐳  Connecting to the PostgreSQL database command line.\n"
+	@docker exec -it postgres psql postgresql://postgres:postgres@localhost:5432/create-node-app
+	
+
+menu:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 9):
+	@echo "\nAvailable Commands:\n"
+	@echo "🚧  build          \t build project for distribution"
+	@echo "✅  check          \t run all static analysis tools"
+	@echo "🐳  docker-start   \t build and run in a production environment"
+	@echo "🏗   install        \t install project dependencies"
+	@echo "🚀  start          \t start the service"
+	@echo "🧪  test           \t run all tests"
+	@echo "\n\nSee the \"Makefile\" or use command \"make list\" for a complete list of commands.\n"
+	
+
+docker-stop:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 97):
+	@echo "\n🐳  Stopping and removing the create-node-app container\n"
+	@docker stop create-node-app 2>&1 >/dev/null || true
+	@docker rm create-node-app 2>&1 >/dev/null || true
+	
+
+install: install-nvm
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 102):
+	@echo "\n🏗  Install VSCode extensions\n"
+	@code --install-extension dbaeumer.vscode-eslint@2.2.2
+	@echo "\n🏗  Installing node and dependencies\n"
+	@source $(HOME)/.nvm/nvm.sh ; nvm install ; nvm exec npm install
+	
+
+# files hash-table stats:
+# Load=33/1024=3%, Rehash=0, Collisions=1/56=2%
+# VPATH Search Paths
+
+# No `vpath' search paths.
+
+# No general (`VPATH' variable) search path.
+
+# # of strings in strcache: 1
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
+
+# Finished Make data base on Mon Jun  6 21:31:51 2022
+
+ 

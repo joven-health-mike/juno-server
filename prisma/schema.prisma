@@ -7,11 +7,179 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = "postgresql://postgres:postgres@localhost:5555/create-node-app"
+  url      = "postgresql://postgres:postgres@localhost:5555/juno_dev"
 }
 
 model User {
-  id    Int     @id     @default(autoincrement())
-  email String  @unique
-  name  String?
+  id       String  @id @default(uuid())
+  email    String? @unique
+  username String  @unique
+  phone    String? @unique
+
+  firstName String
+  lastName  String
+
+  docsUrl String?
+
+  timeZoneIanaName String? @default("America/Denver")
+
+  role Role
+
+  sysAdminRef    SysAdminDetails?
+  jovenAdminRef  JovenAdminDetails?
+  jovenStaffRef  JovenStaffDetails?
+  counselorRef   CounselorDetails?
+  schoolAdminRef SchoolAdminDetails?
+  schoolStaffRef SchoolStaffDetails?
+  guardianRef    GuardianDetails?
+  studentRef     StudentDetails?
+
+  participantAppointments Appointment[] @relation(name: "ParticipantAppointment")
+}
+
+model SysAdminDetails {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+}
+
+model JovenAdminDetails {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+}
+
+model JovenStaffDetails {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+}
+
+model CounselorDetails {
+  id       String @id @default(uuid())
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String @unique
+  roomLink String
+
+  assignedStudents StudentDetails[] @relation(name: "StudentCounselor")
+  appointments     Appointment[]    @relation(name: "CounselorAppointment")
+  assignedSchools  School[]         @relation(name: "CounselorSchool")
+}
+
+model SchoolAdminDetails {
+  id               String @id @default(uuid())
+  user             User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String @unique
+  assignedSchool   School @relation(name: "SchoolAdminSchool", fields: [assignedSchoolId], references: [id], onDelete: Cascade)
+  assignedSchoolId String
+}
+
+model SchoolStaffDetails {
+  id               String @id @default(uuid())
+  user             User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String @unique
+  assignedSchool   School @relation(name: "SchoolStaffSchool", fields: [assignedSchoolId], references: [id], onDelete: Cascade)
+  assignedSchoolId String
+}
+
+model GuardianDetails {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+
+  students StudentDetails[]
+}
+
+model StudentDetails {
+  id                  String            @id @default(uuid())
+  user                User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId              String            @unique
+  assignedSchool      School            @relation(name: "StudentSchool", fields: [assignedSchoolId], references: [id], onDelete: Cascade)
+  assignedSchoolId    String
+  assignedCounselor   CounselorDetails? @relation(name: "StudentCounselor", fields: [assignedCounselorId], references: [id], onDelete: SetNull)
+  assignedCounselorId String
+  guardians           GuardianDetails[]
+  status              StudentStatus
+}
+
+model School {
+  id           String               @id @default(uuid())
+  name         String
+  address      String?
+  state        String?
+  city         String?
+  zip          String?
+  primaryEmail String?
+  primaryPhone String?
+  schoolAdmins SchoolAdminDetails[] @relation(name: "SchoolAdminSchool")
+  schoolStaff  SchoolStaffDetails[] @relation(name: "SchoolStaffSchool")
+  students     StudentDetails[]     @relation(name: "StudentSchool")
+  counselors   CounselorDetails[]   @relation(name: "CounselorSchool")
+  appointments Appointment[]        @relation(name: "SchoolAppointment")
+}
+
+model Appointment {
+  id             String               @id @default(uuid())
+  title          String
+  start          DateTime
+  end            DateTime
+  isRecurring    Boolean?             @default(false)
+  numOccurrences Int?
+  numRepeats     Int?
+  frequency      RepeatFrequency?
+  school         School?              @relation(name: "SchoolAppointment", fields: [schoolId], references: [id], onDelete: Cascade)
+  counselor      CounselorDetails     @relation(name: "CounselorAppointment", fields: [counselorId], references: [id], onDelete: Cascade)
+  counselorId    String
+  participants   User[]               @relation(name: "ParticipantAppointment")
+  type           AppointmentType
+  status         AppointmentStatus
+  location       AppointmentLocation?
+  schoolId       String?
+}
+
+enum RepeatFrequency {
+  DAYS
+  WEEKS
+  MONTHS
+  YEARS
+}
+
+enum Role {
+  JOVEN_ADMIN // Internal administration
+  JOVEN_STAFF
+  SCHOOL_ADMIN
+  SCHOOL_STAFF // Staff 
+  STUDENT
+  GUARDIAN // Parents or guardians at home who can:
+  // - log the student in
+  // - see the student's records and information
+  COUNSELOR
+  SYSADMIN
+}
+
+enum StudentStatus {
+  ACTIVE
+  DISCHARGED
+  DELETED
+}
+
+enum AppointmentType {
+  CLINICAL
+  CONSULTATION
+  EVALUATION
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CANCELLED
+  ONGOING
+  FINISHED
+  DELETED
+}
+
+enum AppointmentLocation {
+  VIRTUAL_SCHOOL
+  VIRTUAL_HOME
+  IN_PERSON
+  UNKNOWN
 }

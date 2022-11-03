@@ -1,13 +1,16 @@
 // Router
 // Creates the application's API routes and Express middleware in the correct order.
 
-import { authenticationRouter } from './components/permissions/authenticationRouter'
 import { Express } from 'express'
+import cors from 'cors'
+import { authenticationRouter } from './components/permissions/authenticationRouter'
 import { errorHandler } from './components/handlers/errorHandler'
 import { healthRouter } from './components/meta/healthRouter'
 import { requestHandler } from './components/handlers/requestHandler'
 import { responseHandler } from './components/handlers/responseHandler'
 import { userRouter } from './components/user/userRouter'
+import { appointmentRouter } from './components/appointment/appointmentRouter'
+import { schoolRouter } from './components/school/schoolRouter'
 
 export class AppRouter {
   constructor(app: Express) {
@@ -18,6 +21,17 @@ export class AppRouter {
   createRoutes(app: Express) {
     // Add a handler to validate, authenticate, and log all incoming requests.
     app.use(requestHandler)
+
+    app.use(
+      cors({
+        origin: [
+          'http://127.0.0.1:3000',
+          'http://localhost:3000',
+          'https://localhost:3000'
+        ],
+        credentials: true
+      })
+    )
     // Attempt to authenticate the request with any available authentication strategy.
     app.use('/', authenticationRouter)
 
@@ -25,6 +39,8 @@ export class AppRouter {
 
     app.use('/', healthRouter)
     app.use('/', userRouter)
+    app.use('/', appointmentRouter)
+    app.use('/', schoolRouter)
 
     // ***** End Application Routes *****
 

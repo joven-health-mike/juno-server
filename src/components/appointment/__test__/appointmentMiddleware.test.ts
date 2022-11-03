@@ -1,10 +1,12 @@
-import { getUser } from '../userMiddleware'
+import { getAppointment } from '../appointmentMiddleware'
 import { Request, Response } from 'express'
-import { mockUser, findUserById} from '../__mocks__/userModel'
+import {
+  mockAppointment,
+} from '../__mocks__/appointmentModel'
 
-jest.mock('../userModel')
+jest.mock('../appointmentModel')
 
-describe('UserMiddleware', () => {
+describe('AppointmentMiddleware', () => {
   let request: Request
   let response: Response
   let mockNext: jest.Mock
@@ -21,13 +23,13 @@ describe('UserMiddleware', () => {
     // mockNext.mockReset()
   })
 
-  describe('getUser', () => {
+  describe('getAppointment', () => {
     it('should ', async () => {
       request.params.id = '22'
-      await getUser(request, response, mockNext)
+      await getAppointment(request, response, mockNext)
       expect(mockNext).toHaveBeenCalledTimes(1)
       // expect(findUserById).toHaveBeenCalledWith(22)
-      expect(response.locals.data).toEqual(mockUser)
+      expect(response.locals.data).toEqual(mockAppointment)
     })
   })
 
