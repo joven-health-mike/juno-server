@@ -97,7 +97,7 @@ model StudentDetails {
   assignedSchool      School            @relation(name: "StudentSchool", fields: [assignedSchoolId], references: [id], onDelete: Cascade)
   assignedSchoolId    String
   assignedCounselor   CounselorDetails? @relation(name: "StudentCounselor", fields: [assignedCounselorId], references: [id], onDelete: SetNull)
-  assignedCounselorId String
+  assignedCounselorId String?
   guardians           GuardianDetails[]
   status              StudentStatus
 }

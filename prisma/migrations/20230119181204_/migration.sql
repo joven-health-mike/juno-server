@@ -95,7 +95,7 @@ CREATE TABLE "StudentDetails" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "assignedSchoolId" TEXT NOT NULL,
-    "assignedCounselorId" TEXT NOT NULL,
+    "assignedCounselorId" TEXT,
     "status" "StudentStatus" NOT NULL,
 
     CONSTRAINT "StudentDetails_pkey" PRIMARY KEY ("id")
