@@ -44,14 +44,32 @@ check: install-nvm
 	@source $(HOME)/.nvm/nvm.sh ; nvm ls-remote v18
 	@echo "\n🎉  Done. Review the output for warnings and errors.\n"
 
-db-build:
-	@echo "\n🚀  Building Prisma database artifacts."
-	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:format
-	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:generate
+db-build-local:
+	@echo "\n🚀  Building local database artifacts."
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:format-local
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:generate-local
 
-db-migrate:
-	@echo "\n🚀  Apply Prisma database migrations."
-	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:migrate
+db-migrate-local:
+	@echo "\n🚀  Apply local database migrations."
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:migrate-local
+
+db-build-dev:
+	@echo "\n🚀  Building dev database artifacts."
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:format-dev
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:generate-dev
+
+db-migrate-dev:
+	@echo "\n🚀  Apply dev database migrations."
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:migrate-dev
+
+db-build-prod:
+	@echo "\n🚀  Building prod database artifacts."
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:format-prod
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:generate-prod
+
+db-migrate-prod:
+	@echo "\n🚀  Apply prod database migrations."
+	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:migrate-prod
 
 db-ui:
 	@echo "\n🚀  Launching Prisma Studio."
