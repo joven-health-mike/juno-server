@@ -134,6 +134,8 @@ The application uses Prisma to implement a postgresql database. The database sch
    make db-migrate-prod // prod environment
    ```
 
+   Press 'Y' to confirm deleting the existing data and 'Enter' to skip entering a name for the migration.
+
 4. Start the server to initiate a connection to the database.
 
    ```bash
@@ -143,7 +145,9 @@ The application uses Prisma to implement a postgresql database. The database sch
 5. Launch Prisma Studio.
 
    ```bash
-   make db-ui
+   make db-ui-local // local environment
+   make db-ui-dev // dev environment
+   make db-ui-prod // prod environment
    ```
 
 ## Logging

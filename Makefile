@@ -71,9 +71,17 @@ db-migrate-prod:
 	@echo "\n🚀  Apply prod database migrations."
 	@source $(HOME)/.nvm/nvm.sh ; nvm exec --silent npm run-script prisma:migrate-prod
 
-db-ui:
+db-ui-local:
 	@echo "\n🚀  Launching Prisma Studio."
-	@npx prisma studio --port 5556
+	@npx prisma studio --port 5556 --schema=./prisma/schema.local.prisma
+
+db-ui-dev:
+	@echo "\n🚀  Launching Prisma Studio."
+	@npx prisma studio --port 5556 --schema=./prisma/schema.dev.prisma
+
+db-ui-prod:
+	@echo "\n🚀  Launching Prisma Studio."
+	@npx prisma studio --port 5556 --schema=./prisma/schema.prod.prisma
 
 docker-build:
 	@echo "\n🐳  Building a new docker image called \"juno:latest\".\n"
