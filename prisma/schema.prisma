@@ -21,20 +21,25 @@ model User {
 
   docsUrl String?
 
-  counselorRoomLink String?
-  counselorAssignedStudents User[] @relation(name: "CounselorStudents", map: "counselor_students")
-  counselorAppointments     Appointment[] @relation(name: "CounselorAppointments")
-  counselorAssignedSchools  School[] @relation(name: "CounselorSchools")
+  counselorRoomLink         String?
+  counselorAssignedStudents User[]        @relation(name: "CounselorStudents")
+  counselorAppointments     Appointment[]
+  counselorAssignedSchools  School[]      @relation(name: "CounselorSchools")
 
-  schoolAdminAssignedSchool   School? @relation(name: "SchoolAdminSchool")
-  schoolStaffAssignedSchool   School? @relation(name: "SchoolStaffSchool")
+  schoolAdminAssignedSchool   School? @relation(name: "SchoolAdminSchool", fields: [schoolAdminAssignedSchoolId], references: [id])
+  schoolAdminAssignedSchoolId String?
 
-  guardianStudents User[] @relation(name: "GuardianStudents", map: "guardian_students")
+  schoolStaffAssignedSchool   School? @relation(name: "SchoolStaffSchool", fields: [schoolStaffAssignedSchoolId], references: [id])
+  schoolStaffAssignedSchoolId String?
 
-  studentAssignedSchool      School?
-  studentAssignedCounselor   User? @relation(name: "StudentCounselor")
-  studentGuardians           User[] @relation(name: "GuardianStudents", map: "student_guardians")
+  guardianStudents User[] @relation(name: "GuardianStudents")
+
+  studentAssignedCounselor   User?          @relation(name: "CounselorStudents", fields: [studentAssignedCounselorId], references: [id])
+  studentAssignedCounselorId String?
+  studentAssignedSchool      School?        @relation(fields: [studentAssignedSchoolId], references: [id])
+  studentAssignedSchoolId    String?
   studentStatus              StudentStatus?
+  studentGuardians           User[]         @relation(name: "GuardianStudents")
 
   timeZoneIanaName String? @default("America/Denver")
 
@@ -44,7 +49,7 @@ model User {
 }
 
 model School {
-  id           String               @id @default(uuid())
+  id           String        @id @default(uuid())
   name         String
   address      String?
   state        String?
@@ -52,28 +57,30 @@ model School {
   zip          String?
   primaryEmail String?
   primaryPhone String?
-  schoolAdmins User[] @relation(name: "SchoolAdminSchool", map: "school_admin_school")
-  schoolStaff  User[] @relation(name: "SchoolStaffSchool", map: "school_staff_school")
-  students     User[] @relation(name: "SchoolAppointments", map: "school_appointments")
-  counselors   User[] @relation(name: "CounselorSchools", map: "counselor_schools")
+  students     User[]
+  counselors   User[]        @relation(name: "CounselorSchools")
+  admins       User[]        @relation(name: "SchoolAdminSchool")
+  staff        User[]        @relation(name: "SchoolStaffSchool")
   appointments Appointment[]
 }
 
 model Appointment {
-  id             String               @id @default(uuid())
-  title          String
-  start          DateTime
-  end            DateTime
-  isRecurring    Boolean?             @default(false)
-  numOccurrences Int?
-  numRepeats     Int?
-  frequency      RepeatFrequency?
-  school         School? @relation(name: "SchoolAppointments")
-  counselor      User @relation(name: "CounselorAppointments")
-  participants   User[]               @relation(name: "ParticipantAppointment")
-  type           AppointmentType
-  status         AppointmentStatus
-  location       AppointmentLocation?
+  id              String               @id @default(uuid())
+  title           String
+  start           DateTime
+  end             DateTime
+  isRecurring     Boolean?             @default(false)
+  numOccurrences  Int?
+  numRepeats      Int?
+  frequency       RepeatFrequency?
+  participants    User[]               @relation(name: "ParticipantAppointment")
+  type            AppointmentType
+  status          AppointmentStatus
+  location        AppointmentLocation?
+  counselor       User?                @relation(fields: [counselorUserId], references: [id])
+  counselorUserId String?
+  school          School?              @relation(fields: [schoolId], references: [id])
+  schoolId        String?
 }
 
 enum RepeatFrequency {
