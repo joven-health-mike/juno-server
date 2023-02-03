@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,41 +8,31 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  email    String? @unique
-  username String  @unique
-  phone    String? @unique
-
-  firstName String
-  lastName  String
-
-  docsUrl String?
-
-  counselorRoomLink         String?
-  counselorAssignedStudents User[]        @relation(name: "CounselorStudents")
-  counselorAppointments     Appointment[]
-  counselorAssignedSchools  School[]      @relation(name: "CounselorSchools")
-
-  schoolAdminAssignedSchool   School? @relation(name: "SchoolAdminSchool", fields: [schoolAdminAssignedSchoolId], references: [id])
+  id                          String         @id @default(uuid())
+  email                       String?        @unique
+  username                    String         @unique
+  phone                       String?        @unique
+  firstName                   String
+  lastName                    String
+  docsUrl                     String?
+  counselorRoomLink           String?
   schoolAdminAssignedSchoolId String?
-
-  schoolStaffAssignedSchool   School? @relation(name: "SchoolStaffSchool", fields: [schoolStaffAssignedSchoolId], references: [id])
   schoolStaffAssignedSchoolId String?
-
-  guardianStudents User[] @relation(name: "GuardianStudents")
-
-  studentAssignedCounselor   User?          @relation(name: "CounselorStudents", fields: [studentAssignedCounselorId], references: [id])
-  studentAssignedCounselorId String?
-  studentAssignedSchool      School?        @relation(fields: [studentAssignedSchoolId], references: [id])
-  studentAssignedSchoolId    String?
-  studentStatus              StudentStatus?
-  studentGuardians           User[]         @relation(name: "GuardianStudents")
-
-  timeZoneIanaName String? @default("America/Denver")
-
-  role Role
-
-  participantAppointments Appointment[] @relation(name: "ParticipantAppointment")
+  studentAssignedCounselorId  String?
+  studentAssignedSchoolId     String?
+  studentStatus               StudentStatus?
+  timeZoneIanaName            String?        @default("America/Denver")
+  role                        Role
+  counselorAppointments       Appointment[]
+  schoolAdminAssignedSchool   School?        @relation("SchoolAdminSchool", fields: [schoolAdminAssignedSchoolId], references: [id])
+  schoolStaffAssignedSchool   School?        @relation("SchoolStaffSchool", fields: [schoolStaffAssignedSchoolId], references: [id])
+  studentAssignedCounselor    User?          @relation("CounselorStudents", fields: [studentAssignedCounselorId], references: [id])
+  counselorAssignedStudents   User[]         @relation("CounselorStudents")
+  studentAssignedSchool       School?        @relation(fields: [studentAssignedSchoolId], references: [id])
+  counselorAssignedSchools    School[]       @relation("CounselorSchools")
+  User_GuardianStudents_A     User[]         @relation("GuardianStudents")
+  User_GuardianStudents_B     User[]         @relation("GuardianStudents")
+  participantAppointments     Appointment[]  @relation("ParticipantAppointment")
 }
 
 model School {
@@ -57,11 +44,11 @@ model School {
   zip          String?
   primaryEmail String?
   primaryPhone String?
-  students     User[]
-  counselors   User[]        @relation(name: "CounselorSchools")
-  admins       User[]        @relation(name: "SchoolAdminSchool")
-  staff        User[]        @relation(name: "SchoolStaffSchool")
   appointments Appointment[]
+  admins       User[]        @relation("SchoolAdminSchool")
+  staff        User[]        @relation("SchoolStaffSchool")
+  students     User[]
+  counselors   User[]        @relation("CounselorSchools")
 }
 
 model Appointment {
@@ -73,14 +60,14 @@ model Appointment {
   numOccurrences  Int?
   numRepeats      Int?
   frequency       RepeatFrequency?
-  participants    User[]               @relation(name: "ParticipantAppointment")
   type            AppointmentType
   status          AppointmentStatus
   location        AppointmentLocation?
-  counselor       User?                @relation(fields: [counselorUserId], references: [id])
   counselorUserId String?
-  school          School?              @relation(fields: [schoolId], references: [id])
   schoolId        String?
+  counselor       User?                @relation(fields: [counselorUserId], references: [id])
+  school          School?              @relation(fields: [schoolId], references: [id])
+  participants    User[]               @relation("ParticipantAppointment")
 }
 
 enum RepeatFrequency {
@@ -91,14 +78,12 @@ enum RepeatFrequency {
 }
 
 enum Role {
-  JOVEN_ADMIN // Internal administration
+  JOVEN_ADMIN
   JOVEN_STAFF
   SCHOOL_ADMIN
-  SCHOOL_STAFF // Staff 
+  SCHOOL_STAFF
   STUDENT
-  GUARDIAN // Parents or guardians at home who can:
-  // - log the student in
-  // - see the student's records and information
+  GUARDIAN
   COUNSELOR
   SYSADMIN
 }

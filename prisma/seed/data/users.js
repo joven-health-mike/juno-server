@@ -18,12 +18,6 @@ module.exports = [
         { id: '6265a973-0f32-421e-b378-9d7caefb1e6a' },
         { id: 'af96c257-8ee5-4902-b4cc-ddb086f81570' }
       ]
-    },
-    counselorAssignedStudents: {
-      connect: [
-        { id: '722f30bf-c589-4e09-9b61-4c3c9e08b957' },
-        { id: '6f466fc1-6b7f-46a0-a0a9-c2a6a3808e1a' }
-      ]
     }
   },
   {
@@ -41,12 +35,6 @@ module.exports = [
       'https://us02web.zoom.us/j/8913658750?pwd=T1VTdVlVZmk1YjhSYmREVnJjeVFzUT09',
     counselorAssignedSchools: {
       connect: [{ id: '5ac1c4ab-725b-4a5c-bb0a-e3ab5c882aca' }]
-    },
-    counselorAssignedStudents: {
-      connect: [
-        { id: '722f30bf-c589-4e09-9b61-4c3c9e08b957' },
-        { id: '6f466fc1-6b7f-46a0-a0a9-c2a6a3808e1a' }
-      ]
     }
   },
   {
@@ -64,12 +52,6 @@ module.exports = [
       'https://us02web.zoom.us/j/8913658750?pwd=T1VTdVlVZmk1YjhSYmREVnJjeVFzUT09',
     counselorAssignedSchools: {
       connect: [{ id: '5ac1c4ab-725b-4a5c-bb0a-e3ab5c882aca' }]
-    },
-    counselorAssignedStudents: {
-      connect: [
-        { id: '64ea8a3a-2934-418b-8ac9-48892d7b2570' },
-        { id: '135a7e88-4fbf-49d2-b332-66dde1965a7f' }
-      ]
     }
   },
   {
@@ -87,13 +69,6 @@ module.exports = [
       'https://us02web.zoom.us/j/8913658750?pwd=T1VTdVlVZmk1YjhSYmREVnJjeVFzUT09',
     counselorAssignedSchools: {
       connect: [{ id: 'af96c257-8ee5-4902-b4cc-ddb086f81570' }]
-    },
-    counselorAssignedStudents: {
-      connect: [
-        { id: 'fb0ee989-dcb8-4b4f-bcc0-b9983c02b69c' },
-        { id: '663edb77-62f1-4998-ad2e-badb80a9cbcf' },
-        { id: '24d59901-6dd8-4865-b871-292863e83d6f' }
-      ]
     }
   },
   {
@@ -127,9 +102,6 @@ module.exports = [
     studentStatus: 'ACTIVE',
     studentAssignedSchool: {
       connect: { id: 'a7e56e1c-f1c2-4bf9-a3fd-9fdef3fb87df' }
-    },
-    studentAssignedCounselor: {
-      connect: { id: 'fd2d518b-ecd5-4b01-b110-f1d0512baa63' }
     }
   },
   {
@@ -146,9 +118,6 @@ module.exports = [
     studentStatus: 'ACTIVE',
     studentAssignedSchool: {
       connect: { id: 'a7e56e1c-f1c2-4bf9-a3fd-9fdef3fb87df' }
-    },
-    studentAssignedCounselor: {
-      connect: { id: 'fd2d518b-ecd5-4b01-b110-f1d0512baa63' }
     }
   },
   {
@@ -165,9 +134,6 @@ module.exports = [
     studentStatus: 'ACTIVE',
     studentAssignedSchool: {
       connect: { id: '5ac1c4ab-725b-4a5c-bb0a-e3ab5c882aca' }
-    },
-    studentAssignedCounselor: {
-      connect: { id: '11773989-d315-4c13-bc71-bba6ec3ed0ca' }
     }
   },
   {
@@ -184,9 +150,6 @@ module.exports = [
     studentStatus: 'ACTIVE',
     studentAssignedSchool: {
       connect: { id: '5ac1c4ab-725b-4a5c-bb0a-e3ab5c882aca' }
-    },
-    studentAssignedCounselor: {
-      connect: { id: '11773989-d315-4c13-bc71-bba6ec3ed0ca' }
     }
   },
   {
@@ -203,9 +166,6 @@ module.exports = [
     studentStatus: 'ACTIVE',
     studentAssignedSchool: {
       connect: { id: '6265a973-0f32-421e-b378-9d7caefb1e6a' }
-    },
-    studentAssignedCounselor: {
-      connect: { id: '11773989-d315-4c13-bc71-bba6ec3ed0ca' }
     }
   },
   {
@@ -222,9 +182,6 @@ module.exports = [
     studentStatus: 'ACTIVE',
     studentAssignedSchool: {
       connect: { id: 'af96c257-8ee5-4902-b4cc-ddb086f81570' }
-    },
-    studentAssignedCounselor: {
-      connect: { id: 'd80602a2-8419-49b1-b6ac-5690628d0e0e' }
     }
   },
   {
@@ -241,9 +198,6 @@ module.exports = [
     studentStatus: 'ACTIVE',
     studentAssignedSchool: {
       connect: { id: 'af96c257-8ee5-4902-b4cc-ddb086f81570' }
-    },
-    studentAssignedCounselor: {
-      connect: { id: 'd80602a2-8419-49b1-b6ac-5690628d0e0e' }
     }
   },
   {
@@ -286,10 +240,7 @@ module.exports = [
     phone: '094-785-9584',
     docsUrl:
       'https://drive.google.com/drive/folders/1Loo_TqwdSVVxURHwDpepHsuOwMhuKeTg?usp=sharing',
-    timeZoneIanaName: 'America/Denver',
-    guardianStudents: {
-      connect: [{ id: '982e6a78-755f-45ff-9511-29dbe09be379' }]
-    }
+    timeZoneIanaName: 'America/Denver'
   },
   {
     id: '8a6c3f49-2bc1-4265-8f6f-736ee63e52ec',
@@ -301,9 +252,6 @@ module.exports = [
     phone: '094-785-9555',
     docsUrl:
       'https://drive.google.com/drive/folders/16d_yDJIqo0xOoTuSMmUTJGxC7NPlBCKN?usp=sharing',
-    timeZoneIanaName: 'America/Denver',
-    guardianStudents: {
-      connect: [{ id: '982e6a78-755f-45ff-9511-29dbe09be379' }]
-    }
+    timeZoneIanaName: 'America/Denver'
   }
 ]
