@@ -30,8 +30,8 @@ model User {
   counselorAssignedStudents   User[]         @relation("CounselorStudents")
   studentAssignedSchool       School?        @relation(fields: [studentAssignedSchoolId], references: [id])
   counselorAssignedSchools    School[]       @relation("CounselorSchools")
-  User_GuardianStudents_A     User[]         @relation("GuardianStudents")
-  User_GuardianStudents_B     User[]         @relation("GuardianStudents")
+  studentGuardians            User[]         @relation("GuardianStudents")
+  guardianStudents            User[]         @relation("GuardianStudents")
   participantAppointments     Appointment[]  @relation("ParticipantAppointment")
 }
 
