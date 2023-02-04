@@ -1,12 +1,7 @@
 import { PrismaClient, Prisma } from '@prisma/client'
 import seedAppointmentsData from './data/appointments'
-import seedCounselorDetailsData from './data/counselorDetails'
 import seedSchoolsData from './data/schools'
-import seedStudentDetailsData from './data/studentDetails'
 import seedUsersData from './data/users'
-import seedSchoolAdminDetailsData from './data/schoolAdminDetails'
-import seedSchoolStaffDetailsData from './data/schoolStaffDetails'
-import seedGuardianDetailsData from './data/guardianDetails'
 
 const prisma = new PrismaClient()
 
@@ -15,16 +10,6 @@ async function main() {
 }
 
 async function seedDatabaseData() {
-  // Users
-  await Promise.all(
-    seedUsersData.map(async user =>
-      prisma.user.upsert({
-        where: { id: user.id },
-        update: {},
-        create: user as Prisma.UserCreateInput
-      })
-    )
-  )
   // Schools
   await Promise.all(
     seedSchoolsData.map(async school =>
@@ -35,66 +20,86 @@ async function seedDatabaseData() {
       })
     )
   )
-  // CounselorDetails
+  // Users
   await Promise.all(
-    seedCounselorDetailsData.map(async counselorDetails =>
-      prisma.counselorDetails.upsert({
-        where: { id: counselorDetails.id },
+    seedUsersData.map(async user =>
+      prisma.user.upsert({
+        where: { id: user.id },
         update: {},
-        create: counselorDetails as Prisma.CounselorDetailsCreateInput
-      })
-    )
-  )
-  // StudentDetails
-  await Promise.all(
-    seedStudentDetailsData.map(async studentDetails =>
-      prisma.studentDetails.upsert({
-        where: { id: studentDetails.id },
-        update: {},
-        create: studentDetails as Prisma.StudentDetailsCreateInput
-      })
-    )
-  )
-  // SchoolAdminDetails
-  await Promise.all(
-    seedSchoolAdminDetailsData.map(async schoolAdminDetails =>
-      prisma.schoolAdminDetails.upsert({
-        where: { id: schoolAdminDetails.id },
-        update: {},
-        create: schoolAdminDetails as Prisma.SchoolAdminDetailsCreateInput
-      })
-    )
-  )
-  // SchoolStaffDetails
-  await Promise.all(
-    seedSchoolStaffDetailsData.map(async schoolStaffDetails =>
-      prisma.schoolStaffDetails.upsert({
-        where: { id: schoolStaffDetails.id },
-        update: {},
-        create: schoolStaffDetails as Prisma.SchoolStaffDetailsCreateInput
-      })
-    )
-  )
-  // GuardianDetails
-  await Promise.all(
-    seedGuardianDetailsData.map(async guardianDetails =>
-      prisma.guardianDetails.upsert({
-        where: { id: guardianDetails.id },
-        update: {},
-        create: guardianDetails as Prisma.GuardianDetailsCreateInput
+        create: user as Prisma.UserCreateInput
       })
     )
   )
   // Appointments
   await Promise.all(
-    seedAppointmentsData.map(async appointments =>
+    seedAppointmentsData.map(async appointment =>
       prisma.appointment.upsert({
-        where: { id: appointments.id },
+        where: { id: appointment.id },
         update: {},
-        create: appointments as Prisma.AppointmentCreateInput
+        create: appointment as Prisma.AppointmentCreateInput
       })
     )
   )
+
+  // assign students to Jacek
+  await prisma.user.update({
+    where: { id: 'fd2d518b-ecd5-4b01-b110-f1d0512baa63' },
+    data: {
+      counselorAssignedStudents: {
+        connect: [
+          { id: '722f30bf-c589-4e09-9b61-4c3c9e08b957' },
+          { id: '6f466fc1-6b7f-46a0-a0a9-c2a6a3808e1a' }
+        ]
+      }
+    }
+  })
+
+  // assign students to Hephzibah
+  await prisma.user.update({
+    where: { id: 'd80602a2-8419-49b1-b6ac-5690628d0e0e' },
+    data: {
+      counselorAssignedStudents: {
+        connect: [
+          { id: '64ea8a3a-2934-418b-8ac9-48892d7b2570' },
+          { id: '135a7e88-4fbf-49d2-b332-66dde1965a7f' }
+        ]
+      }
+    }
+  })
+
+  // assign students to Randi
+  await prisma.user.update({
+    where: { id: 'd80602a2-8419-49b1-b6ac-5690628d0e0e' },
+    data: {
+      counselorAssignedStudents: {
+        connect: [
+          { id: 'fb0ee989-dcb8-4b4f-bcc0-b9983c02b69c' },
+          { id: '663edb77-62f1-4998-ad2e-badb80a9cbcf' },
+          { id: '24d59901-6dd8-4865-b871-292863e83d6f' }
+        ]
+      }
+    }
+  })
+
+  // assign students to Aaron
+  await prisma.user.update({
+    where: { id: 'e68b59ae-c2a3-4cc5-b321-f8d70ac7602e' },
+    data: {
+      guardianStudents: {
+        connect: [{ id: '722f30bf-c589-4e09-9b61-4c3c9e08b957' }]
+      }
+    }
+  })
+
+  // assign students to Amanda
+  await prisma.user.update({
+    where: { id: '8a6c3f49-2bc1-4265-8f6f-736ee63e52ec' },
+    data: {
+      guardianStudents: {
+        connect: [{ id: '722f30bf-c589-4e09-9b61-4c3c9e08b957' }]
+      }
+    }
+  })
 }
 
 main()

@@ -1,16 +1,13 @@
-import { Appointment, StudentDetails, User } from '@prisma/client'
+import { User } from '@prisma/client'
 import { Filter } from '../../Filter'
-import {
-  findUserDetails,
-  GuardianDetailsInfo
-} from '../../user/userDetailsModel'
-import { findAppointmentById, AppointmentInfo } from '../appointmentModel'
+import { DetailedUser } from '../../user/userModel'
+import { DetailedAppointment } from '../appointmentModel'
 
-export class GuardianAppointmentFilter implements Filter<Appointment> {
+export class GuardianAppointmentFilter implements Filter<DetailedAppointment> {
   async apply(
-    allItems: Appointment[],
-    reference: User
-  ): Promise<Appointment[]> {
+    allItems: DetailedAppointment[],
+    reference: DetailedUser
+  ): Promise<DetailedAppointment[]> {
     const result = []
 
     // loop through appointments looking for associated appointments
@@ -25,21 +22,14 @@ export class GuardianAppointmentFilter implements Filter<Appointment> {
 }
 
 async function isUserRelated(
-  reference: User,
-  target: Appointment
+  reference: DetailedUser,
+  target: DetailedAppointment
 ): Promise<boolean> {
-  const guardianDetails = (await findUserDetails(
-    reference
-  )) as GuardianDetailsInfo
-  const fullAppointment = (await findAppointmentById(
-    target.id
-  )) as AppointmentInfo
-
-  const studentsInCommon = (guardianDetails.students as StudentDetails[])
-    .map(student => student.userId) // create an array of guardian's student IDs
+  const studentsInCommon = (reference.guardianStudents as User[])
+    .map(student => student.id) // create an array of guardian's student IDs
     .filter(
       value =>
-        fullAppointment.participants
+        target.participants
           .map(participant => participant.id) // create an array of participant IDs
           .includes(value) // apply filter to only include common elements
     )

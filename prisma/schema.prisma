@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,99 +8,35 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  email    String? @unique
-  username String  @unique
-  phone    String? @unique
-
-  firstName String
-  lastName  String
-
-  docsUrl String?
-
-  timeZoneIanaName String? @default("America/Denver")
-
-  role Role
-
-  sysAdminRef    SysAdminDetails?
-  jovenAdminRef  JovenAdminDetails?
-  jovenStaffRef  JovenStaffDetails?
-  counselorRef   CounselorDetails?
-  schoolAdminRef SchoolAdminDetails?
-  schoolStaffRef SchoolStaffDetails?
-  guardianRef    GuardianDetails?
-  studentRef     StudentDetails?
-
-  participantAppointments Appointment[] @relation(name: "ParticipantAppointment")
-}
-
-model SysAdminDetails {
-  id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @unique
-}
-
-model JovenAdminDetails {
-  id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @unique
-}
-
-model JovenStaffDetails {
-  id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @unique
-}
-
-model CounselorDetails {
-  id       String @id @default(uuid())
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String @unique
-  roomLink String
-
-  assignedStudents StudentDetails[] @relation(name: "StudentCounselor")
-  appointments     Appointment[]    @relation(name: "CounselorAppointment")
-  assignedSchools  School[]         @relation(name: "CounselorSchool")
-}
-
-model SchoolAdminDetails {
-  id               String @id @default(uuid())
-  user             User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           String @unique
-  assignedSchool   School @relation(name: "SchoolAdminSchool", fields: [assignedSchoolId], references: [id], onDelete: Cascade)
-  assignedSchoolId String
-}
-
-model SchoolStaffDetails {
-  id               String @id @default(uuid())
-  user             User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           String @unique
-  assignedSchool   School @relation(name: "SchoolStaffSchool", fields: [assignedSchoolId], references: [id], onDelete: Cascade)
-  assignedSchoolId String
-}
-
-model GuardianDetails {
-  id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @unique
-
-  students StudentDetails[]
-}
-
-model StudentDetails {
-  id                  String            @id @default(uuid())
-  user                User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId              String            @unique
-  assignedSchool      School            @relation(name: "StudentSchool", fields: [assignedSchoolId], references: [id], onDelete: Cascade)
-  assignedSchoolId    String
-  assignedCounselor   CounselorDetails? @relation(name: "StudentCounselor", fields: [assignedCounselorId], references: [id], onDelete: SetNull)
-  assignedCounselorId String?
-  guardians           GuardianDetails[]
-  status              StudentStatus
+  id                          String         @id @default(uuid())
+  email                       String?        @unique
+  username                    String         @unique
+  phone                       String?        @unique
+  firstName                   String
+  lastName                    String
+  docsUrl                     String?
+  counselorRoomLink           String?
+  schoolAdminAssignedSchoolId String?
+  schoolStaffAssignedSchoolId String?
+  studentAssignedCounselorId  String?
+  studentAssignedSchoolId     String?
+  studentStatus               StudentStatus?
+  timeZoneIanaName            String?        @default("America/Denver")
+  role                        Role
+  counselorAppointments       Appointment[]
+  schoolAdminAssignedSchool   School?        @relation("SchoolAdminSchool", fields: [schoolAdminAssignedSchoolId], references: [id])
+  schoolStaffAssignedSchool   School?        @relation("SchoolStaffSchool", fields: [schoolStaffAssignedSchoolId], references: [id])
+  studentAssignedCounselor    User?          @relation("CounselorStudents", fields: [studentAssignedCounselorId], references: [id])
+  counselorAssignedStudents   User[]         @relation("CounselorStudents")
+  studentAssignedSchool       School?        @relation(fields: [studentAssignedSchoolId], references: [id])
+  counselorAssignedSchools    School[]       @relation("CounselorSchools")
+  studentGuardians            User[]         @relation("GuardianStudents")
+  guardianStudents            User[]         @relation("GuardianStudents")
+  participantAppointments     Appointment[]  @relation("ParticipantAppointment")
 }
 
 model School {
-  id           String               @id @default(uuid())
+  id           String        @id @default(uuid())
   name         String
   address      String?
   state        String?
@@ -111,30 +44,30 @@ model School {
   zip          String?
   primaryEmail String?
   primaryPhone String?
-  schoolAdmins SchoolAdminDetails[] @relation(name: "SchoolAdminSchool")
-  schoolStaff  SchoolStaffDetails[] @relation(name: "SchoolStaffSchool")
-  students     StudentDetails[]     @relation(name: "StudentSchool")
-  counselors   CounselorDetails[]   @relation(name: "CounselorSchool")
-  appointments Appointment[]        @relation(name: "SchoolAppointment")
+  appointments Appointment[]
+  admins       User[]        @relation("SchoolAdminSchool")
+  staff        User[]        @relation("SchoolStaffSchool")
+  students     User[]
+  counselors   User[]        @relation("CounselorSchools")
 }
 
 model Appointment {
-  id             String               @id @default(uuid())
-  title          String
-  start          DateTime
-  end            DateTime
-  isRecurring    Boolean?             @default(false)
-  numOccurrences Int?
-  numRepeats     Int?
-  frequency      RepeatFrequency?
-  school         School?              @relation(name: "SchoolAppointment", fields: [schoolId], references: [id], onDelete: Cascade)
-  counselor      CounselorDetails     @relation(name: "CounselorAppointment", fields: [counselorId], references: [id], onDelete: Cascade)
-  counselorId    String
-  participants   User[]               @relation(name: "ParticipantAppointment")
-  type           AppointmentType
-  status         AppointmentStatus
-  location       AppointmentLocation?
-  schoolId       String?
+  id              String               @id @default(uuid())
+  title           String
+  start           DateTime
+  end             DateTime
+  isRecurring     Boolean?             @default(false)
+  numOccurrences  Int?
+  numRepeats      Int?
+  frequency       RepeatFrequency?
+  type            AppointmentType
+  status          AppointmentStatus
+  location        AppointmentLocation?
+  counselorUserId String?
+  schoolId        String?
+  counselor       User?                @relation(fields: [counselorUserId], references: [id])
+  school          School?              @relation(fields: [schoolId], references: [id])
+  participants    User[]               @relation("ParticipantAppointment")
 }
 
 enum RepeatFrequency {
@@ -145,14 +78,12 @@ enum RepeatFrequency {
 }
 
 enum Role {
-  JOVEN_ADMIN // Internal administration
+  JOVEN_ADMIN
   JOVEN_STAFF
   SCHOOL_ADMIN
-  SCHOOL_STAFF // Staff 
+  SCHOOL_STAFF
   STUDENT
-  GUARDIAN // Parents or guardians at home who can:
-  // - log the student in
-  // - see the student's records and information
+  GUARDIAN
   COUNSELOR
   SYSADMIN
 }

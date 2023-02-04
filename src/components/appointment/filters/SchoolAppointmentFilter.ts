@@ -1,17 +1,14 @@
 import { Appointment, Role, User } from '@prisma/client'
 import { Filter } from '../../Filter'
-import {
-  findUserDetails,
-  SchoolAdminDetailsInfo,
-  SchoolStaffDetailsInfo
-} from '../../user/userDetailsModel'
+import { DetailedUser } from '../../user/userModel'
+import { DetailedAppointment } from '../appointmentModel'
 
 // schools get access to themselves, their students and guardians, other facilitators from their school, and counselors assigned to their school
-export class SchoolAppointmentFilter implements Filter<Appointment> {
+export class SchoolAppointmentFilter implements Filter<DetailedAppointment> {
   async apply(
-    allItems: Appointment[],
-    reference: User
-  ): Promise<Appointment[]> {
+    allItems: DetailedAppointment[],
+    reference: DetailedUser
+  ): Promise<DetailedAppointment[]> {
     const result = []
 
     // loop through users looking for associated users
@@ -29,12 +26,11 @@ async function isAppointmentRelated(
   reference: User,
   target: Appointment
 ): Promise<boolean> {
-  const schoolDetails = await findUserDetails(reference)
   let schoolId: string
   if (reference.role === ('SCHOOL_ADMIN' as Role)) {
-    schoolId = (schoolDetails as SchoolAdminDetailsInfo).assignedSchoolId
+    schoolId = reference.schoolAdminAssignedSchoolId
   } else {
-    schoolId = (schoolDetails as SchoolStaffDetailsInfo).assignedSchoolId
+    schoolId = reference.schoolStaffAssignedSchoolId
   }
   return schoolId === target.schoolId
 }

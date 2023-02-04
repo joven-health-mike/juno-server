@@ -1,13 +1,9 @@
-import { Role, School, User } from '@prisma/client'
+import { Role, School } from '@prisma/client'
 import { Filter } from '../../Filter'
-import {
-  findUserDetails,
-  SchoolAdminDetailsInfo,
-  SchoolStaffDetailsInfo
-} from '../../user/userDetailsModel'
+import { DetailedUser } from '../../user/userModel'
 
 export class SchoolSchoolFilter implements Filter<School> {
-  async apply(allItems: School[], reference: User): Promise<School[]> {
+  async apply(allItems: School[], reference: DetailedUser): Promise<School[]> {
     const result = []
 
     // loop through schools looking for associated schools
@@ -22,15 +18,14 @@ export class SchoolSchoolFilter implements Filter<School> {
 }
 
 async function isSchoolRelated(
-  reference: User,
+  reference: DetailedUser,
   target: School
 ): Promise<boolean> {
-  const schoolDetails = await findUserDetails(reference)
   let schoolId: string
   if (reference.role === ('SCHOOL_ADMIN' as Role)) {
-    schoolId = (schoolDetails as SchoolAdminDetailsInfo).assignedSchoolId
+    schoolId = reference.schoolAdminAssignedSchoolId
   } else {
-    schoolId = (schoolDetails as SchoolStaffDetailsInfo).assignedSchoolId
+    schoolId = reference.schoolStaffAssignedSchoolId
   }
 
   return schoolId === target.id

@@ -1,17 +1,17 @@
-import { Appointment, User } from '@prisma/client'
 import { Filter } from '../../Filter'
+import { DetailedUser } from '../../user/userModel'
 import {
-  findUserDetails,
-  StudentDetailsInfo
-} from '../../user/userDetailsModel'
-import { AppointmentInfo, findAppointmentById } from '../appointmentModel'
+  AppointmentInfo,
+  DetailedAppointment,
+  findAppointmentById
+} from '../appointmentModel'
 
 // schools get access to themselves, their students and guardians, other facilitators from their school, and counselors assigned to their school
-export class StudentAppointmentFilter implements Filter<Appointment> {
+export class StudentAppointmentFilter implements Filter<DetailedAppointment> {
   async apply(
-    allItems: Appointment[],
-    reference: User
-  ): Promise<Appointment[]> {
+    allItems: DetailedAppointment[],
+    reference: DetailedUser
+  ): Promise<DetailedAppointment[]> {
     const result = []
 
     // loop through users looking for associated users
@@ -26,18 +26,15 @@ export class StudentAppointmentFilter implements Filter<Appointment> {
 }
 
 async function isAppointmentRelated(
-  reference: User,
-  target: Appointment
+  reference: DetailedUser,
+  target: DetailedAppointment
 ): Promise<boolean> {
-  const studentDetails = (await findUserDetails(
-    reference
-  )) as StudentDetailsInfo
   const fullAppointment = (await findAppointmentById(
     target.id
   )) as AppointmentInfo
 
   const studentsInCommon = fullAppointment.participants.filter(participant => {
-    participant.id === studentDetails.userId
+    participant.id === reference.id
   })
 
   return studentsInCommon.length > 0

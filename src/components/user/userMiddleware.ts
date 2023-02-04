@@ -1,23 +1,15 @@
 import { Role, User } from '@prisma/client'
 import { Http as HttpStatus } from '@status/codes'
 import { NextFunction, Request, Response } from 'express'
-import { getDelegate } from './userDetailsModel'
 import {
   findUserById,
   findUsersByRole,
   findAllUsers,
   createUser,
-  createCounselorRef,
-  createSchoolAdminRef,
-  createSchoolStaffRef,
-  createStudentRef,
   updateUser,
   deleteUser,
-  updateCounselorRef,
-  updateSchoolAdminRef,
-  updateSchoolStaffRef,
-  updateStudentRef,
-  findDetailedUserByUsername
+  findUserByUsername,
+  DetailedUser
 } from './userModel'
 
 export const getLoggedInUser = async (
@@ -26,7 +18,7 @@ export const getLoggedInUser = async (
   next: NextFunction
 ): Promise<void> => {
   if (typeof request.user !== 'undefined') {
-    const user = await findDetailedUserByUsername(request.user as User)
+    const user = await findUserByUsername((request.user as User).username)
     response.locals.data = user
     response.status(HttpStatus.Ok)
   } else {
@@ -57,7 +49,7 @@ export const getAllUsers = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const user = await findAllUsers(request.user as User)
+    const user = await findAllUsers(request.user as DetailedUser)
     response.locals.data = user
     next()
   } catch (error) {
@@ -102,7 +94,7 @@ export const getUsersByRole = async (
       default:
         throw new Error('Requested role does not exist.')
     }
-    const users = await findUsersByRole(request.user as User, role)
+    const users = await findUsersByRole(request.user as DetailedUser, role)
     response.locals.data = users
     next()
   } catch (error) {
@@ -117,25 +109,10 @@ export const createNewUser = async (
   next: NextFunction
 ): Promise<void> => {
   const requestData = request.body
-  const user = await createUser(requestData)
-
-  // if the user has any ref data, create that object too
-  if (typeof requestData.counselorRef !== 'undefined') {
-    await createCounselorRef(requestData, user.id)
-  } else if (typeof requestData.schoolAdminRef !== 'undefined') {
-    await createSchoolAdminRef(requestData, user.id)
-  } else if (typeof requestData.schoolStaffRef !== 'undefined') {
-    await createSchoolStaffRef(requestData, user.id)
-  } else if (typeof requestData.studentRef !== 'undefined') {
-    await createStudentRef(requestData, user.id)
-  }
-
-  // after everything is created and linked, query the new user to return
-  const result = await findUserById(user.id)
-
-  response.locals.data = result
+  response.locals.data = await createUser(requestData)
   next()
 }
+
 export const updateExistingUser = async (
   request: Request,
   response: Response,
@@ -143,29 +120,9 @@ export const updateExistingUser = async (
 ): Promise<void> => {
   const requestData = request.body
   const basicUserData = { ...requestData }
-  basicUserData.counselorRef = undefined
-  basicUserData.schoolAdminRef = undefined
-  basicUserData.schoolStaffRef = undefined
-  basicUserData.studentRef = undefined
   const urlParamId = request.params.id
   if (urlParamId === requestData.id) {
-    const user = await updateUser(basicUserData)
-
-    // if the user has any ref data, update that object too
-    if (typeof requestData.counselorRef !== 'undefined') {
-      await updateCounselorRef(requestData, user.id)
-    } else if (typeof requestData.schoolAdminRef !== 'undefined') {
-      await updateSchoolAdminRef(requestData, user.id)
-    } else if (typeof requestData.schoolStaffRef !== 'undefined') {
-      await updateSchoolStaffRef(requestData, user.id)
-    } else if (typeof requestData.studentRef !== 'undefined') {
-      await updateStudentRef(requestData, user.id)
-    }
-
-    // after everything is created and linked, query the new user to return
-    const result = await findUserById(user.id)
-
-    response.locals.data = result
+    response.locals.data = await updateUser(basicUserData)
   } else {
     // TODO: ID of the passed-in object didn't match ID of the URL
   }
@@ -177,13 +134,8 @@ export const deleteExistingUser = async (
   response: Response,
   next: NextFunction
 ): Promise<void> => {
-  const userInfo = request.body
   const userIdToDelete = request.params.id
-
-  // if the user has any ref data, delete that object first
-  await getDelegate(userInfo.role)?.delete(userInfo.id)
-  const deletedUser = await deleteUser(userIdToDelete)
-
-  response.locals.data = deletedUser
+  response.locals.data = await deleteUser(userIdToDelete)
+  // TODO - what if the passed-in user ID doesn't exist?
   next()
 }

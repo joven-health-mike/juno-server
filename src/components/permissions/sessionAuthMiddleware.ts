@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import config from 'config'
 import {
-  findDetailedUserByUsername,
   findOrCreateUserByEmail,
   findUserByEmail,
   findUserByUsername
@@ -41,14 +40,14 @@ export const authenticateSession = async (
       const simulatedLoginUsername = config.get(
         'authentication.user.simulatedLoginUsername'
       ) as string
+      req.log.debug(`found simulatedUsername: ${simulatedLoginUsername}`)
       const loggedInUser = await findUserByEmail(req.oidc.user.email)
       if (
         loggedInUser?.role === ('SYSADMIN' as Role) &&
         simulatedLoginUsername
       ) {
         // if an admin is logged in and there's a simulated login in the config file, set the user as the simulated user
-        const user = await findUserByUsername(simulatedLoginUsername)
-        req.user = await findDetailedUserByUsername(user)
+        req.user = await findUserByUsername(simulatedLoginUsername)
       } else {
         req.user = await findOrCreateUserByEmail({
           email: req.oidc.user.email,
