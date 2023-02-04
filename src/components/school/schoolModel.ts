@@ -1,12 +1,7 @@
 import { prismaClient } from '../../database'
-import {
-  School,
-  SchoolAdminDetails,
-  SchoolStaffDetails,
-  StudentDetails,
-  User
-} from '@prisma/client'
+import { School } from '@prisma/client'
 import { SchoolFilterDelegate } from './filters/SchoolFilterDelegate'
+import { DetailedUser } from '../user/userModel'
 
 interface SchoolInfo {
   id?: string
@@ -17,9 +12,6 @@ interface SchoolInfo {
   zip?: string
   primaryEmail?: string
   primaryPhone?: string
-  schoolAdmins?: SchoolAdminDetails[]
-  schoolStaff?: SchoolStaffDetails[]
-  students?: StudentDetails[]
 }
 
 const getSchoolFromSchoolInfo = (schoolInfo: SchoolInfo) => {
@@ -31,10 +23,7 @@ const getSchoolFromSchoolInfo = (schoolInfo: SchoolInfo) => {
     state: schoolInfo.state,
     zip: schoolInfo.zip,
     primaryEmail: schoolInfo.primaryEmail,
-    primaryPhone: schoolInfo.primaryPhone,
-    schoolAdmins: schoolInfo.schoolAdmins,
-    schoolStaff: schoolInfo.schoolStaff,
-    students: schoolInfo.students
+    primaryPhone: schoolInfo.primaryPhone
   }
 }
 
@@ -50,7 +39,9 @@ export const deleteSchool = async (id: string): Promise<School> => {
   })
 }
 
-export const findAllSchools = async (loggedInUser: User): Promise<School[]> => {
+export const findAllSchools = async (
+  loggedInUser: DetailedUser
+): Promise<School[]> => {
   const allSchools = await prismaClient.school.findMany()
   return await filterSchools(allSchools, loggedInUser)
 }
@@ -71,7 +62,7 @@ export const updateSchool = async (schoolInfo: SchoolInfo): Promise<School> => {
 // only return users that are related to the logged-in user somehow
 const filterSchools = async (
   schools: School[],
-  loggedInUser: User
+  loggedInUser: DetailedUser
 ): Promise<School[]> => {
   return new SchoolFilterDelegate()
     .get(loggedInUser)

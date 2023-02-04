@@ -1,34 +1,14 @@
-import { Appointment, User } from '@prisma/client'
 import { Filter } from '../../Filter'
-import {
-  CounselorDetailsInfo,
-  findUserDetails
-} from '../../user/userDetailsModel'
+import { DetailedUser } from '../../user/userModel'
+import { DetailedAppointment } from '../appointmentModel'
 
-export class CounselorAppointmentFilter implements Filter<Appointment> {
+export class CounselorAppointmentFilter implements Filter<DetailedAppointment> {
   async apply(
-    allItems: Appointment[],
-    reference: User
-  ): Promise<Appointment[]> {
-    const result = []
-
-    // loop through appointments looking for associated appointments
-    for (const dbAppointment of allItems) {
-      if (await isAppointmentRelated(reference, dbAppointment)) {
-        result.push(dbAppointment)
-      }
-    }
-
-    return result
+    allItems: DetailedAppointment[],
+    reference: DetailedUser
+  ): Promise<DetailedAppointment[]> {
+    return allItems.filter(appointment => {
+      appointment.counselorUserId === reference.id
+    })
   }
-}
-
-async function isAppointmentRelated(
-  reference: User,
-  target: Appointment
-): Promise<boolean> {
-  const counselorDetails = (await findUserDetails(
-    reference
-  )) as CounselorDetailsInfo
-  return target.counselorId === counselorDetails.id
 }

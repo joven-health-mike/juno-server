@@ -4,11 +4,13 @@ import {
   AppointmentLocation,
   AppointmentStatus,
   AppointmentType,
-  CounselorDetails,
   School,
   User
 } from '@prisma/client'
 import { AppointmentFilterDelegate } from './filters/AppointmentFilterDelegate'
+import { DetailedUser } from '../user/userModel'
+
+export type DetailedAppointment = Appointment & { participants: User[] }
 
 export interface AppointmentInfo {
   id?: string
@@ -21,9 +23,8 @@ export interface AppointmentInfo {
   frequency?: string
   school?: School
   schoolId?: string
+  counselorUserId?: string
   participants?: User[]
-  counselor?: CounselorDetails
-  counselorId?: string
   type?: AppointmentType
   status?: AppointmentStatus
   location?: AppointmentLocation
@@ -44,11 +45,10 @@ const getAppointmentFromAppointmentInfo = (
     school: appointmentInfo.school,
     schoolId:
       appointmentInfo.schoolId === '-1' ? undefined : appointmentInfo.schoolId,
-    counselor: appointmentInfo.counselor,
-    counselorId:
-      appointmentInfo.counselorId === '-1'
+    counselorUserId:
+      appointmentInfo.counselorUserId === '-1'
         ? undefined
-        : appointmentInfo.counselorId,
+        : appointmentInfo.counselorUserId,
     type: appointmentInfo.type,
     status: appointmentInfo.status,
     location: appointmentInfo.location,
@@ -148,11 +148,11 @@ export const createRecurringAppointments = async (
 }
 
 export const findAllAppointments = async (
-  loggedInUser: User
-): Promise<Appointment[]> => {
+  loggedInUser: DetailedUser
+): Promise<DetailedAppointment[]> => {
   const allAppointments = await prismaClient.appointment.findMany({
     include: {
-      counselor: { include: { user: true } },
+      counselor: true,
       participants: true,
       school: true
     }
@@ -162,11 +162,11 @@ export const findAllAppointments = async (
 
 export const findAppointmentById = async (
   id: string
-): Promise<Appointment | null> => {
+): Promise<DetailedAppointment | null> => {
   return await prismaClient.appointment.findUnique({
     where: { id },
     include: {
-      counselor: { include: { user: true } },
+      counselor: true,
       school: true,
       participants: true
     }
@@ -176,7 +176,6 @@ export const findAppointmentById = async (
 export const updateAppointment = async (
   appointmentInfo: AppointmentInfo
 ): Promise<Appointment> => {
-  appointmentInfo.counselor = undefined
   appointmentInfo.school = undefined
   appointmentInfo.participants = undefined
   return await prismaClient.appointment.update({
@@ -193,9 +192,9 @@ export const deleteAppointment = async (id: string): Promise<Appointment> => {
 
 // only return appointments that are related to the logged-in user somehow
 const filterAppointments = async (
-  appointments: Appointment[],
-  loggedInUser: User
-): Promise<Appointment[]> => {
+  appointments: DetailedAppointment[],
+  loggedInUser: DetailedUser
+): Promise<DetailedAppointment[]> => {
   return new AppointmentFilterDelegate()
     .get(loggedInUser)
     .apply(appointments, loggedInUser)

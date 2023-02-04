@@ -1,17 +1,18 @@
-import { Appointment, User } from '@prisma/client'
+import { User } from '@prisma/client'
 import { Filter, ShowEverythingFilter, ShowNothingFilter } from '../../Filter'
+import { DetailedAppointment } from '../appointmentModel'
 import { CounselorAppointmentFilter } from './CounselorAppointmentFilter'
 import { GuardianAppointmentFilter } from './GuardianAppointmentFilter'
 import { SchoolAppointmentFilter } from './SchoolAppointmentFilter'
 import { StudentAppointmentFilter } from './StudentAppointmentFilter'
 
 export class AppointmentFilterDelegate {
-  get(user: User): Filter<Appointment> {
+  get(user: User): Filter<DetailedAppointment> {
     switch (user.role) {
       case 'SYSADMIN':
       case 'JOVEN_ADMIN':
       case 'JOVEN_STAFF':
-        return new ShowEverythingFilter<Appointment>()
+        return new ShowEverythingFilter<DetailedAppointment>()
       case 'COUNSELOR':
         return new CounselorAppointmentFilter()
       case 'SCHOOL_ADMIN':
@@ -22,7 +23,7 @@ export class AppointmentFilterDelegate {
       case 'GUARDIAN':
         return new GuardianAppointmentFilter()
       default:
-        return new ShowNothingFilter<Appointment>()
+        return new ShowNothingFilter<DetailedAppointment>()
     }
   }
 }

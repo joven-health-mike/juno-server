@@ -1,12 +1,9 @@
-import { School, User } from '@prisma/client'
+import { School } from '@prisma/client'
 import { Filter } from '../../Filter'
-import {
-  findUserDetails,
-  StudentDetailsInfo
-} from '../../user/userDetailsModel'
+import { DetailedUser } from '../../user/userModel'
 
 export class StudentSchoolFilter implements Filter<School> {
-  async apply(allItems: School[], reference: User): Promise<School[]> {
+  async apply(allItems: School[], reference: DetailedUser): Promise<School[]> {
     const result = []
 
     for (const dbSchool of allItems) {
@@ -20,12 +17,8 @@ export class StudentSchoolFilter implements Filter<School> {
 }
 
 async function isSchoolRelated(
-  reference: User,
+  reference: DetailedUser,
   target: School
 ): Promise<boolean> {
-  const studentDetails = (await findUserDetails(
-    reference
-  )) as StudentDetailsInfo
-
-  return studentDetails.assignedSchoolId === target.id
+  return reference.studentAssignedSchoolId === target.id
 }

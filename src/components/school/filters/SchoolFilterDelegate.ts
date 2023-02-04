@@ -1,12 +1,13 @@
-import { School, User } from '@prisma/client'
+import { School } from '@prisma/client'
 import { Filter, ShowEverythingFilter, ShowNothingFilter } from '../../Filter'
+import { DetailedUser } from '../../user/userModel'
 import { CounselorSchoolFilter } from './CounselorSchoolFilter'
 import { GuardianSchoolFilter } from './GuardianSchoolFilter'
 import { SchoolSchoolFilter } from './SchoolSchoolFilter'
 import { StudentSchoolFilter } from './StudentSchoolFilter'
 
 export class SchoolFilterDelegate {
-  get(user: User): Filter<School> {
+  get(user: DetailedUser): Filter<School> {
     switch (user.role) {
       case 'SYSADMIN':
       case 'JOVEN_ADMIN':
