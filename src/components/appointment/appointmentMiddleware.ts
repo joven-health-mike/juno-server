@@ -50,11 +50,11 @@ export const createNewAppointment = async (
   const appointment = await createAppointment(requestData)
   appointments.push(appointment)
   if (appointment.isRecurring) {
-    const recurringAppointment = await createRecurringAppointments(
+    const recurringAppointments = await createRecurringAppointments(
       requestData,
       appointment
     )
-    appointments.push(recurringAppointment)
+    appointments.push(...recurringAppointments)
   }
   response.locals.data = appointments
   next()

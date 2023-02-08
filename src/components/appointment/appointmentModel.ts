@@ -23,6 +23,7 @@ export interface AppointmentInfo {
   frequency?: string
   school?: School
   schoolId?: string
+  counselor?: User
   counselorUserId?: string
   participants?: User[]
   type?: AppointmentType
@@ -45,6 +46,10 @@ const getAppointmentFromAppointmentInfo = (
     school: appointmentInfo.school,
     schoolId:
       appointmentInfo.schoolId === '-1' ? undefined : appointmentInfo.schoolId,
+    counselor:
+      appointmentInfo.counselor?.id === '-1'
+        ? undefined
+        : appointmentInfo.counselor,
     counselorUserId:
       appointmentInfo.counselorUserId === '-1'
         ? undefined
