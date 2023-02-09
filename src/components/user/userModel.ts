@@ -25,6 +25,34 @@ interface UserInfo {
   studentStatus?: StudentStatus
   timeZoneIanaName?: string
   role?: Role
+  guardianStudents?: User[]
+  counselorAssignedSchools?: School[]
+}
+
+const getGuardianStudentsConnectionStr = (guardianStudents: User[]) => {
+  if (guardianStudents?.length > 0) {
+    const result: any = {}
+    result.connect = []
+    guardianStudents.forEach(student => result.connect.push({ id: student.id }))
+    return result
+  } else {
+    return undefined
+  }
+}
+
+const getCounselorAssignedSchoolsConnectionStr = (
+  counselorAssignedSchools: School[]
+) => {
+  if (counselorAssignedSchools?.length > 0) {
+    const result: any = {}
+    result.connect = []
+    counselorAssignedSchools.forEach(school =>
+      result.connect.push({ id: school.id })
+    )
+    return result
+  } else {
+    return undefined
+  }
 }
 
 const getUserFromUserInfo = (userInfo: UserInfo) => {
@@ -43,13 +71,19 @@ const getUserFromUserInfo = (userInfo: UserInfo) => {
     studentAssignedSchoolId: userInfo.studentAssignedSchoolId,
     studentStatus: userInfo.studentStatus,
     timeZoneIanaName: userInfo.timeZoneIanaName,
-    role: userInfo.role
+    role: userInfo.role,
+    guardianStudents: getGuardianStudentsConnectionStr(
+      userInfo.guardianStudents
+    ),
+    counselorAssignedSchools: getCounselorAssignedSchoolsConnectionStr(
+      userInfo.counselorAssignedSchools
+    )
   }
 }
 
 export const createUser = async (userInfo: UserInfo): Promise<User> => {
   const newUser = getUserFromUserInfo(userInfo)
-  return await prismaClient.user.create({ data: newUser })
+  return await prismaClient.user.create({ data: newUser as User })
 }
 
 export const findUserByUsername = async (
@@ -111,9 +145,9 @@ export const findUsersByRole = async (
   return filterUsers(loggedInUser, allUsers)
 }
 
-export const updateUser = async (userInfo: User): Promise<User> => {
+export const updateUser = async (userInfo: UserInfo): Promise<User> => {
   return await prismaClient.user.update({
-    data: userInfo,
+    data: getUserFromUserInfo(userInfo),
     where: { id: userInfo.id }
   })
 }

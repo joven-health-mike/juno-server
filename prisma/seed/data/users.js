@@ -102,6 +102,12 @@ module.exports = [
     studentStatus: 'ACTIVE',
     studentAssignedSchool: {
       connect: { id: 'a7e56e1c-f1c2-4bf9-a3fd-9fdef3fb87df' }
+    },
+    studentGuardians: {
+      connect: [
+        { id: 'e68b59ae-c2a3-4cc5-b321-f8d70ac7602e' },
+        { id: '8a6c3f49-2bc1-4265-8f6f-736ee63e52ec' }
+      ]
     }
   },
   {
@@ -240,7 +246,10 @@ module.exports = [
     phone: '094-785-9584',
     docsUrl:
       'https://drive.google.com/drive/folders/1Loo_TqwdSVVxURHwDpepHsuOwMhuKeTg?usp=sharing',
-    timeZoneIanaName: 'America/Denver'
+    timeZoneIanaName: 'America/Denver',
+    guardianStudents: {
+      connect: { id: '722f30bf-c589-4e09-9b61-4c3c9e08b957' }
+    }
   },
   {
     id: '8a6c3f49-2bc1-4265-8f6f-736ee63e52ec',
@@ -252,6 +261,9 @@ module.exports = [
     phone: '094-785-9555',
     docsUrl:
       'https://drive.google.com/drive/folders/16d_yDJIqo0xOoTuSMmUTJGxC7NPlBCKN?usp=sharing',
-    timeZoneIanaName: 'America/Denver'
+    timeZoneIanaName: 'America/Denver',
+    guardianStudents: {
+      connect: { id: '722f30bf-c589-4e09-9b61-4c3c9e08b957' }
+    }
   }
 ]
