@@ -40,7 +40,6 @@ export const authenticateSession = async (
       const simulatedLoginUsername = config.get(
         'authentication.user.simulatedLoginUsername'
       ) as string
-      req.log.debug(`found simulatedUsername: ${simulatedLoginUsername}`)
       const loggedInUser = await findUserByEmail(req.oidc.user.email)
       if (
         loggedInUser?.role === ('SYSADMIN' as Role) &&

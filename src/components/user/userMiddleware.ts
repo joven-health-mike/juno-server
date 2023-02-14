@@ -121,6 +121,7 @@ export const updateExistingUser = async (
   const requestData = request.body
   const basicUserData = { ...requestData }
   const urlParamId = request.params.id
+  // TODO: throws an error due to relations guardianStudents & studentAssignedSchools arrays
   if (urlParamId === requestData.id) {
     response.locals.data = await updateUser(basicUserData)
   } else {
