@@ -54,7 +54,7 @@ export const authenticateM2mToken = async (
         req.log.debug(
           'Request is authenticated using a machine-to-machine token.'
         )
-        req.log.warn(JSON.stringify(req.oidc))
+        req.log.warn('M2M auth: ' + JSON.stringify(req.m2mAuth))
         req.authenticated = true
       }
       next()
