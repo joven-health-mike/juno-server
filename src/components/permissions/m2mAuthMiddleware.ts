@@ -54,7 +54,7 @@ export const authenticateM2mToken = async (
         req.log.debug(
           'Request is authenticated using a machine-to-machine token.'
         )
-        req.user = { role: 'SYSADMIN' }
+        req.log.warn(JSON.stringify(req.oidc))
         req.authenticated = true
       }
       next()
