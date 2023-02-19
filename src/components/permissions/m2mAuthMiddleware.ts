@@ -5,7 +5,6 @@ import { expressjwt } from 'express-jwt'
 import { expressJwtSecret, GetVerificationKey } from 'jwks-rsa'
 import { StatusCodes } from 'http-status-codes'
 import config from 'config'
-import { findUserByEmail } from '../user/userModel'
 
 export interface M2mAuth {
   // JWT Issuer, eg 'https://code-juno.us.auth0.com/'
@@ -55,7 +54,7 @@ export const authenticateM2mToken = async (
         req.log.debug(
           'Request is authenticated using a machine-to-machine token.'
         )
-        req.user = await findUserByEmail(req.oidc.user.email)
+        req.user = { role: 'SYSADMIN' }
         req.authenticated = true
       }
       next()
