@@ -4,9 +4,9 @@
 module.exports = {
   authentication: {
     machineToMachine: {
-      audience: 'https://code-juno.com/api',
-      issuer: 'https://code-juno.us.auth0.com/',
-      jwksUri: 'https://code-juno.us.auth0.com/.well-known/jwks.json'
+      audience: 'https://juno-server-dev.jovenhealth.com/',
+      issuer: 'https://dev-9e-ctbg8.us.auth0.com/',
+      jwksUri: 'https://dev-9e-ctbg8.us.auth0.com/.well-known/jwks.json'
     },
     session: {
       baseUrl: 'https://juno-server-dev.jovenhealth.com',
