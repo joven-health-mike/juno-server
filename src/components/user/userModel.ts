@@ -83,7 +83,10 @@ const getUserFromUserInfo = (userInfo: UserInfo) => {
 
 export const createUser = async (userInfo: UserInfo): Promise<User> => {
   const newUser = getUserFromUserInfo(userInfo)
-  return await prismaClient.user.create({ data: newUser as User })
+  return await prismaClient.user.create({
+    data: newUser as User,
+    include: userInclude
+  })
 }
 
 export const findUserByUsername = async (
@@ -146,9 +149,20 @@ export const findUsersByRole = async (
 }
 
 export const updateUser = async (userInfo: UserInfo): Promise<User> => {
+  const sanitizedUserInfo = getUserFromUserInfo(userInfo)
+  // clear out old connections
+  await prismaClient.user.update({
+    where: { id: sanitizedUserInfo.id },
+    data: {
+      guardianStudents: { set: [] },
+      counselorAssignedSchools: { set: [] }
+    }
+  })
+  // add new connections
   return await prismaClient.user.update({
-    data: getUserFromUserInfo(userInfo),
-    where: { id: userInfo.id }
+    data: sanitizedUserInfo,
+    where: { id: sanitizedUserInfo.id },
+    include: userInclude
   })
 }
 
