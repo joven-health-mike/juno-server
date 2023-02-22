@@ -2,7 +2,7 @@ import { Role, School } from '@prisma/client'
 import { Filter } from '../../Filter'
 import { DetailedUser } from '../../user/userModel'
 
-export class SchoolSchoolFilter implements Filter<School> {
+export class SchoolSchoolFilter implements Filter<School, DetailedUser> {
   async apply(allItems: School[], reference: DetailedUser): Promise<School[]> {
     const result = []
 

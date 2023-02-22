@@ -7,7 +7,9 @@ import {
 } from '../appointmentModel'
 
 // schools get access to themselves, their students and guardians, other facilitators from their school, and counselors assigned to their school
-export class StudentAppointmentFilter implements Filter<DetailedAppointment> {
+export class StudentAppointmentFilter
+  implements Filter<DetailedAppointment, DetailedUser>
+{
   async apply(
     allItems: DetailedAppointment[],
     reference: DetailedUser
