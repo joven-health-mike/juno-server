@@ -3,7 +3,9 @@ import { Filter } from '../../Filter'
 import { DetailedUser } from '../../user/userModel'
 import { DetailedAppointment } from '../appointmentModel'
 
-export class GuardianAppointmentFilter implements Filter<DetailedAppointment> {
+export class GuardianAppointmentFilter
+  implements Filter<DetailedAppointment, DetailedUser>
+{
   async apply(
     allItems: DetailedAppointment[],
     reference: DetailedUser
