@@ -44,6 +44,7 @@ model School {
   zip          String?
   primaryEmail String?
   primaryPhone String?
+  docsUrl      String?
   appointments Appointment[]
   admins       User[]        @relation("SchoolAdminSchool")
   staff        User[]        @relation("SchoolStaffSchool")

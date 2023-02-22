@@ -12,6 +12,7 @@ interface SchoolInfo {
   zip?: string
   primaryEmail?: string
   primaryPhone?: string
+  docsUrl?: string
 }
 
 const getSchoolFromSchoolInfo = (schoolInfo: SchoolInfo) => {
@@ -23,7 +24,8 @@ const getSchoolFromSchoolInfo = (schoolInfo: SchoolInfo) => {
     state: schoolInfo.state,
     zip: schoolInfo.zip,
     primaryEmail: schoolInfo.primaryEmail,
-    primaryPhone: schoolInfo.primaryPhone
+    primaryPhone: schoolInfo.primaryPhone,
+    docsUrl: schoolInfo.docsUrl
   }
 }
 
