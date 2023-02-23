@@ -253,5 +253,124 @@ module.exports = [
     docsUrl:
       'https://drive.google.com/drive/folders/16d_yDJIqo0xOoTuSMmUTJGxC7NPlBCKN?usp=sharing',
     timeZoneIanaName: 'America/Denver'
+  },
+  {
+    id: '7a44439a-7cdf-4667-aa91-c56942847488',
+    firstName: 'Mike',
+    lastName: 'Burke',
+    email: 'mike@jovenhealth.com',
+    username: 'mike.burke',
+    role: 'SYSADMIN',
+    phone: '810-412-8753',
+    docsUrl: 'https://docs.url',
+    timeZoneIanaName: 'America/Denver'
+  },
+  {
+    id: '6797649b-aebf-45a2-892a-44e831283802',
+    firstName: 'Patricia',
+    lastName: 'Rocha',
+    email: 'patricia@jovenhealth.com',
+    username: 'patricia.rocha',
+    role: 'COUNSELOR',
+    phone: '847-219-6267',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1TPa2hMxGSxGJkhbtA0Ktvkdk9Xub4APi?usp=sharing',
+    timeZoneIanaName: 'America/Los_Angeles',
+    counselorRoomLink: 'https://zoom.co/to-be-determined',
+    counselorAssignedSchools: {
+      connect: [
+        { id: 'a7e56e1c-f1c2-4bf9-a3fd-9fdef3fb87df' },
+        { id: '5ac1c4ab-725b-4a5c-bb0a-e3ab5c882aca' },
+        { id: '6265a973-0f32-421e-b378-9d7caefb1e6a' },
+        { id: 'af96c257-8ee5-4902-b4cc-ddb086f81570' }
+      ]
+    }
+  },
+  {
+    id: '2b1ef724-dd2f-4fd7-8b4e-115bee671d68',
+    firstName: 'Tyler',
+    lastName: 'McCord',
+    email: 'tyler@jovenhealth.com',
+    username: 'tyler.mccord',
+    role: 'SYSADMIN',
+    phone: '123-401-1392',
+    docsUrl: 'https://docs.url',
+    timeZoneIanaName: 'America/New_York'
+  },
+  {
+    id: '5a616c1f-669a-41fd-a114-75f6ea4e9672',
+    firstName: 'Bob',
+    lastName: 'Rath',
+    email: 'brath31@gmail.com',
+    username: 'bob.rath',
+    role: 'SYSADMIN',
+    phone: '419-120-1302',
+    docsUrl: 'https://docs.url',
+    timeZoneIanaName: 'America/New_York'
+  },
+  {
+    id: '6f5ee5dd-0d4d-4278-8d24-2539e6be9b2f',
+    firstName: 'Zoe',
+    lastName: 'Gonzales',
+    email: 'zoegonzales03@gmail.com',
+    username: 'zoe.gonzales',
+    role: 'SYSADMIN',
+    phone: '913-013-1302',
+    docsUrl: 'https://docs.url',
+    timeZoneIanaName: 'America/Denver'
+  },
+  {
+    id: '49181a87-27a1-47a8-8d95-0628b37a64af',
+    firstName: 'System',
+    lastName: 'Administrator',
+    email: 'sysadmin@jovenhealth.com',
+    username: 'sys.admin',
+    role: 'SYSADMIN',
+    phone: '912-104-1302',
+    docsUrl: 'https://docs.url',
+    timeZoneIanaName: 'America/Denver'
+  },
+  {
+    id: 'fd6683c7-b867-499c-8eaf-052b7fdcd85f',
+    firstName: 'Joven',
+    lastName: 'Administrator',
+    email: 'jovenadmin@jovenhealth.com',
+    username: 'joven.admin',
+    role: 'JOVEN_ADMIN',
+    phone: '301-132-1309',
+    docsUrl: 'https://docs.url',
+    timeZoneIanaName: 'America/Denver'
+  },
+  {
+    id: 'c3918eba-2c8e-46a6-9ba1-2271223a660d',
+    firstName: 'Joven',
+    lastName: 'Staff',
+    email: 'jovenstaff@jovenhealth.com',
+    username: 'joven.staff',
+    role: 'JOVEN_STAFF',
+    phone: '301-132-1329',
+    docsUrl: 'https://docs.url',
+    timeZoneIanaName: 'America/Denver'
+  },
+  {
+    id: '9081ed50-3b6a-4082-b514-ff04a874f7e8',
+    firstName: 'Jesse',
+    lastName: 'Mercer',
+    email: 'jesse@jovenhealth.com',
+    username: 'jesse.mercer',
+    role: 'COUNSELOR',
+    phone: '303-653-5410',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1DzXIbdfE6ARrJP7I4fGl19iWXH7adx4E?usp=share_link',
+    timeZoneIanaName: 'America/Denver',
+    counselorRoomLink: 'https://zoom.co/to-be-determined',
+    counselorAssignedSchools: {
+      connect: [
+        { id: 'a7e56e1c-f1c2-4bf9-a3fd-9fdef3fb87df' },
+        { id: '5ac1c4ab-725b-4a5c-bb0a-e3ab5c882aca' },
+        { id: '6265a973-0f32-421e-b378-9d7caefb1e6a' },
+        { id: 'af96c257-8ee5-4902-b4cc-ddb086f81570' }
+      ]
+    }
   }
 ]

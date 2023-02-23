@@ -41,27 +41,29 @@ async function seedDatabaseData() {
     )
   )
 
-  // assign students to Jacek
+  // assign students to Jesse
   await prisma.user.update({
-    where: { id: 'fd2d518b-ecd5-4b01-b110-f1d0512baa63' },
+    where: { id: '9081ed50-3b6a-4082-b514-ff04a874f7e8' },
     data: {
       counselorAssignedStudents: {
         connect: [
-          { id: '722f30bf-c589-4e09-9b61-4c3c9e08b957' },
-          { id: '6f466fc1-6b7f-46a0-a0a9-c2a6a3808e1a' }
+          { id: '64ea8a3a-2934-418b-8ac9-48892d7b2570' },
+          { id: '24d59901-6dd8-4865-b871-292863e83d6f' },
+          { id: '663edb77-62f1-4998-ad2e-badb80a9cbcf' }
         ]
       }
     }
   })
 
-  // assign students to Hephzibah
+  // assign students to Patricia
   await prisma.user.update({
-    where: { id: 'd80602a2-8419-49b1-b6ac-5690628d0e0e' },
+    where: { id: '6797649b-aebf-45a2-892a-44e831283802' },
     data: {
       counselorAssignedStudents: {
         connect: [
-          { id: '64ea8a3a-2934-418b-8ac9-48892d7b2570' },
-          { id: '135a7e88-4fbf-49d2-b332-66dde1965a7f' }
+          { id: '135a7e88-4fbf-49d2-b332-66dde1965a7f' },
+          { id: 'fb0ee989-dcb8-4b4f-bcc0-b9983c02b69c' },
+          { id: '6f466fc1-6b7f-46a0-a0a9-c2a6a3808e1a' }
         ]
       }
     }
@@ -72,11 +74,7 @@ async function seedDatabaseData() {
     where: { id: 'd80602a2-8419-49b1-b6ac-5690628d0e0e' },
     data: {
       counselorAssignedStudents: {
-        connect: [
-          { id: 'fb0ee989-dcb8-4b4f-bcc0-b9983c02b69c' },
-          { id: '663edb77-62f1-4998-ad2e-badb80a9cbcf' },
-          { id: '24d59901-6dd8-4865-b871-292863e83d6f' }
-        ]
+        connect: [{ id: '722f30bf-c589-4e09-9b61-4c3c9e08b957' }]
       }
     }
   })
