@@ -7,12 +7,12 @@ import { SchoolSchoolFilter } from './SchoolSchoolFilter'
 import { StudentSchoolFilter } from './StudentSchoolFilter'
 
 export class SchoolFilterDelegate {
-  get(user: DetailedUser): Filter<School> {
+  get(user: DetailedUser): Filter<School, DetailedUser> {
     switch (user.role) {
       case 'SYSADMIN':
       case 'JOVEN_ADMIN':
       case 'JOVEN_STAFF':
-        return new ShowEverythingFilter<School>()
+        return new ShowEverythingFilter<School, DetailedUser>()
       case 'COUNSELOR':
         return new CounselorSchoolFilter()
       case 'SCHOOL_ADMIN':
@@ -23,7 +23,7 @@ export class SchoolFilterDelegate {
       case 'GUARDIAN':
         return new GuardianSchoolFilter()
       default:
-        return new ShowNothingFilter<School>()
+        return new ShowNothingFilter<School, DetailedUser>()
     }
   }
 }

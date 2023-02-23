@@ -1,0 +1,33 @@
+{
+  "id": "-1",
+  "title": "François C (Aardvark Academy) - CLINICAL",
+  "start": "2023-02-16T18:30:00.478Z",
+  "end": "2023-02-16T19:30:00.478Z",
+  "isRecurring": false,
+  "schoolId": "a7e56e1c-f1c2-4bf9-a3fd-9fdef3fb87df",
+  "participants": [
+    {
+      "id": "6f466fc1-6b7f-46a0-a0a9-c2a6a3808e1a",
+      "email": "francois-chaves@jovenhealth.com",
+      "username": "francois.chaves",
+      "phone": "098-765-4344",
+      "firstName": "François",
+      "lastName": "Chaves",
+      "docsUrl": "https://drive.google.com/drive/folders/1dO26MVndA_owj81U24BD1AyDsF4fTgXB?usp=sharing",
+      "counselorRoomLink": null,
+      "schoolAdminAssignedSchoolId": null,
+      "schoolStaffAssignedSchoolId": null,
+      "studentAssignedCounselorId": "fd2d518b-ecd5-4b01-b110-f1d0512baa63",
+      "studentAssignedSchoolId": "a7e56e1c-f1c2-4bf9-a3fd-9fdef3fb87df",
+      "studentStatus": "ACTIVE",
+      "timeZoneIanaName": "America/Denver",
+      "role": "STUDENT",
+      "guardianStudents": [],
+      "counselorAssignedSchools": []
+    }
+  ],
+  "type": "CLINICAL",
+  "status": "SCHEDULED",
+  "location": "UNKNOWN",
+  "counselorUserId": "fd2d518b-ecd5-4b01-b110-f1d0512baa63"
+}

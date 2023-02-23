@@ -47,6 +47,7 @@ CREATE TABLE "School" (
     "zip" TEXT,
     "primaryEmail" TEXT,
     "primaryPhone" TEXT,
+    "docsUrl" TEXT,
 
     CONSTRAINT "School_pkey" PRIMARY KEY ("id")
 );

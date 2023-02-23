@@ -3,7 +3,7 @@ import { Filter } from '../../Filter'
 import { DetailedUser } from '../userModel'
 
 // counselors get access to themselves, their students, and facilitators associated with the schools they're assigned to
-export class CounselorUserFilter implements Filter<DetailedUser> {
+export class CounselorUserFilter implements Filter<DetailedUser, DetailedUser> {
   async apply(
     allItems: DetailedUser[],
     reference: DetailedUser

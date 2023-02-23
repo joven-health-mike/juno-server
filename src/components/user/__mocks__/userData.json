@@ -1,0 +1,11 @@
+{
+  "id": "-1",
+  "firstName": "User",
+  "lastName": "Name",
+  "email": "user@name.com",
+  "username": "user.name",
+  "phone": "412-230-1402",
+  "docsUrl": "https://docs.com",
+  "timeZoneIanaName": "America/Chicago",
+  "role": "JOVEN_STAFF"
+}
