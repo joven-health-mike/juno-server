@@ -46,10 +46,6 @@ const getAppointmentFromAppointmentInfo = (
     school: appointmentInfo.school,
     schoolId:
       appointmentInfo.schoolId === '-1' ? undefined : appointmentInfo.schoolId,
-    counselor:
-      appointmentInfo.counselor?.id === '-1'
-        ? undefined
-        : appointmentInfo.counselor,
     counselorUserId:
       appointmentInfo.counselorUserId === '-1'
         ? undefined
@@ -64,6 +60,9 @@ const getAppointmentFromAppointmentInfo = (
 const getParticipantConnectionsFromAppointmentInfo = (
   appointmentInfo: AppointmentInfo
 ) => {
+  if (typeof appointmentInfo.participants === 'undefined') {
+    return undefined
+  }
   const result: any = {}
   result.connect = []
 
@@ -185,7 +184,12 @@ export const updateAppointment = async (
   appointmentInfo.participants = undefined
   return await prismaClient.appointment.update({
     data: getAppointmentFromAppointmentInfo(appointmentInfo) as Appointment,
-    where: { id: appointmentInfo.id }
+    where: { id: appointmentInfo.id },
+    include: {
+      counselor: true,
+      school: true,
+      participants: true
+    }
   })
 }
 
