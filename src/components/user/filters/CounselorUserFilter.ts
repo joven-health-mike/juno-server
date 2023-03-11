@@ -28,7 +28,10 @@ async function isUserRelated(
   // counselor has access to their own user
   if (target.id === reference.id) {
     return true
-  } else if (target.role === ('STUDENT' as Role)) {
+  } else if (
+    target.role === ('STUDENT' as Role) ||
+    target.role === ('TEACHER' as Role)
+  ) {
     // counselor has access to students that are assigned to their caseload
     return reference.id === target.studentAssignedCounselorId
   } else if (target.role === ('SCHOOL_ADMIN' as Role)) {

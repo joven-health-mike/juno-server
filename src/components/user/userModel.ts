@@ -18,6 +18,7 @@ interface UserInfo {
   phone?: string
   docsUrl?: string
   counselorRoomLink?: string
+  counselorRoomLink2?: string
   schoolAdminAssignedSchoolId?: string
   schoolStaffAssignedSchoolId?: string
   studentAssignedCounselorId?: string
@@ -65,6 +66,7 @@ const getUserFromUserInfo = (userInfo: UserInfo) => {
     phone: userInfo.phone,
     docsUrl: userInfo.docsUrl,
     counselorRoomLink: userInfo.counselorRoomLink,
+    counselorRoomLink2: userInfo.counselorRoomLink2,
     schoolAdminAssignedSchoolId: userInfo.schoolAdminAssignedSchoolId,
     schoolStaffAssignedSchoolId: userInfo.schoolStaffAssignedSchoolId,
     studentAssignedCounselorId: userInfo.studentAssignedCounselorId,
