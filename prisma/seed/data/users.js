@@ -372,5 +372,21 @@ module.exports = [
         { id: 'af96c257-8ee5-4902-b4cc-ddb086f81570' }
       ]
     }
+  },
+  {
+    id: '9281fd50-3b6a-4082-b514-ff04a874f7e8',
+    firstName: 'Cynthia',
+    lastName: 'Palmer',
+    email: 'cynthia@jovenhealth.com',
+    username: 'cynthia.palmer',
+    role: 'TEACHER',
+    phone: '303-693-5410',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1VvVm1k784KlYYqyl3i3g3IRkPyfdDHG3?usp=share_link',
+    timeZoneIanaName: 'America/Phoenix',
+    studentStatus: 'ACTIVE',
+    studentAssignedSchool: {
+      connect: { id: 'af96c257-8ee5-4902-b4cc-ddb086f81570' }
+    }
   }
 ]

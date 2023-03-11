@@ -8,31 +8,38 @@ datasource db {
 }
 
 model User {
-  id                          String         @id @default(uuid())
-  email                       String?        @unique
-  username                    String         @unique
-  phone                       String?        @unique
-  firstName                   String
-  lastName                    String
-  docsUrl                     String?
-  counselorRoomLink           String?
+  id               String  @id @default(uuid())
+  firstName        String
+  lastName         String
+  username         String  @unique
+  role             Role    @default(UNASSIGNED)
+  email            String? @unique
+  phone            String? @unique
+  docsUrl          String?
+  timeZoneIanaName String? @default("America/New_York")
+
+  counselorRoomLink         String?
+  counselorRoomLink2        String?
+  counselorAppointments     Appointment[]
+  counselorAssignedStudents User[]        @relation("CounselorStudents")
+  counselorAssignedSchools  School[]      @relation("CounselorSchools")
+
+  studentStatus              StudentStatus?
+  studentAssignedCounselorId String?
+  studentAssignedCounselor   User?          @relation("CounselorStudents", fields: [studentAssignedCounselorId], references: [id], onDelete: SetNull)
+  studentAssignedSchoolId    String?
+  studentAssignedSchool      School?        @relation(fields: [studentAssignedSchoolId], references: [id], onDelete: Cascade)
+  studentGuardians           User[]         @relation("GuardianStudents")
+
   schoolAdminAssignedSchoolId String?
+  schoolAdminAssignedSchool   School? @relation("SchoolAdminSchool", fields: [schoolAdminAssignedSchoolId], references: [id], onDelete: Cascade)
+
   schoolStaffAssignedSchoolId String?
-  studentAssignedCounselorId  String?
-  studentAssignedSchoolId     String?
-  studentStatus               StudentStatus?
-  timeZoneIanaName            String?        @default("America/Denver")
-  role                        Role
-  counselorAppointments       Appointment[]
-  schoolAdminAssignedSchool   School?        @relation("SchoolAdminSchool", fields: [schoolAdminAssignedSchoolId], references: [id])
-  schoolStaffAssignedSchool   School?        @relation("SchoolStaffSchool", fields: [schoolStaffAssignedSchoolId], references: [id])
-  studentAssignedCounselor    User?          @relation("CounselorStudents", fields: [studentAssignedCounselorId], references: [id])
-  counselorAssignedStudents   User[]         @relation("CounselorStudents")
-  studentAssignedSchool       School?        @relation(fields: [studentAssignedSchoolId], references: [id])
-  counselorAssignedSchools    School[]       @relation("CounselorSchools")
-  studentGuardians            User[]         @relation("GuardianStudents")
-  guardianStudents            User[]         @relation("GuardianStudents")
-  participantAppointments     Appointment[]  @relation("ParticipantAppointment")
+  schoolStaffAssignedSchool   School? @relation("SchoolStaffSchool", fields: [schoolStaffAssignedSchoolId], references: [id], onDelete: Cascade)
+
+  guardianStudents User[] @relation("GuardianStudents")
+
+  participantAppointments Appointment[] @relation("ParticipantAppointment")
 }
 
 model School {
@@ -53,22 +60,26 @@ model School {
 }
 
 model Appointment {
-  id              String               @id @default(uuid())
-  title           String
-  start           DateTime
-  end             DateTime
-  isRecurring     Boolean?             @default(false)
-  numOccurrences  Int?
-  numRepeats      Int?
-  frequency       RepeatFrequency?
-  type            AppointmentType
-  status          AppointmentStatus
-  location        AppointmentLocation?
+  id       String               @id @default(uuid())
+  title    String
+  start    DateTime
+  end      DateTime
+  status   AppointmentStatus    @default(SCHEDULED)
+  type     AppointmentType?     @default(UNKNOWN)
+  location AppointmentLocation? @default(UNKNOWN)
+
+  isRecurring    Boolean?         @default(false)
+  numOccurrences Int?             @default(0)
+  numRepeats     Int?             @default(0)
+  frequency      RepeatFrequency? @default(WEEKS)
+
   counselorUserId String?
-  schoolId        String?
-  counselor       User?                @relation(fields: [counselorUserId], references: [id])
-  school          School?              @relation(fields: [schoolId], references: [id])
-  participants    User[]               @relation("ParticipantAppointment")
+  counselor       User?   @relation(fields: [counselorUserId], references: [id], onDelete: Cascade)
+
+  schoolId String?
+  school   School? @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  participants User[] @relation("ParticipantAppointment")
 }
 
 enum RepeatFrequency {
@@ -84,9 +95,11 @@ enum Role {
   SCHOOL_ADMIN
   SCHOOL_STAFF
   STUDENT
+  TEACHER
   GUARDIAN
   COUNSELOR
   SYSADMIN
+  UNASSIGNED
 }
 
 enum StudentStatus {
@@ -99,6 +112,7 @@ enum AppointmentType {
   CLINICAL
   CONSULTATION
   EVALUATION
+  UNKNOWN
 }
 
 enum AppointmentStatus {
