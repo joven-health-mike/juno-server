@@ -19,6 +19,7 @@ export class SchoolFilterDelegate {
       case 'SCHOOL_STAFF':
         return new SchoolSchoolFilter()
       case 'STUDENT':
+      case 'TEACHER':
         return new StudentSchoolFilter()
       case 'GUARDIAN':
         return new GuardianSchoolFilter()
