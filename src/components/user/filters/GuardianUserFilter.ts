@@ -28,7 +28,10 @@ async function isUserRelated(
   // guardian users have access to their own user
   if (target.id === reference.id) {
     return true
-  } else if (target.role === ('STUDENT' as Role)) {
+  } else if (
+    target.role === ('STUDENT' as Role) ||
+    target.role === ('TEACHER' as Role)
+  ) {
     // guardians have access to any students in their list of students
     for (const guardianStudent of reference.guardianStudents) {
       if (target.id === guardianStudent.id) return true

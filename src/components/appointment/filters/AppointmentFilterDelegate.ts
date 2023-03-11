@@ -20,6 +20,7 @@ export class AppointmentFilterDelegate {
       case 'SCHOOL_STAFF':
         return new SchoolAppointmentFilter()
       case 'STUDENT':
+      case 'TEACHER':
         return new StudentAppointmentFilter()
       case 'GUARDIAN':
         return new GuardianAppointmentFilter()

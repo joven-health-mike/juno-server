@@ -35,7 +35,10 @@ async function isUserRelated(
   // school users have access to their own user
   if (target.id === reference.id) {
     return true
-  } else if (target.role === ('STUDENT' as Role)) {
+  } else if (
+    target.role === ('STUDENT' as Role) ||
+    target.role === ('TEACHER' as Role)
+  ) {
     // school has access to students that are assigned to their school
     return schoolId === target.studentAssignedSchoolId
   } else if (target.role === ('SCHOOL_ADMIN' as Role)) {
