@@ -83,7 +83,7 @@ const getUserFromUserInfo = (userInfo: UserInfo) => {
   }
 }
 
-export const createUser = async (userInfo: UserInfo): Promise<User> => {
+export const createUser = async (userInfo: UserInfo): Promise<DetailedUser> => {
   const newUser = getUserFromUserInfo(userInfo)
   return await prismaClient.user.create({
     data: newUser as User,
@@ -102,19 +102,12 @@ export const findUserByUsername = async (
 
 export const findOrCreateUserByEmail = async (
   userInfo: UserInfo
-): Promise<User> => {
-  let userInDatabase = await findUserByEmail(userInfo.email)
+): Promise<DetailedUser> => {
+  let userInDatabase = await findUserByUsername(userInfo.username)
   if (!userInDatabase) {
     userInDatabase = await createUser(userInfo)
   }
   return userInDatabase
-}
-
-export const findUserByEmail = async (email: string): Promise<User | null> => {
-  return await prismaClient.user.findUnique({
-    where: { email },
-    include: userInclude
-  })
 }
 
 export const findUserById = async (id: string): Promise<User | null> => {

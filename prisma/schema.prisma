@@ -13,8 +13,8 @@ model User {
   lastName         String
   username         String  @unique
   role             Role    @default(UNASSIGNED)
-  email            String? @unique
-  phone            String? @unique
+  email            String?
+  phone            String?
   docsUrl          String?
   timeZoneIanaName String? @default("America/New_York")
 
