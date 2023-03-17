@@ -1,11 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import config from 'config'
-import {
-  findOrCreateUserByEmail,
-  findUserByEmail,
-  findUserByUsername
-} from '../user/userModel'
+import { findOrCreateUserByEmail, findUserByUsername } from '../user/userModel'
 import { Role } from '@prisma/client'
 
 // User session information returned from Auth0
@@ -40,7 +36,12 @@ export const authenticateSession = async (
       const simulatedLoginUsername = config.get(
         'authentication.user.simulatedLoginUsername'
       ) as string
-      const loggedInUser = await findUserByEmail(req.oidc.user.email)
+      const username = (
+        req.oidc.user.name.split(' ')[0] +
+        '.' +
+        req.oidc.user.name.split(' ')[1]
+      ).toLowerCase()
+      const loggedInUser = await findUserByUsername(username)
       if (
         loggedInUser?.role === ('SYSADMIN' as Role) &&
         simulatedLoginUsername
