@@ -388,5 +388,26 @@ module.exports = [
     studentAssignedSchool: {
       connect: { id: 'af96c257-8ee5-4902-b4cc-ddb086f81570' }
     }
+  },
+  {
+    id: '9981ed50-3c6a-4022-b514-ff04a874f7e8',
+    firstName: 'Claire',
+    lastName: 'Boyer',
+    email: 'claire@jovenhealth.com',
+    username: 'claire.boyer',
+    role: 'COUNSELOR',
+    phone: '123-456-5029',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1QyFeRR9W_EGOfRrC-Qv4Jc5Bc7O5THtc?usp=share_link',
+    timeZoneIanaName: 'America/Chicago',
+    counselorRoomLink: 'https://zoom.us/j/8989713891',
+    counselorAssignedSchools: {
+      connect: [
+        { id: 'a7e56e1c-f1c2-4bf9-a3fd-9fdef3fb87df' },
+        { id: '5ac1c4ab-725b-4a5c-bb0a-e3ab5c882aca' },
+        { id: '6265a973-0f32-421e-b378-9d7caefb1e6a' },
+        { id: 'af96c257-8ee5-4902-b4cc-ddb086f81570' }
+      ]
+    }
   }
 ]
