@@ -10,6 +10,7 @@ interface SchoolInfo {
   city?: string
   state?: string
   zip?: string
+  timeZoneIanaName?: string
   primaryEmail?: string
   primaryPhone?: string
   docsUrl?: string
@@ -23,6 +24,7 @@ const getSchoolFromSchoolInfo = (schoolInfo: SchoolInfo) => {
     city: schoolInfo.city,
     state: schoolInfo.state,
     zip: schoolInfo.zip,
+    timeZoneIanaName: schoolInfo.timeZoneIanaName,
     primaryEmail: schoolInfo.primaryEmail,
     primaryPhone: schoolInfo.primaryPhone,
     docsUrl: schoolInfo.docsUrl

@@ -42,13 +42,14 @@ CREATE TABLE "User" (
 CREATE TABLE "School" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "primaryEmail" TEXT,
+    "primaryPhone" TEXT,
+    "docsUrl" TEXT,
     "address" TEXT,
     "state" TEXT,
     "city" TEXT,
     "zip" TEXT,
-    "primaryEmail" TEXT,
-    "primaryPhone" TEXT,
-    "docsUrl" TEXT,
+    "timeZoneIanaName" TEXT DEFAULT 'America/New_York',
 
     CONSTRAINT "School_pkey" PRIMARY KEY ("id")
 );
