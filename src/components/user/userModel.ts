@@ -1,6 +1,7 @@
 import { Role, StudentStatus, User, School } from '@prisma/client'
 import { prismaClient } from '../../database'
 import { UserFilterDelegate } from './filters/UserFilterDelegate'
+import { generateUsername } from './UsernameGenerator'
 
 export type DetailedUser = User & {
   guardianStudents: User[]
@@ -59,10 +60,13 @@ const getCounselorAssignedSchoolsConnectionStr = (
 const getUserFromUserInfo = (userInfo: UserInfo) => {
   return {
     id: userInfo.id === '-1' ? undefined : userInfo.id,
+    username:
+      typeof userInfo.username === 'undefined' || userInfo.username.length === 0
+        ? generateUsername(userInfo.firstName, userInfo.lastName)
+        : userInfo.username,
     firstName: userInfo.firstName,
     lastName: userInfo.lastName,
     email: userInfo.email,
-    username: userInfo.username,
     phone: userInfo.phone,
     docsUrl: userInfo.docsUrl,
     counselorRoomLink: userInfo.counselorRoomLink,

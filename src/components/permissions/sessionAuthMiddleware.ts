@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes'
 import config from 'config'
 import { findOrCreateUserByEmail, findUserByUsername } from '../user/userModel'
 import { Role } from '@prisma/client'
+import { generateUsername } from '../user/UsernameGenerator'
 
 // User session information returned from Auth0
 export interface UserSession {
@@ -49,15 +50,13 @@ export const authenticateSession = async (
         // if an admin is logged in and there's a simulated login in the config file, set the user as the simulated user
         req.user = await findUserByUsername(simulatedLoginUsername)
       } else {
+        const [firstName, lastName] = req.oidc.user.name.split(' ')
+
         req.user = await findOrCreateUserByEmail({
           email: req.oidc.user.email,
-          firstName: req.oidc.user.name.split(' ')[0],
-          lastName: req.oidc.user.name.split(' ')[1],
-          username: (
-            req.oidc.user.name.split(' ')[0] +
-            '.' +
-            req.oidc.user.name.split(' ')[1]
-          ).toLowerCase(),
+          firstName: firstName,
+          lastName: lastName,
+          username: generateUsername(firstName, lastName),
           role: config.get('authentication.user.defaultRole')
         })
       }
