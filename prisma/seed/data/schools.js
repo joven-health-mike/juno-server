@@ -8,6 +8,7 @@ module.exports = [
     city: 'Denver',
     state: 'CO',
     zip: '80013',
+    timeZoneIanaName: 'America/Denver',
     docsUrl:
       'https://drive.google.com/drive/folders/1j1j_3Pk7EiApXtCzBiU8Q00zmI7RKPXh?usp=share_link'
   },
@@ -20,6 +21,7 @@ module.exports = [
     city: 'New York',
     state: 'NY',
     zip: '80013',
+    timeZoneIanaName: 'America/New_York',
     docsUrl:
       'https://drive.google.com/drive/folders/1QCJnt8SR-UZtDHt9xUUHEuswymnr-9lf?usp=share_link'
   },
@@ -32,6 +34,7 @@ module.exports = [
     city: 'Philadelphia',
     state: 'PA',
     zip: '80013',
+    timeZoneIanaName: 'America/New_York',
     docsUrl:
       'https://drive.google.com/drive/folders/1AYXPkOlZBgBU53-I8VDZi2oJ3vvcusy-?usp=share_link'
   },
@@ -44,6 +47,7 @@ module.exports = [
     city: 'Phoenix',
     state: 'AZ',
     zip: '80013',
+    timeZoneIanaName: 'America/Phoenix',
     docsUrl:
       'https://drive.google.com/drive/folders/17cXwM7O07HAHOw6nLSDBq2IAKeOq7X_7?usp=share_link'
   }

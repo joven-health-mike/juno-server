@@ -43,20 +43,21 @@ model User {
 }
 
 model School {
-  id           String        @id @default(uuid())
-  name         String
-  address      String?
-  state        String?
-  city         String?
-  zip          String?
-  primaryEmail String?
-  primaryPhone String?
-  docsUrl      String?
-  appointments Appointment[]
-  admins       User[]        @relation("SchoolAdminSchool")
-  staff        User[]        @relation("SchoolStaffSchool")
-  students     User[]
-  counselors   User[]        @relation("CounselorSchools")
+  id               String        @id @default(uuid())
+  name             String
+  primaryEmail     String?
+  primaryPhone     String?
+  docsUrl          String?
+  address          String?
+  state            String?
+  city             String?
+  zip              String?
+  timeZoneIanaName String?       @default("America/New_York")
+  appointments     Appointment[]
+  admins           User[]        @relation("SchoolAdminSchool")
+  staff            User[]        @relation("SchoolStaffSchool")
+  students         User[]
+  counselors       User[]        @relation("CounselorSchools")
 }
 
 model Appointment {

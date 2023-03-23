@@ -18,7 +18,7 @@ module.exports = {
       logoutRedirect: 'https://juno-dev.jovenhealth.com'
     },
     user: {
-      defaultRole: 'JOVEN_STAFF',
+      defaultRole: 'UNASSIGNED',
       simulatedLoginUsername: '' // this overrides the actual login information
     }
   },
