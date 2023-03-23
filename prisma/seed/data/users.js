@@ -409,5 +409,37 @@ module.exports = [
         { id: 'af96c257-8ee5-4902-b4cc-ddb086f81570' }
       ]
     }
+  },
+  {
+    id: '135a7e88-4fbf-4932-be32-66dda1965a7f',
+    firstName: 'Tami',
+    lastName: 'Pooja',
+    email: 'tami@jovenhealth.com',
+    username: 'tami.pooja',
+    role: 'STUDENT',
+    phone: '094-795-4424',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1yd7ciTNbxY1rNkOQ_W-kr-IE8BGkKHVu?usp=share_link',
+    timeZoneIanaName: 'America/Chicago',
+    studentStatus: 'ACTIVE',
+    studentAssignedSchool: {
+      connect: { id: 'af96c257-8ee5-4902-b4cc-ddb086f81570' }
+    }
+  },
+  {
+    id: '125a7e28-42bf-4932-b232-66dd21965a7f',
+    firstName: 'Leo',
+    lastName: 'Zion',
+    email: 'leo@jovenhealth.com',
+    username: 'leo.zion',
+    role: 'STUDENT',
+    phone: '004-795-4424',
+    docsUrl:
+      'https://drive.google.com/drive/folders/1U7MkpPB3b5y37UUvtS09zrXiwS4egE78?usp=share_link',
+    timeZoneIanaName: 'America/Chicago',
+    studentStatus: 'ACTIVE',
+    studentAssignedSchool: {
+      connect: { id: 'af96c257-8ee5-4902-b4cc-ddb086f81570' }
+    }
   }
 ]

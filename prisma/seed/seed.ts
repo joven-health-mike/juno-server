@@ -69,13 +69,15 @@ async function seedDatabaseData() {
     }
   })
 
-  // assign students to Hephzibah
+  // assign students to Claire
   await prisma.user.update({
-    where: { id: 'd80602a2-8419-49b1-b6ac-5690628d0e0e' },
+    where: { id: '9981ed50-3c6a-4022-b514-ff04a874f7e8' },
     data: {
       counselorAssignedStudents: {
         connect: [
           { id: '722f30bf-c589-4e09-9b61-4c3c9e08b957' },
+          { id: '135a7e88-4fbf-4932-be32-66dda1965a7f' },
+          { id: '125a7e28-42bf-4932-b232-66dd21965a7f' },
           { id: '9281fd50-3b6a-4082-b514-ff04a874f7e8' }
         ]
       }
