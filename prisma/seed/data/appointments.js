@@ -7,7 +7,6 @@ module.exports = [
     title: 'Bolat F (Aardvark Academy) - CLINICAL',
     start: currentDate,
     end: currentDatePlus30Mins,
-    isRecurring: false,
     counselor: { connect: { id: 'fd2d518b-ecd5-4b01-b110-f1d0512baa63' } },
     participants: { connect: [{ id: '722f30bf-c589-4e09-9b61-4c3c9e08b957' }] },
     school: { connect: { id: 'a7e56e1c-f1c2-4bf9-a3fd-9fdef3fb87df' } },
