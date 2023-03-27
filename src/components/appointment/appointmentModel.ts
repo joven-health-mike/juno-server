@@ -9,6 +9,7 @@ import {
 } from '@prisma/client'
 import { AppointmentFilterDelegate } from './filters/AppointmentFilterDelegate'
 import { DetailedUser } from '../user/userModel'
+import { randomUUID } from 'crypto'
 
 export type DetailedAppointment = Appointment & { participants: User[] }
 
@@ -17,10 +18,11 @@ export interface AppointmentInfo {
   title?: string
   start?: Date
   end?: Date
-  isRecurring?: boolean
-  numOccurrences?: number
-  numRepeats: number
-  frequency?: string
+  isSeries?: boolean
+  seriesId?: string
+  seriesRule?: string
+  seriesExceptions?: string[]
+  seriesProtoId?: string
   school?: School
   schoolId?: string
   counselor?: User
@@ -39,10 +41,11 @@ const getAppointmentFromAppointmentInfo = (
     title: appointmentInfo.title,
     start: appointmentInfo.start,
     end: appointmentInfo.end,
-    isRecurring: appointmentInfo.isRecurring,
-    numOccurrences: appointmentInfo.numOccurrences,
-    numRepeats: appointmentInfo.numRepeats,
-    frequency: appointmentInfo.frequency,
+    isSeries: appointmentInfo.isSeries,
+    seriesId: appointmentInfo.seriesId,
+    seriesRule: appointmentInfo.seriesRule,
+    seriesExceptions: appointmentInfo.seriesExceptions,
+    seriesProtoId: appointmentInfo.seriesProtoId,
     school: appointmentInfo.school,
     schoolId:
       appointmentInfo.schoolId === '-1' ? undefined : appointmentInfo.schoolId,
@@ -78,77 +81,17 @@ const getParticipantConnectionsFromAppointmentInfo = (
 export const createAppointment = async (
   appointmentInfo: AppointmentInfo
 ): Promise<Appointment> => {
+  const appointmentId = randomUUID()
+  appointmentInfo.id = appointmentId
+  if (appointmentInfo.isSeries) {
+    appointmentInfo.seriesId = randomUUID()
+    appointmentInfo.seriesProtoId = appointmentId
+  }
+
   return await prismaClient.appointment.create({
     data: getAppointmentFromAppointmentInfo(appointmentInfo) as Appointment,
     include: { participants: true, counselor: true, school: true }
   })
-}
-
-export const createRecurringAppointments = async (
-  appointmentInfo: AppointmentInfo,
-  originalAppointment: Appointment
-): Promise<Appointment[]> => {
-  const openRequests: Promise<Appointment>[] = []
-  const originalStartDate = originalAppointment.start
-  const originalEndDate = originalAppointment.end
-  const numOccurrences = appointmentInfo.numOccurrences
-  const occurrenceRepeatFrequency = appointmentInfo.frequency
-  const occurrenceRepeatNumber = appointmentInfo.numRepeats
-  let loopStartDate: Date = originalStartDate,
-    loopEndDate: Date = originalEndDate
-  for (let i = 0; i < numOccurrences - 1; i++) {
-    loopStartDate = new Date(loopStartDate)
-    loopEndDate = new Date(loopEndDate)
-    switch (occurrenceRepeatFrequency) {
-      case 'DAYS':
-        loopStartDate.setDate(loopStartDate.getDate() + occurrenceRepeatNumber)
-        loopEndDate.setDate(loopEndDate.getDate() + occurrenceRepeatNumber)
-        break
-      case 'WEEKS':
-        loopStartDate.setDate(
-          loopStartDate.getDate() + occurrenceRepeatNumber * 7
-        )
-        loopEndDate.setDate(loopEndDate.getDate() + occurrenceRepeatNumber * 7)
-        break
-      case 'MONTHS':
-        loopStartDate = new Date(
-          loopStartDate.setMonth(
-            loopStartDate.getMonth() + occurrenceRepeatNumber
-          )
-        )
-        loopEndDate = new Date(
-          loopEndDate.setMonth(loopEndDate.getMonth() + occurrenceRepeatNumber)
-        )
-        break
-      case 'YEARS':
-        loopStartDate = new Date(
-          loopStartDate.setFullYear(
-            loopStartDate.getFullYear() + occurrenceRepeatNumber
-          )
-        )
-        loopEndDate = new Date(
-          loopEndDate.setFullYear(
-            loopEndDate.getFullYear() + occurrenceRepeatNumber
-          )
-        )
-        break
-    }
-
-    const appointment = {
-      ...appointmentInfo,
-      id: undefined, // we want a new ID for each appointment, clear the old one
-      start: loopStartDate,
-      end: loopEndDate
-    }
-
-    openRequests.push(
-      prismaClient.appointment.create({
-        data: getAppointmentFromAppointmentInfo(appointment) as Appointment
-      })
-    )
-  }
-
-  return Promise.all(openRequests)
 }
 
 export const findAllAppointments = async (
