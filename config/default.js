@@ -4,21 +4,21 @@
 module.exports = {
   authentication: {
     machineToMachine: {
-      audience: 'https://code-juno.com/api',
-      issuer: 'https://code-juno.us.auth0.com/',
-      jwksUri: 'https://code-juno.us.auth0.com/.well-known/jwks.json'
+      audience: 'https://juno-server-dev.jovenhealth.com/',
+      issuer: 'https://dev-9e-ctbg8.us.auth0.com/',
+      jwksUri: 'https://dev-9e-ctbg8.us.auth0.com/.well-known/jwks.json'
     },
     session: {
-      baseUrl: 'https://localhost',
+      baseUrl: 'https://juno-server-dev.jovenhealth.com',
       clientId: 'DsMXODwKWpw9oSBMtybu6UCnwEGqxs31',
       issuerBaseUrl: 'https://dev-9e-ctbg8.us.auth0.com',
       secret:
         'Z7-nLOB7Q5ktiEbGXYGBMk0etxlSWM8hpcFnyWHmFPXq5De2uLHm-fFzMkLvcYCz',
-      loginRedirect: 'https://localhost:3000',
-      logoutRedirect: 'https://localhost:3000'
+      loginRedirect: 'https://juno-dev.jovenhealth.com',
+      logoutRedirect: 'https://juno-dev.jovenhealth.com'
     },
     user: {
-      defaultRole: 'JOVEN_STAFF',
+      defaultRole: 'UNASSIGNED',
       simulatedLoginUsername: '' // this overrides the actual login information
     }
   },

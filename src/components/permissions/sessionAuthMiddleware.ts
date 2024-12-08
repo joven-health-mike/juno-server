@@ -1,13 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import config from 'config'
-import {
-  findDetailedUserByUsername,
-  findOrCreateUserByEmail,
-  findUserByEmail,
-  findUserByUsername
-} from '../user/userModel'
+import { findOrCreateUserByEmail, findUserByUsername } from '../user/userModel'
 import { Role } from '@prisma/client'
+import { generateUsername } from '../user/UsernameGenerator'
 
 // User session information returned from Auth0
 export interface UserSession {
@@ -41,24 +37,26 @@ export const authenticateSession = async (
       const simulatedLoginUsername = config.get(
         'authentication.user.simulatedLoginUsername'
       ) as string
-      const loggedInUser = await findUserByEmail(req.oidc.user.email)
+      const username = (
+        req.oidc.user.name.split(' ')[0] +
+        '.' +
+        req.oidc.user.name.split(' ')[1]
+      ).toLowerCase()
+      const loggedInUser = await findUserByUsername(username)
       if (
         loggedInUser?.role === ('SYSADMIN' as Role) &&
         simulatedLoginUsername
       ) {
         // if an admin is logged in and there's a simulated login in the config file, set the user as the simulated user
-        const user = await findUserByUsername(simulatedLoginUsername)
-        req.user = await findDetailedUserByUsername(user)
+        req.user = await findUserByUsername(simulatedLoginUsername)
       } else {
+        const [firstName, lastName] = req.oidc.user.name.split(' ')
+
         req.user = await findOrCreateUserByEmail({
           email: req.oidc.user.email,
-          firstName: req.oidc.user.name.split(' ')[0],
-          lastName: req.oidc.user.name.split(' ')[1],
-          username: (
-            req.oidc.user.name.split(' ')[0] +
-            '.' +
-            req.oidc.user.name.split(' ')[1]
-          ).toLowerCase(),
+          firstName: firstName,
+          lastName: lastName,
+          username: generateUsername(firstName, lastName),
           role: config.get('authentication.user.defaultRole')
         })
       }

@@ -4,8 +4,13 @@
 - [Development](#development)
   - [Authentication](#authentication)
   - [Components](#components)
+    - [`/appointments`](#appointments)
+    - [`/schools`](#schools)
+    - [`/users`](#users)
   - [Configurations](#configurations)
     - [Environment Variables](#environment-variables)
+  - [Database](#database)
+    - [Deploying a Fresh Database](#deploying-a-fresh-database)
   - [Logging](#logging)
   - [Makefile](#makefile)
   - [Router](#router)
@@ -20,7 +25,13 @@
    make install
    ```
 
-2. Start the server
+2. Start the SSL Proxy (Caddy)
+
+   ```bash
+   make start-proxy
+   ```
+
+3. Start the server
 
    ```bash
    make start
@@ -29,18 +40,52 @@
 3. You can now make API requests to the server
 
    ```bash
-   curl -H "Content-Type: application/json" "http://localhost:8080/api/1/meta/alive"
+   curl -H "Content-Type: application/json" "https://localhost/api/1/users"
    ```
 
 # Development
 
+The application will be run and tested locally during feature development and published on the development server (https://juno-dev/jovenhealth.com) with each commit to the development branch.
+
 ## Authentication
 
-TODO
+You can log in to the application locally at `https://localhost/api/1/login` (server must be running locally) and on the development site at `https://juno-server-dev.jovenhealth.com/api/1/login`.
+
+If you don't have credentials to log in, please contact `mike@jovenhealth.com`.
 
 ## Components
 
-TODO
+### `/appointments`
+
+API to interact with the appointments database table.
+
+GET /appointments - returns a list of all appointments
+GET /appointments/:ID - returns a specific appointment by ID
+POST /appointments - adds a new appointment
+PUT /appointments/:ID - updates an existing appointment by ID
+DELETE /appointments/:ID - deletes an appointment by ID
+
+### `/schools`
+
+API to interact with the schools database table.
+
+GET /schools - returns a list of all schools
+GET /schools/:ID - returns a specific school by ID
+POST /schools - adds a new school
+PUT /schools/:ID - updates an existing school by ID
+DELETE /schools/:ID - deletes an school by ID
+
+### `/users`
+
+API to interact with the users database table.
+
+GET /users - returns a list of all users
+GET /loggedInUser - returns the logged-in user
+GET /users/:ID - returns a specific user by ID
+GET /users/roles/:role - returns a list of users by role
+POST /users - adds a new user
+PUT /users/:ID - updates an existing user by ID
+DELETE /users/:ID - deletes an user by ID
 
 ## Configurations
 
@@ -56,7 +101,53 @@ module.exports = {
 
 ### Environment Variables
 
-TODO
+- DATABASE_URL: The postgres URL for the database to connect to.
+  - For local development, this value should be `postgresql://postgres:postgres@localhost:5555/juno_dev`
+
+## Database
+
+The application uses Prisma to implement a postgresql database. The database schema is defined in the `/prisma` folder.
+
+### Deploying a Fresh Database
+
+0. Prepare the environment for database migration.
+  You only need to do this once, not every time you want to deploy a fresh db
+
+  - [Install Docker](https://docs.docker.com/get-docker/)
+  - Run `make docker-build` to build the Docker container
+  - Run `make docker-db` to start postgres in the Docker container
+
+1. Delete the existing database by deleting the "migrations" folder.
+
+  ```bash
+   rm -rf ./prisma/migrations
+   ```
+
+2. Build the database.
+
+   ```bash
+   make db-build
+   ```
+
+3. Migrate and seed the database with initial data.
+
+   ```bash
+   make db-migrate
+   ```
+
+   Press 'Y' to confirm deleting the existing data and 'Enter' to skip entering a name for the migration.
+
+4. Start the server to initiate a connection to the database.
+
+   ```bash
+   make start
+   ```
+
+5. Launch Prisma Studio.
+
+   ```bash
+   make db-ui
+   ```
 
 ## Logging
 

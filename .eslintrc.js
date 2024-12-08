@@ -12,7 +12,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
-    indent: [2, 2, { SwitchCase: 1 }],
+    indent: 'off',
     'lines-between-class-members': ['error', 'always'],
     'linebreak-style': ['error', 'unix'],
     'max-lines': ['error', 750],

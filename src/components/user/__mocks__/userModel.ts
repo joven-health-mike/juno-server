@@ -1,8 +1,6 @@
-export const mockUser = {
-  id: 1,
-  email: 'jon.smith@gmail.com',
-  name: 'Jon Smith',
-}
+import userData from './userData.json'
+
+export const mockUser = userData
 
 // export const findUserById = jest.fn().mockImplementation().mockResolvedValue(mockUser)
 

@@ -1,14 +1,14 @@
-import {
-  CounselorDetails,
-  Prisma,
-  Role,
-  SchoolAdminDetails,
-  SchoolStaffDetails,
-  StudentDetails,
-  User
-} from '@prisma/client'
+import { Role, StudentStatus, User, School } from '@prisma/client'
 import { prismaClient } from '../../database'
 import { UserFilterDelegate } from './filters/UserFilterDelegate'
+import { generateUsername } from './UsernameGenerator'
+
+export type DetailedUser = User & {
+  guardianStudents: User[]
+  counselorAssignedSchools: School[]
+}
+
+const userInclude = { guardianStudents: true, counselorAssignedSchools: true }
 
 interface UserInfo {
   id?: string
@@ -18,318 +18,150 @@ interface UserInfo {
   username?: string
   phone?: string
   docsUrl?: string
+  counselorRoomLink?: string
+  counselorRoomLink2?: string
+  schoolAdminAssignedSchoolId?: string
+  schoolStaffAssignedSchoolId?: string
+  studentAssignedCounselorId?: string
+  studentAssignedSchoolId?: string
+  studentStatus?: StudentStatus
   timeZoneIanaName?: string
   role?: Role
-  counselorRef?: CounselorDetails
-  schoolAdminRef?: SchoolAdminDetails
-  schoolStaffRef?: SchoolStaffDetails
-  studentRef?: StudentDetails
+  guardianStudents?: User[]
+  counselorAssignedSchools?: School[]
+}
+
+const getGuardianStudentsConnectionStr = (guardianStudents: User[]) => {
+  if (guardianStudents?.length > 0) {
+    const result: any = {}
+    result.connect = []
+    guardianStudents.forEach(student => result.connect.push({ id: student.id }))
+    return result
+  } else {
+    return undefined
+  }
+}
+
+const getCounselorAssignedSchoolsConnectionStr = (
+  counselorAssignedSchools: School[]
+) => {
+  if (counselorAssignedSchools?.length > 0) {
+    const result: any = {}
+    result.connect = []
+    counselorAssignedSchools.forEach(school =>
+      result.connect.push({ id: school.id })
+    )
+    return result
+  } else {
+    return undefined
+  }
 }
 
 const getUserFromUserInfo = (userInfo: UserInfo) => {
   return {
     id: userInfo.id === '-1' ? undefined : userInfo.id,
+    username:
+      typeof userInfo.username === 'undefined' || userInfo.username.length === 0
+        ? generateUsername(userInfo.firstName, userInfo.lastName)
+        : userInfo.username,
     firstName: userInfo.firstName,
     lastName: userInfo.lastName,
     email: userInfo.email,
-    username: userInfo.username,
     phone: userInfo.phone,
     docsUrl: userInfo.docsUrl,
+    counselorRoomLink: userInfo.counselorRoomLink,
+    counselorRoomLink2: userInfo.counselorRoomLink2,
+    schoolAdminAssignedSchoolId: userInfo.schoolAdminAssignedSchoolId,
+    schoolStaffAssignedSchoolId: userInfo.schoolStaffAssignedSchoolId,
+    studentAssignedCounselorId: userInfo.studentAssignedCounselorId,
+    studentAssignedSchoolId: userInfo.studentAssignedSchoolId,
+    studentStatus: userInfo.studentStatus,
     timeZoneIanaName: userInfo.timeZoneIanaName,
-    role: userInfo.role
+    role: userInfo.role,
+    guardianStudents: getGuardianStudentsConnectionStr(
+      userInfo.guardianStudents
+    ),
+    counselorAssignedSchools: getCounselorAssignedSchoolsConnectionStr(
+      userInfo.counselorAssignedSchools
+    )
   }
 }
 
-export const createUser = async (userInfo: UserInfo): Promise<User> => {
+export const createUser = async (userInfo: UserInfo): Promise<DetailedUser> => {
   const newUser = getUserFromUserInfo(userInfo)
-  return await prismaClient.user.create({ data: newUser })
-}
-
-export const createCounselorRef = async (
-  userInfo: UserInfo,
-  userId: string
-): Promise<CounselorDetails> => {
-  const counselorDetails: CounselorDetails = {
-    id:
-      userInfo.counselorRef.id === '-1' ? undefined : userInfo.counselorRef.id,
-    userId: userId,
-    roomLink: userInfo.counselorRef.roomLink
-  }
-  return await prismaClient.counselorDetails.create({ data: counselorDetails })
-}
-
-export const updateCounselorRef = async (
-  userInfo: UserInfo,
-  userId: string
-): Promise<CounselorDetails> => {
-  const counselorDetails: CounselorDetails = {
-    id:
-      userInfo.counselorRef.id === '-1' ? undefined : userInfo.counselorRef.id,
-    userId: userId,
-    roomLink: userInfo.counselorRef.roomLink
-  }
-  return await prismaClient.counselorDetails.update({
-    data: counselorDetails,
-    where: { userId: userId }
+  return await prismaClient.user.create({
+    data: newUser as User,
+    include: userInclude
   })
 }
 
-export const createSchoolAdminRef = async (
-  userInfo: UserInfo,
-  userId: string
-): Promise<SchoolAdminDetails> => {
-  const schoolAdminDetails: SchoolAdminDetails = {
-    id:
-      userInfo.schoolAdminRef.id === '-1'
-        ? undefined
-        : userInfo.schoolAdminRef.id,
-    userId: userId,
-    assignedSchoolId: userInfo.schoolAdminRef.assignedSchoolId
-  }
-  return await prismaClient.schoolAdminDetails.create({
-    data: schoolAdminDetails
-  })
-}
-
-export const updateSchoolAdminRef = async (
-  userInfo: UserInfo,
-  userId: string
-): Promise<SchoolAdminDetails> => {
-  const schoolAdminDetails: SchoolAdminDetails = {
-    id:
-      userInfo.schoolAdminRef.id === '-1'
-        ? undefined
-        : userInfo.schoolAdminRef.id,
-    userId: userId,
-    assignedSchoolId: userInfo.schoolAdminRef.assignedSchoolId
-  }
-  return await prismaClient.schoolAdminDetails.update({
-    data: schoolAdminDetails,
-    where: { userId: userId }
-  })
-}
-
-export const createSchoolStaffRef = async (
-  userInfo: UserInfo,
-  userId: string
-): Promise<SchoolStaffDetails> => {
-  const schoolStaffDetails: SchoolStaffDetails = {
-    id:
-      userInfo.schoolStaffRef.id === '-1'
-        ? undefined
-        : userInfo.schoolStaffRef.id,
-    userId: userId,
-    assignedSchoolId: userInfo.schoolStaffRef.assignedSchoolId
-  }
-  return await prismaClient.schoolStaffDetails.create({
-    data: schoolStaffDetails
-  })
-}
-
-export const updateSchoolStaffRef = async (
-  userInfo: UserInfo,
-  userId: string
-): Promise<SchoolStaffDetails> => {
-  const schoolStaffDetails: SchoolStaffDetails = {
-    id:
-      userInfo.schoolStaffRef.id === '-1'
-        ? undefined
-        : userInfo.schoolStaffRef.id,
-    userId: userId,
-    assignedSchoolId: userInfo.schoolStaffRef.assignedSchoolId
-  }
-  return await prismaClient.schoolStaffDetails.update({
-    data: schoolStaffDetails,
-    where: { userId: userId }
-  })
-}
-
-export const createStudentRef = async (
-  userInfo: UserInfo,
-  userId: string
-): Promise<StudentDetails> => {
-  const studentDetails: StudentDetails = {
-    id: userInfo.studentRef.id === '-1' ? undefined : userInfo.studentRef.id,
-    userId: userId,
-    assignedSchoolId: userInfo.studentRef.assignedSchoolId,
-    assignedCounselorId: userInfo.studentRef.assignedCounselorId,
-    status: userInfo.studentRef.status
-  }
-  return await prismaClient.studentDetails.create({
-    data: studentDetails
-  })
-}
-
-export const updateStudentRef = async (
-  userInfo: UserInfo,
-  userId: string
-): Promise<StudentDetails> => {
-  const studentDetails: StudentDetails = {
-    id: userInfo.studentRef.id === '-1' ? undefined : userInfo.studentRef.id,
-    userId: userId,
-    assignedSchoolId: userInfo.studentRef.assignedSchoolId,
-    assignedCounselorId: userInfo.studentRef.assignedCounselorId,
-    status: userInfo.studentRef.status
-  }
-  return await prismaClient.studentDetails.update({
-    data: studentDetails,
-    where: { userId: userId }
-  })
-}
-
-export const findUserByUsername = async (username: string): Promise<User> => {
+export const findUserByUsername = async (
+  username: string
+): Promise<DetailedUser> => {
   return await prismaClient.user.findUnique({
-    where: { username: username }
-  })
-}
-
-export const findDetailedUserByUsername = async (
-  userInfo: UserInfo
-): Promise<User> => {
-  return await prismaClient.user.findUnique({
-    where: { username: userInfo.username },
-    include: getUserIncludeForRole(userInfo.role)
+    where: { username: username },
+    include: userInclude
   })
 }
 
 export const findOrCreateUserByEmail = async (
   userInfo: UserInfo
-): Promise<User> => {
-  let userInDatabase = await findUserByEmail(userInfo.email)
+): Promise<DetailedUser> => {
+  let userInDatabase = await findUserByUsername(userInfo.username)
   if (!userInDatabase) {
     userInDatabase = await createUser(userInfo)
   }
   return userInDatabase
 }
 
-export const findUserByEmail = async (email: string): Promise<User | null> => {
-  return await prismaClient.user.findUnique({
-    where: { email }
-  })
-}
-
 export const findUserById = async (id: string): Promise<User | null> => {
-  const user = await prismaClient.user.findUnique({
-    where: { id }
-  })
   return await prismaClient.user.findUnique({
     where: { id },
-    include: getUserIncludeForRole(user.role)
+    include: userInclude
   })
 }
 
-export const findAllUsers = async (loggedInUser: User): Promise<User[]> => {
-  const allUsers = await prismaClient.user.findMany({
-    include: getAllUsersInclude()
-  })
+export const findAllUsers = async (
+  loggedInUser: DetailedUser
+): Promise<DetailedUser[]> => {
+  const allUsers = await prismaClient.user.findMany({ include: userInclude })
   return filterUsers(loggedInUser, allUsers)
 }
 
 // only return users that are related to the logged-in user somehow
 const filterUsers = async (
-  loggedInUser: User,
-  users: User[]
-): Promise<User[]> => {
+  loggedInUser: DetailedUser,
+  users: DetailedUser[]
+): Promise<DetailedUser[]> => {
   return new UserFilterDelegate().get(loggedInUser).apply(users, loggedInUser)
 }
 
 export const findUsersByRole = async (
-  loggedInUser: User,
+  loggedInUser: DetailedUser,
   role: Role
-): Promise<User[]> => {
+): Promise<DetailedUser[]> => {
   const allUsers = await prismaClient.user.findMany({
     where: { role: role },
-    include: getUserIncludeForRole(role)
+    include: userInclude
   })
   return filterUsers(loggedInUser, allUsers)
 }
 
-const getAllUsersInclude = (): Prisma.UserInclude => {
-  return {
-    schoolAdminRef: {
-      include: { assignedSchool: true }
-    },
-    schoolStaffRef: {
-      include: { assignedSchool: true }
-    },
-    counselorRef: true,
-    studentRef: {
-      include: {
-        assignedSchool: true,
-        assignedCounselor: {
-          include: {
-            user: true
-          }
-        },
-        guardians: {
-          include: {
-            user: true
-          }
-        }
-      }
+export const updateUser = async (userInfo: UserInfo): Promise<User> => {
+  const sanitizedUserInfo = getUserFromUserInfo(userInfo)
+  // clear out old connections
+  await prismaClient.user.update({
+    where: { id: sanitizedUserInfo.id },
+    data: {
+      guardianStudents: { set: [] },
+      counselorAssignedSchools: { set: [] }
     }
-  }
-}
-
-const getUserIncludeForRole = (role: Role): Prisma.UserInclude => {
-  switch (role) {
-    case Role.SYSADMIN:
-      return null
-    case Role.JOVEN_ADMIN:
-      return null
-    case Role.JOVEN_STAFF:
-      return null
-    case Role.SCHOOL_ADMIN:
-      return {
-        schoolAdminRef: {
-          include: { assignedSchool: true }
-        }
-      }
-    case Role.SCHOOL_STAFF:
-      return {
-        schoolStaffRef: {
-          include: { assignedSchool: true }
-        }
-      }
-    case Role.COUNSELOR:
-      return {
-        counselorRef: true
-      }
-    case Role.GUARDIAN:
-      return {
-        guardianRef: {
-          include: {
-            students: {
-              include: { user: true }
-            }
-          }
-        }
-      }
-    case Role.STUDENT:
-      return {
-        studentRef: {
-          include: {
-            assignedSchool: true,
-            assignedCounselor: {
-              include: {
-                user: true
-              }
-            },
-            guardians: {
-              include: {
-                user: true
-              }
-            }
-          }
-        }
-      }
-  }
-}
-
-export const updateUser = async (userInfo: User): Promise<User> => {
+  })
+  // add new connections
   return await prismaClient.user.update({
-    data: userInfo,
-    where: { id: userInfo.id }
+    data: sanitizedUserInfo,
+    where: { id: sanitizedUserInfo.id },
+    include: userInclude
   })
 }
 

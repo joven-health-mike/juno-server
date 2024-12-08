@@ -1,0 +1,10 @@
+{
+  "id": "-1",
+  "name": "ABC School",
+  "primaryEmail": "abc@school.com",
+  "address": "123 ABC Dr",
+  "city": "Alphabet City",
+  "state": "MI",
+  "zip": "49201",
+  "primaryPhone": "321-401-1230"
+}
