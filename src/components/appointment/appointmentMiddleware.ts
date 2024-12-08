@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express'
 import { DetailedUser } from '../user/userModel'
 import {
   createAppointment,
-  createRecurringAppointments,
   deleteAppointment,
   findAllAppointments,
   findAppointmentById,
@@ -46,17 +45,8 @@ export const createNewAppointment = async (
   next: NextFunction
 ): Promise<void> => {
   const requestData = request.body
-  const appointments = []
   const appointment = await createAppointment(requestData)
-  appointments.push(appointment)
-  if (appointment.isRecurring) {
-    const recurringAppointments = await createRecurringAppointments(
-      requestData,
-      appointment
-    )
-    appointments.push(...recurringAppointments)
-  }
-  response.locals.data = appointments
+  response.locals.data = appointment
   next()
 }
 

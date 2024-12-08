@@ -69,10 +69,11 @@ model Appointment {
   type     AppointmentType?     @default(UNKNOWN)
   location AppointmentLocation? @default(UNKNOWN)
 
-  isRecurring    Boolean?         @default(false)
-  numOccurrences Int?             @default(0)
-  numRepeats     Int?             @default(0)
-  frequency      RepeatFrequency? @default(WEEKS)
+  isSeries         Boolean? @default(false)
+  seriesId         String?
+  seriesRule       String?
+  seriesExceptions String[]
+  seriesProtoId    String?
 
   counselorUserId String?
   counselor       User?   @relation(fields: [counselorUserId], references: [id], onDelete: Cascade)
@@ -81,13 +82,6 @@ model Appointment {
   school   School? @relation(fields: [schoolId], references: [id], onDelete: Cascade)
 
   participants User[] @relation("ParticipantAppointment")
-}
-
-enum RepeatFrequency {
-  DAYS
-  WEEKS
-  MONTHS
-  YEARS
 }
 
 enum Role {

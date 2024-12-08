@@ -1,7 +1,4 @@
 -- CreateEnum
-CREATE TYPE "RepeatFrequency" AS ENUM ('DAYS', 'WEEKS', 'MONTHS', 'YEARS');
-
--- CreateEnum
 CREATE TYPE "Role" AS ENUM ('JOVEN_ADMIN', 'JOVEN_STAFF', 'SCHOOL_ADMIN', 'SCHOOL_STAFF', 'STUDENT', 'TEACHER', 'GUARDIAN', 'COUNSELOR', 'SYSADMIN', 'UNASSIGNED');
 
 -- CreateEnum
@@ -63,10 +60,11 @@ CREATE TABLE "Appointment" (
     "status" "AppointmentStatus" NOT NULL DEFAULT 'SCHEDULED',
     "type" "AppointmentType" DEFAULT 'UNKNOWN',
     "location" "AppointmentLocation" DEFAULT 'UNKNOWN',
-    "isRecurring" BOOLEAN DEFAULT false,
-    "numOccurrences" INTEGER DEFAULT 0,
-    "numRepeats" INTEGER DEFAULT 0,
-    "frequency" "RepeatFrequency" DEFAULT 'WEEKS',
+    "isSeries" BOOLEAN DEFAULT false,
+    "seriesId" TEXT,
+    "seriesRule" TEXT,
+    "seriesExceptions" TEXT[],
+    "seriesProtoId" TEXT,
     "counselorUserId" TEXT,
     "schoolId" TEXT,
 
